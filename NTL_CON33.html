@@ -1,0 +1,65 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CON33"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CON33</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: None of the inputs have any effect on net.
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Leda flags this violation when it finds a net this not connected to any of the input signals and also forms a data loop.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CONNECTIVITY</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following is an example code:</font>
+</p>
+<pre>
+<font face="Courier">module con33 (a, b,  q, dout);
+</font><font face="Courier">	input a, b;
+</font><font face="Courier">	output dout, q;
+</font><font face="Courier">	wire w1;
+</font><font face="Courier">	wire w2;
+</font><font face="Courier">	wire w3;  // NTL_CON33 flags on wire w3
+</font><font face="Courier">	wire w4;
+</font><font face="Courier">	assign dout = a &amp; b;
+</font><font face="Courier">	assign w4 = w2 | w3;
+</font><font face="Courier">	assign w3 = w1 &amp; w4;
+</font><font face="Courier">	assign q = w3;
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font></pre>
+<h2>
+
+</h2>
+<p>
+
+</p>
+<h3>
+</body>
+</html>

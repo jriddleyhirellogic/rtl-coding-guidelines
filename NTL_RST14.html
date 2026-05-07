@@ -1,0 +1,71 @@
+<html>
+<body>
+<h3>
+<a name="NTL_RST14"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_RST14</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Reset pin not connected to reset net</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects a reset pin that is not connected to a reset net in the design. Pins that are not connected to nets may be taken as having different power polarities by different tools. Connecting reset pins to reset nets can prevent sequence errors and improve reset tree analysis. </font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">RESETS</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_rst14_top ;
+</font><font face="Courier">input Reset; // a reset pin at top-level
+</font><font face="Courier">...
+</font><font face="Courier">//DFFR - flip-flop  with reset, CD is the reset pin
+</font><font face="Courier">DFFR        U0(.D(net_01), .CP(Clock), .CD(Reset) .Q(net_02))
+</font><font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK -- reset is connected
+</b></font></font><font face="Courier">Sub_block U1(.Clock(Clock_ext), .Rst( ), .Din(Din_ext), 
+.Dout(Dout_ext));
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_RST14 fires -- reset pin not connected to reset net Rst</b></font> 
+</font><font face="Courier">...
+</font><font face="Courier">endmodule    
+</font><font face="Courier">
+</font><font face="Courier">module Sub_block (Clock, Rst, Din, Dout);
+</font><font face="Courier">input  Clock, Rst, Din;
+</font><font face="Courier">output Dout;
+</font><font face="Courier">reg  Dout;
+</font><font face="Courier">always @(posedge Clock)
+</font><font face="Courier">begin
+</font><font face="Courier">   if (!Rst)
+</font><font face="Courier">        Dout &lt;= 0;
+</font><font face="Courier">   else Dout &lt;= Din;
+</font><font face="Courier">end
+</font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design66.gif" height="350" width="851" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

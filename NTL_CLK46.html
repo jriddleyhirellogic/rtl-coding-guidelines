@@ -1,0 +1,74 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CLK46"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CLK46</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Do not put DB cell that does not have timing-arc in out-pin on clock line</font>
+</h3>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda find the following DB cells in the clock line:</font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">  out pin of a DB cell that does not have a function.<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">  out pin of a DB cell having "non_unate" in timing_sense.<br></font>
+</font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CLOCKS</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+</font>
+</p>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<pre>
+<font face="Courier">`timescale 1ns/1ps
+</font><font face="Courier">module top(Y,Y1,D,D1,D2,D3,D4,T1,T2,T3,S,Y2,CLK,A);
+</font><font face="Courier"> input D,D1,D2,D3,D4,T1,T2,T3,S,CLK,A;
+</font><font face="Courier"> output Y,Y1,Y2;
+</font><font face="Courier">
+</font><font face="Courier"> TB2DFFQXL I1(.Q(Y), .DATA(D), .CLK(I5_Y)); 
+</font><font face="Courier"> TB2DFFQXL I2(.Q(Y1), .DATA(D1), .CLK(I4_Y)); 
+</font><font face="Courier"> TB2AND2XL I7(.Y(I7_Y), .A(D4), .B(D2));
+</font><font face="Courier"> TB2AND2XA_NOARC I3(.Y(I3_Y), .A(I6_Y), .B(I7_Y)); <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// FAIL
+</b></font></font><font face="Courier"> TB2BUFXL I5(.Y(I5_Y), .A(I3_Y));
+</font><font face="Courier"> TB2MUX2XL I4(.Y(I4_Y), .D0(T2), .D1(T3), .S0(S));
+</font><font face="Courier"> TB2AND2XC_NOARC I6(.Y(I6_Y), .A(T1), .B(D3)); <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// FAIL
+</b></font></font><font face="Courier"> 
+</font><font face="Courier"> TB2DFFQXL U0 (.Q(Y2), .DATA(A), .CLK(n1)); 
+</font><font face="Courier"> BUF U1 (.A(CLK), .Z(n1) ); <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// FAIL
+</b></font></font><font face="Courier">endmodule
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Configuration<br></font>
+<pre>
+<font face="Courier">rule_deselect -all
+</font><font face="Courier">rule_select -policy DESIGN -rule NTL_CLK46
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Case schematic<br></font>
+<pre>
+<font face="Courier"><img src="images/pol_designa106.gif" height="531" width="684" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

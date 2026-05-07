@@ -1,0 +1,179 @@
+<html>
+<body>
+<h3>
+<a name="NTL_STR65"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_STR65</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: The number of buffers/inverters should not exceed the user specified percentage of total cell count: %s1</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects that the number of buffers/inverters in the design exceeds the user specified percentage of total cell count. This information is important because it identifies bufferization that may occur during synthesis. In some cases, the number of buffers/inverters in the design is taken as an index of timing/power estimate. </font><font  face="Verdana, Arial, Helvetica, sans-serif">Arguments: </font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">	 %s1 is the top instance name<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Source Position: </font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">	 The position is the line in which the top instance is defined.<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">You can configure this rule using the rule_set_parameter Tcl command and the following parameters:</font><ul>
+  <ul>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li>BUFFERS_PERCENT to specify the acceptable buffer percentage. The default value is 5.</font>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li>INVERTERS_PERCENT to specify the acceptable inverter percentage. The default value is 5.</font>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li>BUFS_INVS_PERCENT to specify the acceptable buffer and inverter total percentage. The default value is 10.</font>
+  </ul>
+</ul>
+<font  face="Verdana, Arial, Helvetica, sans-serif">For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_STR65 \
+-parameter BUFFERS_PERCENT -value {7}
+</b></font></font></pre>
+<br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">STRUCTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">This rule should be used only for designs that have Gate-level descriptions. It will generate meaningless violations if applied to RTL designs.<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_str65_top (Reset, Din, Dout);
+</font><font face="Courier">input   Reset, Din;
+</font><font face="Courier">output  Dout;
+</font><font face="Courier">wire Din_int, Reset_inv;
+</font><font face="Courier">buf I1(Din_int, Din);
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>//NTL_STR65, number of buffers/inverters exceeds cell count by 5 percent
+</b></font></font><font face="Courier">not I2(Reset_inv, Reset);
+</font><font face="Courier">xnor I3(Dout, Din_int, Reset_inv);
+</font><font face="Courier">endmodule
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Sample Output <br></font>
+<pre>
+<font face="Courier">3: module test_str65 (out, in0, in1);
+</font><font face="Courier">         ^
+</font><font face="Courier">test_str65.v:3: STRUCTURE&gt; [ERROR] NTL_STR65: The number of 
+                buffers/inverters should not exceed the user specified 
+                percentage of total cell count test_str65
+</font><font face="Courier">   ---  The number of buffers in the design: 1 test_str65 (file: 
+        test_str65.v, line: 3)
+</font><font face="Courier">   ---  The number of inverters in the design: 1 test_str65 (file: 
+        test_str65.v, line: 3)
+</font><font face="Courier">   ---  The number of cells in the design: 3 test_str65 (file: 
+        test_str65.v, line: 3)
+</font><font face="Courier">   ---  The percentage of buffers:33% (&gt;5%) test_str65 (file: 
+        test_str65.v, line: 3)
+</font><font face="Courier">   ---  The percentage of inverters:33% (&gt;5%) test_str65 (file: 
+        test_str65.v, line: 3)
+</font><font face="Courier">   ---  The percentage of buffers and inverters:66% (&gt;10%) test_str65 
+        (file: test_str65.v, line: 3)
+</font><font face="Courier">
+</font></pre>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">In the above sample output,</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Secondary Message - 1</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The number of buffers in the design: %d1, %s2.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Argument - 1</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">%d1 is the number of buffers.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s2 is the name of the top instance.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Source Position - 1</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The position is the line in which the top instance is defined.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Secondary Message - 2</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The number of inverters in the design: %d2 %s3.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Argument - 2</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">%d2 is the number of inverters.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s3 is the name of the top instance.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Source Position - 2</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The position is the line in which the top instance is defined.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Secondary Message - 3</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The number of cells in the design: %d3 %s4.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Argument - 3</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">%d3 is the number of cells in the design.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s4 is the name of the top instance.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Source Position - 3</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The position is the line in which the top instance is defined.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Secondary Message - 4</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The percentage of buffers: %d4% (&gt;/&lt;= %d5%) %s5.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Argument - 4</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">%d4 is the percentage of buffer in the design.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%d5 is the value of the parameter BUFFERS_PERCENT.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s5 is the name of the top instance.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Source Position - 4</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The position is the line in which the top instance is defined.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Secondary Message - 5</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The percentage of inverters: %d6% (&gt;/&lt;= %d7%) %s6.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Argument - 5</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">%d6 is the percentage of inverter in the design.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%d7 is the value of the parameter INVERTERS_PERCENT.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s6 is the name of the top instance.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Source Position - 5</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The position is the line in which the top instance is defined.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Secondary Message - 6</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The percentage of buffers and inverters: %d8% (&gt;/&lt;= %d9%) %s7.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Argument - 6</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">%d8 is the total percentage of buffers and inverters in the design.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%d9 is the value of the parameter BUFS_INVS_PERCENT.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s7 is the name of the top instance.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Source Position - 6</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The position is the line in which the top instance is defined.</font></font></td>
+  </tr>
+</table>
+</font>
+</p>
+<pre>
+<font face="Courier">
+</font><font face="Courier">
+</font></pre>
+<h3>
+</body>
+</html>

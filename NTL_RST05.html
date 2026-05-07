@@ -1,0 +1,81 @@
+<html>
+<body>
+<h3>
+<a name="NTL_RST05"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_RST05</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Don't use asynchronous set/reset signal except for initial reset</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects external set/reset is synchronous or internal generated set/reset signal is asynchronous. Using external asynchronous set/reset can quickly and easily set/reset the flip-flops. Using internal generated synchronous set/reset signals can synchronize the data and decrease data failures and it will cause clock and set/reset skew.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">RESETS</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is a Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module rst05(Clk, Rst1, Rst2,Din);
+</font><font face="Courier">input Clk, Rst1,Rst2, Din;
+</font><font face="Courier">reg Rst_int1,Rst_int2,Temp1,Temp2,Temp3,Temp4;
+</font><font face="Courier">always @(posedge Clk or posedge Rst1) begin
+</font><font face="Courier">     if (!Rst1)
+</font><font face="Courier">            Rst_int1 &lt;= 0;
+</font><font face="Courier">     else Rst_int1 &lt;= 1;     <font  face="Verdana, Arial, Helvetica, sans-serif"><b>// Rst_int1 - internal generated reset 
+</b></font></font><font face="Courier">end
+</font><font face="Courier">always @(posedge Clk) begin
+</font><font face="Courier">     if (!Rst2)
+</font><font face="Courier">            Rst_int2 &lt;= 0;
+</font><font face="Courier">     else Rst_int2 &lt;= 1;    <font  face="Verdana, Arial, Helvetica, sans-serif"><b>// Rst_int2 - internal generated reset</b></font> 
+</font><font face="Courier">end
+</font><font face="Courier">always @(posedge Clk or posedge Rst1)  begin
+</font><font face="Courier">      if (Rst1)             <font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK - initial reset signal is asynchronous
+</b></font></font><font face="Courier">             Temp1 &lt;= 0;
+</font><font face="Courier">      else Temp1 &lt;= Din;
+</font><font face="Courier">end
+</font><font face="Courier">always @(posedge Clk)  begin
+</font><font face="Courier">      if (Rst2)           <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTLRST05 fires -- initial reset signal
+</b></font></font><font face="Courier">             Temp2 &lt;= 0;
+</font><font face="Courier">      else Temp2 &lt;= Din;
+</font><font face="Courier">end
+</font><font face="Courier">always @(posedge Clk)   begin
+</font><font face="Courier">      if (Rst_int1)  <font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK -- internal reset signal is synchronous
+</b></font></font><font face="Courier">            Temp3 &lt;= 0;
+</font><font face="Courier">      else Temp3 &lt;= Din;
+</font><font face="Courier">end
+</font><font face="Courier">always @(posedge Clk or posedge Rst_int2)   begin
+</font><font face="Courier">      if (Rst_int2) <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTLRST05 fires -- initial reset signal is async.
+</b></font></font><font face="Courier">           Temp4  &lt;= 0;
+</font><font face="Courier">      else  Temp4 &lt;= Din;
+</font><font face="Courier">end
+</font><font face="Courier">endmodule
+</font></pre>
+<h3>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<html>
+<body>
+<h3>
+<a name="NTL_DFT45"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_DFT45</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Flip-flop clock pin is unconnected</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">In most cases, flip-flops with unconnected clock pins result from manual modifications of the netlist. If not, such flip-flops are useless and should be removed.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_dft45_top;
+</font><font face="Courier">...
+</font><font face="Courier">GTECH_FD3 U0(.D(Din), .CP( ), .CD(Reset), .SD(Set), .Q(Dout));
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_DFT45 fires -- clock pin is unconnected
+</b></font></font><font face="Courier">endmodule
+</font></pre>
+<h3>
+</body>
+</html>

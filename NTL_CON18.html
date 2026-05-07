@@ -1,0 +1,64 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CON18"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CON18</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: There is output port, but it is not connected internally %s1</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects an output port that is not connected internally in an instance. You can activate this rule to double check such ports and avoid data failures.</font><font  face="Verdana, Arial, Helvetica, sans-serif">Arguments:</font><ul>
+  <ul>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li>%s1 is the hierarchy name of the output port in the instance in which the port is not connected internally.</font>
+  </ul>
+</ul>
+<font  face="Verdana, Arial, Helvetica, sans-serif">The source position of this rule is the line in which the output port is defined.</font><font  face="Verdana, Arial, Helvetica, sans-serif">The secondary message of this rule is "Output port connectivity path: %s2".</font><font  face="Verdana, Arial, Helvetica, sans-serif">Arguments:</font><ul>
+  <ul>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li>%s2 is the hierarchy name of the other tied output port.</font>
+  </ul>
+</ul>
+<br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CONNECTIVITY</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_con18_top (Reset, Din, Dout1, Dout2);
+</font><font face="Courier">input Reset, Din;
+</font><font face="Courier">output Dout1;      
+</font><font face="Courier">output Dout2;<font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b> // NTL_CON18 fires -- output, but not connected internally</b></font> 
+</font><font face="Courier">
+</font><font face="Courier">assign Dout1 = !Reset ? 0 :  ~Din;
+</font><font face="Courier">endmodule  
+</font></pre>
+<h3>
+</body>
+</html>

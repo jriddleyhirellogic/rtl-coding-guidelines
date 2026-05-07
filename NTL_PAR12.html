@@ -1,0 +1,78 @@
+<html>
+<body>
+<h3>
+<a name="NTL_PAR12"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_PAR12</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Separate flip-flops with asynchronous sets or resets into separate modules</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects flip-flops with asynchronous sets or resets and flip-flops without asynchronous sets or resets in the same module. To avoid metastability in timing analysis, separate flip-flops with asynchronous sets or resets into separate modules </font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">PARTITIONING</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of valid Verilog code, followed by a circuit diagram that illustrates the correct approach:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_par12_top;
+</font><font face="Courier">...
+</font><font face="Courier">Sub_asyn_reset U0(.Clock(Clock), .Reset_asyn (Reset_asyn), .Din(Din1), 
+.Dout(Dout1));
+</font><font face="Courier">Sub_asyn_set    U1(.Clock(Clock), .Set_asyn (Set_asyn), .Din(Din2), 
+.Dout(Dout2));
+</font><font face="Courier">...
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module Sub_asyn_reset (Clock, Reset_asyn, Din, Dout);  
+</font><font face="Courier">...
+</font><font face="Courier">//asynchronous DFF with reset
+</font><font face="Courier">always @(posedge Clock or negedge Reset_asyn)        
+</font><font face="Courier">begin   
+</font><font face="Courier">     if (!Reset_asyn) 
+</font><font face="Courier">            Dout &lt;= 0;
+</font><font face="Courier">     else  Dout &lt;= Din;
+</font><font face="Courier">end
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module Sub_asyn_set (Clock, Set_asyn, Din, Dout); 
+</font><font face="Courier">...
+</font><font face="Courier">//asynchronous DFF with set
+</font><font face="Courier">always @(posedge Clock or negedge Set_asyn) 
+</font><font face="Courier">begin   
+</font><font face="Courier">     if (!Set_asyn) 
+</font><font face="Courier">             Dout &lt;= 1;
+</font><font face="Courier">     else  Dout &lt;= Din;
+</font><font face="Courier">end
+</font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design16.gif" height="598" width="907" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

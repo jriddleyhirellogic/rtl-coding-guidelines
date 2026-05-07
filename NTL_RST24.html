@@ -1,0 +1,177 @@
+<html>
+<body>
+<h3>
+<a name="NTL_RST24"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_RST24</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Source and Destination flip-flops use different asynchronous resets.</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Source flip-flop: %S</font>
+</h3>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">LEDA flags the rule when the source flip-flop and destination flip-flop use different asynchronous reset. When one flip-flop drive the data input of other flip-flops passing any combinational logic, then the driver flip-flop is called the source flip-flop, and the driven flip-flop as destination flip-flop.</font></font><font  face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>Note:</b></font> When there are only buffers, or inverters between the path of the source and destination flip-flop reset, both the resets are considered to be the same. </font><font  face="Verdana, Arial, Helvetica, sans-serif">The following are the parameters for this rule:</font><ul>
+  <ul>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li>IGNORE_SRC_RST: LEDA does not report the violation when the source reset is any of the one specified by the parameter.</font>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li>IGNORE_SRC_FF: LEDA does not report the violation when the source flip-flop is any of the one specified by the parameter.</font>
+  </ul>
+</ul>
+</font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><br></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><ul>
+  <ul>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li>IGNORE_DES_RES: LEDA does not report the violation when the destination reset is any of the one specified by the parameter.</font>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li>IGNORE_DES_FF: LEDA does not report the violation when the destination flip-flop is any of the one specified by the parameter.</font>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li>CHECK_FILTER: LEDA does not report the violation when there is a path from the source flip-flop reset pin to the data pin of the destination flip-flop. </font>
+  </ul>
+</ul>
+</font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Reset</font></font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Warning</font></font></font></td>
+  </tr>
+</table>
+</font>
+</p>
+<h3>
+<a name="Example"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Example</font>
+</h3>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module top;
+</font><font face="Courier">wire clk,rst1,rst2,rst3,rst4,rst5,data1,data2;
+</font><font face="Courier">reg [1:0] dout5;
+</font><font face="Courier">reg [2:0] dout;
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge clk or posedge rst1)
+</font><font face="Courier">  if(rst1)
+</font><font face="Courier">    dout[0] &lt;= 0;
+</font><font face="Courier">  else
+</font><font face="Courier">    dout[0] &lt;= dout5[0];
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge clk or posedge rst2)
+</font><font face="Courier">  if(rst2)
+</font><font face="Courier">    dout[1] &lt;=0;
+</font><font face="Courier">  else
+</font><font face="Courier">    dout[1] &lt;= dout5[1];
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge clk or posedge rst3)
+</font><font face="Courier">  if(rst3)
+</font><font face="Courier">    dout[2] &lt;= 0;
+</font><font face="Courier">  else
+</font><font face="Courier">    dout[2] &lt;= dout5[0];
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge clk or posedge rst4)
+</font><font face="Courier">  if(rst4)
+</font><font face="Courier">    dout5[0] &lt;= 0;
+</font><font face="Courier">  else
+</font><font face="Courier">    dout5[0] &lt;= data1;
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge clk or posedge rst3)
+</font><font face="Courier">  if(rst3)
+</font><font face="Courier">    dout5[1] &lt;= 0;
+</font><font face="Courier">  else
+</font><font face="Courier">    dout5[1] &lt;= data2;
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font></pre>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Violations</font>
+</h3>
+<pre>
+<font face="Courier">28: dout5[0] &lt;= data1;
+</font><font face="Courier">^
+</font><font face="Courier">
+</font><font face="Courier">example.v:24: RESETS&gt; [WARNING] NTL_RST24: Source and Destination flip-
+flops use different asynchronous resets, Source flip-flop: top.dout5(0)
+</font><font face="Courier">
+</font><font face="Courier">   ---  Destination flip-flop: top.dout(0) (file: example.v, line: 4)
+</font><font face="Courier">
+</font><font face="Courier">   ---  Destination flip-flop: top.dout(2) (file: example.v, line: 4)
+</font><font face="Courier"> 
+</font><font face="Courier">
+</font><font face="Courier">    34: dout5[1] &lt;= data2;
+</font><font face="Courier">
+</font><font face="Courier">        ^
+</font><font face="Courier">
+</font><font face="Courier">example.v:29: RESETS&gt; [WARNING] NTL_RST24: Source and Destination flip-
+flops use different asynchronous resets, Source flip-flop: top.dout5(1)
+</font><font face="Courier">
+</font><font face="Courier">   ---  Destination flip-flop: top.dout(1) (file: example.v, line: 4)
+</font></pre>
+<h3>
+<a name="Example"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Example</font>
+</h3>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following example illustrates the valid Verilog code:</font>
+</p>
+<pre>
+<font face="Courier">module top;
+</font><font face="Courier">wire clk,rst1,rst2,data1,data2;
+</font><font face="Courier">reg [1:0] dout5;
+</font><font face="Courier">reg [2:0] dout;
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge clk or posedge rst1)
+</font><font face="Courier">  if(rst1)
+</font><font face="Courier">    dout[0] &lt;= 0;
+</font><font face="Courier">  else
+</font><font face="Courier">    dout[0] &lt;= dout5[0];
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge clk or posedge rst2)
+</font><font face="Courier">  if(rst2)
+</font><font face="Courier">    dout[1] &lt;=0;
+</font><font face="Courier">  else
+</font><font face="Courier">    dout[1] &lt;= dout5[1];
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge clk or posedge rst1)
+</font><font face="Courier">  if(rst3)
+</font><font face="Courier">    dout[2] &lt;= 0;
+</font><font face="Courier">  else
+</font><font face="Courier">    dout[2] &lt;= dout5[0];
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge clk or posedge rst1)
+</font><font face="Courier">  if(rst4)
+</font><font face="Courier">    dout5[0] &lt;= 0;
+</font><font face="Courier">  else
+</font><font face="Courier">    dout5[0] &lt;= data1;
+</font><font face="Courier">
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge clk or posedge rst2)
+</font><font face="Courier">  if(rst3)
+</font><font face="Courier">    dout5[1] &lt;= 0;
+</font><font face="Courier">  else
+</font><font face="Courier">    dout5[1] &lt;= data2;
+</font><font face="Courier">endmodule
+</font></pre>
+<h3>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CLK51"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CLK51</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Identical gated clocks detected %s.
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Leda flags this rule when it detects an identical gated clocks that have the same clock signal and enable signal.</font><font  face="Verdana, Arial, Helvetica, sans-serif">Arguments</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s: the hierarchy name of the gate output.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Design</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Clock</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Verilog/VHDL</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Netlist</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+</font>
+</h3>
+<h3>
+<a name="Example:"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Example:</font>
+</h3>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following example illustrates the rule:</font>
+</p>
+<pre>
+<font face="Courier">module top(Y1,Y2,Y3,D,T,EN);
+</font><font face="Courier">  input D,T,EN;
+</font><font face="Courier">  output Y1,Y2,Y3;
+</font><font face="Courier">
+</font><font face="Courier">  V1 I1(.Q(Y1), .DATA(D), .CLK(T), .EN(EN));
+</font><font face="Courier">  V2 I2(.Q(Y2), .DATA(D), .CLK(T), .EN(EN));
+</font><font face="Courier">
+</font><font face="Courier">  DFF I3(.Q(Y3),.DATA(D),.CLK(T));
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module V1(Q,DATA,CLK,EN);
+</font><font face="Courier">  input DATA,CLK,EN;
+</font><font face="Courier">  output Q;
+</font><font face="Courier">
+</font><font face="Courier">  DFF I1(.Q(Q), .DATA(DATA), .CLK(I2_Y));
+</font><font face="Courier">  AND2 I2(.Y(I2_Y), .A(CLK), .B(EN));
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">
+</font><font face="Courier">module V2(Q,DATA,CLK,EN);
+</font><font face="Courier">  input DATA,CLK,EN;
+</font><font face="Courier">  output Q;
+</font><font face="Courier">
+</font><font face="Courier">  DFF I1(.Q(Q), .DATA(DATA), .CLK(I2_Y));
+</font><font face="Courier">  AND2 I2(.Y(I2_Y), .A(CLK), .B(EN));
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Configuration:<br></font>
+<pre>
+<font face="Courier">rule_deselect -all
+</font><font face="Courier">rule_select -rule NTL_CLK51
+</font><font face="Courier">
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Violations:<br></font>
+<pre>
+<font face="Courier">    17:   AND2 I2(.Y(I2_Y), .A(CLK), .B(EN));
+</font><font face="Courier">            ^
+</font><font face="Courier">doc.v:17: CLOCKS&gt; [ERROR] NTL_CLK51: Identical gated clocks detected 
+top.I1.I2.~band0
+</font><font face="Courier">---  Clock input signal is: top.I1.I2.A (file: doc.v, line: 17)
+</font><font face="Courier">---  Enable input signal is: top.I1.I2.B (file: doc.v, line: 17)
+</font><font face="Courier">---  Identical gated clock is top.I2.I2.~band0 (file: doc.v, line:27)
+</font><font face="Courier">
+</font></pre>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Secondary Message</font>
+</h3>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">Secondary messages - Number of secondary messages
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Secondary message</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Clock signal is: %s</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Arguments of</font><font  face="Verdana, Arial, Helvetica, sans-serif">message (if any)</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">%s: the hierarchy name of clock signal</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Source position</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The position of the clock signal</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Secondary message</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Enable signal is :%s</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Arguments of</font><font  face="Verdana, Arial, Helvetica, sans-serif">message (if any)</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">%s: the hierarchy name of enable signal</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Source position</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The position of the enable signal</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Secondary message</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Identical gated clock signal is: %s</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Arguments of</font><font  face="Verdana, Arial, Helvetica, sans-serif">message (if any)</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">%s: the hierarchy name of gate</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Source position</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The position of the gate</font></font></td>
+  </tr>
+</table>
+</font>
+</p>
+<h3>
+</body>
+</html>

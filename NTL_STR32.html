@@ -1,0 +1,145 @@
+<html>
+<body>
+<h3>
+<a name="NTL_STR32"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_STR32</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Reconvergent path detected between %s1</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects a reconvergent path in the design. A net that branches into two different gates and converges again can produce a reconvergent path. You can activate this rule to double check reconvergent paths and avoid competition in the circuit. </font><font  face="Verdana, Arial, Helvetica, sans-serif">Arguments: </font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">	 %s1 is the hierarchy name of the starting point of the reconvergent path.<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Source Position: </font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">	 The position is the line in which the starting line of the reconvergent path is defined.<br></font>
+<br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">STRUCTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_str32_top;
+</font><font face="Courier">...
+</font><font face="Courier">wire net_01, net_02, net_03, net_04, net_05;
+</font><font face="Courier">
+</font><font face="Courier">and I1 (net_03, net_01, net_02);
+</font><font face="Courier">or I2 (net_04, net_01l, net_02);
+</font><font face="Courier">nand I3(net_05, net_04, net_03);
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_STR32 fires -- the path of I1/I2 -&gt; I3 is a reconvergent path
+</b></font></font><font face="Courier">endmodule
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Note:	 This rule checks re-convergent path to output ports, flip-flops, and latches.<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Sample Output <br></font>
+<pre>
+<font face="Courier">9: output DATA_OUT0, DATA_OUT1;
+</font><font face="Courier">              ^
+</font><font face="Courier">GATE_NTL_STR32.v:9: STRUCTURE&gt; [ERROR] NTL_STR32: Reconvergent path 
+                    detected between top.DATA_OUT0
+</font><font face="Courier">   ---  And  top.DATA_IN0 (file: GATE_NTL_STR32.v, line: 10)
+</font><font face="Courier">   ---  One of the paths is:  top.DATA_IN0 (file: GATE_NTL_STR32.v, 
+        line: 10)
+</font><font face="Courier">   ---   top.INST_BUF0.~buf0 (file: GATE_NTL_STR32.v, line: 15)
+</font><font face="Courier">   ---   top.INST_AND0.A (file: GATE_NTL_STR32.v, line: 23)
+</font><font face="Courier">   ---   top.INST_AND0.~band0 (file: GATE_NTL_STR32.v, line: 23)
+</font><font face="Courier">   ---   top.INST_AND2.A (file: GATE_NTL_STR32.v, line: 26)
+</font><font face="Courier">   ---   top.INST_BUF5.~buf0 (file: GATE_NTL_STR32.v, line: 20)
+</font><font face="Courier">   ---   top.INST_AND2.A (file: GATE_NTL_STR32.v, line: 26)
+</font><font face="Courier">   ---   top.INST_AND2.~band0 (file: GATE_NTL_STR32.v, line: 26)
+</font><font face="Courier">   ---   top.NET_8 (file: GATE_NTL_STR32.v, line: 11)
+</font><font face="Courier">   ---   top.INST_BUF6.~buf0 (file: GATE_NTL_STR32.v, line: 34)
+</font><font face="Courier">   ---   top.DATA_OUT0 (file: GATE_NTL_STR32.v, line: 9)
+</font><font face="Courier">   ---   One of the paths is:  top.DATA_IN0 (file: GATE_NTL_STR32.v, 
+         line: 10)
+</font><font face="Courier">   ---   top.INST_BUF0.~buf0 (file: GATE_NTL_STR32.v, line: 15)
+</font><font face="Courier">   ---   top.INST_AND1.A (file: GATE_NTL_STR32.v, line: 24)
+</font><font face="Courier">   ---   top.INST_AND1.~band0 (file: GATE_NTL_STR32.v, line: 24)
+</font><font face="Courier">   ---   top.INST_NOT0.A (file: GATE_NTL_STR32.v, line: 25)
+</font><font face="Courier">   ---   top.INST_NOT0.~not0 (file: GATE_NTL_STR32.v, line: 25)
+</font><font face="Courier">   ---   top.INST_AND2.B (file: GATE_NTL_STR32.v, line: 26)
+</font><font face="Courier">   ---   top.INST_AND2.~band0 (file: GATE_NTL_STR32.v, line: 26)
+</font><font face="Courier">   ---   top.NET_8 (file: GATE_NTL_STR32.v, line: 11)
+</font><font face="Courier">   ---   top.INST_BUF6.~buf0 (file: GATE_NTL_STR32.v, line: 34)
+</font><font face="Courier">   ---   top.DATA_OUT0 (file: GATE_NTL_STR32.v, line: 9)
+</font><font face="Courier">
+</font><font face="Courier">
+</font></pre>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">In the above sample output,</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Secondary Message - 1</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">And %s2</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Argument - 1</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">%s3 is the hierarchy name of the ending point of the reconvergent path.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Source Position - 1</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The position is the line in which the ending point is defined.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Secondary Message - 2</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">One of the path is: $%s3</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Argument - 2</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">%s3 is the hierarchy name of the signal in the path</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Source Position - 2</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The position is the line in which the signal is declared.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Secondary Message - 3</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">%s4</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Argument - 3</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">%s3 is the hierarchy name of the signal in the path</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Source Position - 3</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The position is the line in which the combinational logic is instantiated.</font></font></td>
+  </tr>
+</table>
+</font>
+</p>
+<pre>
+<font face="Courier">
+</font><font face="Courier"><img src="images/pol_design140.gif" height="229" width="729" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

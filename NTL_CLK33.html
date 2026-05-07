@@ -1,0 +1,78 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CLK33"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CLK33</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Detect the combinational circuit other than selector (multiplexer) which merges the multiple clocks</font>
+</h3>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule detects when multiple clocks are gated with a combinational circuit element other than a selector (multiplexer), and the gated signal is used also as clock.</font><font  face="Verdana, Arial, Helvetica, sans-serif">You can configure this rule using the rule_set_parameter Tcl command and the MUX_LIST parameter to specify complex multiplexers that you want the tool to examine, but which Leda cannot infer automatically. For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_CLK33 \
+-parameter MUX_LIST -value {MUX1, MUX2}
+</b></font></font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">If you set the MUX_LIST parameter to null, Leda checks only the simple multiplexers that it can infer from the source code. If you set the MUX_LIST parameter to a list of complex multiplexers, Leda checks those plus the simple multiplexers that it infers automatically.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CLOCKS</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Warning</font></font></td>
+  </tr>
+</table>
+</font>
+</p>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">Here are examples of valid and invalid Verilog code, followed by circuit diagrams that illustrate the problem and the correct approach:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_clk33_top; // Invalid Example
+</font><font face="Courier">input Clock1, Clock2;
+</font><font face="Courier">...
+</font><font face="Courier">wire D_01, D_02, Clock_comb, net_01;
+</font><font face="Courier">reg   D_11, D_12, net_02;
+</font><font face="Courier">...
+</font><font face="Courier">GTECH_FD1   U0(.D(D_01), .CP(Clock1),  .Q(D_11));
+</font><font face="Courier">GTECH_FD1   U1(.D(D_02), .CP(Clock2),  .Q(D_12));
+</font><font face="Courier">GTECH_AND2 U2(.A(Clock1), .B(Clock2),  .Z(Clock_comb);  
+</font><font face="Courier">GTECH_FD1   U3(.D(net_01), .CP(Clock_comb),  .Q(net_02)); 
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CLK33 fires -- violation
+</b></font></font><font face="Courier">endmodule
+</font><font face="Courier">// Valid Example
+</font><font face="Courier">module ntl_clk33_top;
+</font><font face="Courier">input Clock1, Clock2, Sel;
+</font><font face="Courier">...
+</font><font face="Courier">wire D_01, D_02, Clock_comb, net_01;
+</font><font face="Courier">reg   D_11, D_12, net_02;
+</font><font face="Courier">...
+</font><font face="Courier">GTECH_FD1   U0(.D(D_01), .CP(Clock1),  .Q(D_11));
+</font><font face="Courier">GTECH_FD1   U1(.D(D_02), .CP(Clock2),  .Q(D_12));
+</font><font face="Courier">GTECH_MUX U2(.A(Clock1), .B(Clock2),  .S(Sel), .Z(Clock_comb);  
+</font><font face="Courier">GTECH_FD1   U3(.D(net_01), .CP(Clock_comb),  .Q(net_02)); <font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK
+</b></font></font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design21.gif" height="439" width="936" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

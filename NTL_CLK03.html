@@ -1,0 +1,83 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CLK03"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CLK03</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Use only one edge of the clock %s1</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">                --- Using positive edge: %s2<br>               --- Using negative edge: %s3</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Working on the same edge of the clock simplifies timing analysis and test insertion. Designing with both edges of the clock may generate a faster design but will require more attention during scan insertion because you cannot mix both kinds of flip-flops in the same scan path unless you include extra control logic such as lookup latches.</font><font  face="Verdana, Arial, Helvetica, sans-serif">Arguments: </font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">	 %s1 is the clock source position.<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">	 %s2 is the position of flip-flop/latch that uses the positive edge of the clock.<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">	 %s3 is the position of flip-flop/latch that uses the negedge edge of the clock.<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">You can use the rule_set_parameter Tcl command and the NTL_CLK03_IGNORE_CLOCK_NEGEDGE_IN_MODULES   and NTL_CLK03_IGNORE_CLOCK_POSEDGE_IN_MODULES parameters to specify the modules that you want Leda to ignore checking this rule. For example:</font><pre>
+<font face="Courier">leda&gt; rule_set_parameter -rule NTL_CLK03 \ -
+parameter 
+NTL_CLK03_IGNORE_CLOCK_NEGEDGE_IN_MODULES -value  
+{ MOD1 MOD2 }
+</font><font face="Courier">leda&gt; rule_set_parameter -rule NTL_CLK03 \ -
+parameter NTL_CLK03_IGNORE_CLOCK_ POSEDGE 
+_IN_MODULES -value  { MOD3 MOD4 }
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">The default value of these 2 parameters is null.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CLOCKS</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_clk03_top (Clk, Reset,  Din, Dout); 
+</font><font face="Courier">input  Clk, Reset, Din; 
+</font><font face="Courier">output Dout;
+</font><font face="Courier">
+</font><font face="Courier">reg Dout1, Dout_temp;
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge Clk)  <font  face="Verdana, Arial, Helvetica, sans-serif"><b> // Posedege clock
+</b></font></font><font face="Courier">begin
+</font><font face="Courier">	if (!Reset)
+</font><font face="Courier">	      "Dout_temp&lt;= 0;"
+</font><font face="Courier">	else  Dout_temp &lt;= Din; 
+</font><font face="Courier">end
+</font><font face="Courier">always @(negedge Clk)  <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CLK03 fires -- negedge clock
+</b></font></font><font face="Courier">begin
+</font><font face="Courier">	if (!Reset)
+</font><font face="Courier">	        Dout &lt;= 0;
+</font><font face="Courier">	else  Dout &lt;= Dout_temp; 
+</font><font face="Courier">end
+</font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design27.gif" height="321" width="823" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CON05"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CON05</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Some input pins tied together %s</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule verifies that there are no shorts between input pins in instances. Input pins may be connected via manual modification of the netlist or a non-optimized cell (can be linked to a don't touch abuse). Such problems are usually solved after reoptimization.</font><font  face="Verdana, Arial, Helvetica, sans-serif">By default, this rule checks leaf cells only (ignores hierarchical modules). If you want this rule to check all hierarchical modules, set the ONLY_APPLY_ON_LEAF_CELL parameter to 0 (the default value is 1). For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_CON05 \
+-parameter ONLY_APPLY_ON_LEAF_CELL -value {0}
+</b></font></font></pre>
+<br><font  face="Verdana, Arial, Helvetica, sans-serif">By default, this check is applied on the inout ports. You can set parameter APPLY_ONLY_ON_INPUTS to 1, to apply this check only on input ports (the default value is 0). For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_CON05 \
+-parameter APPLY_ONLY_ON_INPUTS -value {0}
+</b></font></font></pre>
+<br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CONNECTIVITY</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">Here are examples of invalid Verilog code that illustrate the problem. In the first example, the ONLY_APPLY_ON_LEAF_CELL parameter is left at the default value of 1. In the second example, the ONLY_APPLY_ON_LEAF_CELL is set to 0:</font>
+</p>
+<pre>
+<font face="Courier">// ONLY_APPLY_ON_LEAF_CELL = 1
+</font><font face="Courier">module ntl_con05_top (Clock, Reset, Din, Dout);
+</font><font face="Courier">input   Clock, Reset, Din;
+</font><font face="Courier">output Dout;
+</font><font face="Courier">GTECH_FD2 I0 (.D(Clock), .CP(Clock), .CD(Reset), .Q(Dout) );  
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CON05 fires -- some input pins of GTECH_FD2 (a LEAF_CELL)
+</b></font></font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// tied together
+</b></font></font><font face="Courier">...
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">// ONLY_APPLY_ON_LEAF_CELL = 0
+</font><font face="Courier">module ntl_con05_top (Clock, Reset, Din, Dout);
+</font><font face="Courier">input   Clock, Reset, Din;
+</font><font face="Courier">output Dout;
+</font><font face="Courier">ntl_con05_sub U0 (.Din(Clock), .Clock(Clock),.Reset(Reset),.Dout(Dout));
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CON05 fires -- some input pins of hierarchical module
+</b></font></font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// tied together
+</b></font></font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module ntl_con05_sub (Clock, Reset, Din, Dout);
+</font><font face="Courier">input   Clock, Reset, Din;
+</font><font face="Courier">output Dout;
+</font><font face="Courier">...
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Secondary Message</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">--- Input pin %s1</font><font  face="Verdana, Arial, Helvetica, sans-serif">--- Tied pin %s11</font><font  face="Verdana, Arial, Helvetica, sans-serif">...</font><font  face="Verdana, Arial, Helvetica, sans-serif">--- Tied pin %s1n</font><font  face="Verdana, Arial, Helvetica, sans-serif">...</font><font  face="Verdana, Arial, Helvetica, sans-serif">--- Input pin %sn</font><font  face="Verdana, Arial, Helvetica, sans-serif">--- Tied pin %sn1</font><font  face="Verdana, Arial, Helvetica, sans-serif">...</font><font  face="Verdana, Arial, Helvetica, sans-serif">--- Tied pin %snn</font><font  face="Verdana, Arial, Helvetica, sans-serif">...</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Argument</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif">
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">%s is the hierarchy name of instance.</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">%s1 is the hierarchy name of the first input pin that is tied.</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">%s11 is the hierarchy name of the first input pin that is tied to %s1.</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">%s1n is the hierarchy name of the nth input pin that is tied to %s1.</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">%sn is the hierarchy name of the nth input pin that is tied.</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">%sn1 is the hierarchy name of the first input pin that is tied to %sn.</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">%snn is the hierarchy name of the nth input pin that is tied to %sn.</font>
+</p>
+</font></td>
+  </tr>
+</table>
+</font></font></pre>
+<h3>
+</body>
+</html>

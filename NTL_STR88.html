@@ -1,0 +1,61 @@
+<html>
+<body>
+<h3>
+<a name="NTL_STR88"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_STR88</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: The number of ports in modules</font>
+</h3>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule calculates and reports the number of ports in all modules of the design.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">STRUCTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Note</font></font></td>
+  </tr>
+</table>
+</font>
+</p>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">Here is an example that shows a gate-level design and the report that Leda generates for it when this rule is on: </font>
+</p>
+<pre>
+<font face="Courier">module ntl_str88_top (Clk, Din, Dout);
+</font><font face="Courier">input   Clk, Din;
+</font><font face="Courier">output Dout;
+</font><font face="Courier">reg D_temp1, D_temp2;
+</font><font face="Courier">
+</font><font face="Courier">GTECH_FD1    I0 (.D(Din), .CP(Clk), .Q(D_temp1));
+</font><font face="Courier">GTECH_FD1    I1 (.D(D_temp1), .CP(Clk), .Q(D_temp2));
+</font><font face="Courier">GTECH_AND2 I2 (.A(D_temp1), .B(D_temp2), .Z(Dout));
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>// Leda reports:
+</b></font></font><font face="Courier">//ntl_str88_top: 3  ntl_str88_top ...
+</font></pre>
+<h3>
+</body>
+</html>

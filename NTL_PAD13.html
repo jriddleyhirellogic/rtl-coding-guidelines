@@ -1,0 +1,63 @@
+<html>
+<body>
+<h3>
+<a name="NTL_PAD13"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_PAD13</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Primary inputs of the core must be connected to exactly 1 PAD cell</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule verifies that primary input ports are connected to a single PAD. (Primary outputs can be connected to more than one PAD cell).</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">PAD</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_pad13_top ;
+</font><font face="Courier">...
+</font><font face="Courier">// signal named with '_pad' is an input/output of Top-level
+</font><font face="Courier">Design _core U0(.Ctrl(Ctrl), .Din(Din), .Dout(Dout));
+</font><font face="Courier">
+</font><font face="Courier">//PAD cells : PC3D01 - input PAD; PC3O01 - output PAD
+</font><font face="Courier">PC3D01 U1 (.PAD(Din1_pad), .CIN(Din));
+</font><font face="Courier">PC3D01 U2 (.PAD(Din2_pad), .CIN(Din));
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_PAD13 fires -- input signal Din is connected to 2 PAD
+</b></font></font><font face="Courier">PC3D01 U3 (.PAD(Ctrl_pad), .CIN(Ctrl));
+</font><font face="Courier">
+</font><font face="Courier">PC3O01 U4 (.I(Dout), .PAD(Dout1_pad));
+</font><font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK -- Output signal Dout can be connected to 2 PAD
+</b></font></font><font face="Courier">PC3O01 U5 (.I(Dout), .PAD(Dout2_pad));
+</font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design10.gif" height="575" width="941" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

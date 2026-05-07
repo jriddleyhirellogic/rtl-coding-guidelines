@@ -1,0 +1,98 @@
+<html>
+<body>
+<h3>
+<a name="NTL_STR08"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_STR08</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: The number of gate instantiation should not exceed &lt;NB_MAX_GATES&gt; in instance: %s1</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects a number of gate instantiations in a module that exceeds the number specified by the user. Sometimes, the number of gate instantiations is limited to a number that improves the quality of synthesis and timing analysis. </font><font  face="Verdana, Arial, Helvetica, sans-serif">You can configure this rule for the maximum number of gate instantiations using the rule_set_parameter Tcl command and the NB_MAX_GATES parameter. The default value is 10. For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_STR08 \
+-parameter NB_MAX_GATES -value {15}
+</b></font></font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Arguments:</font><ul>
+  <ul>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li>%s1 is the hierarchy name of the instance.</font>
+  </ul>
+</ul>
+<font  face="Verdana, Arial, Helvetica, sans-serif">The position is the line where the instance is used.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">STRUCTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_str08_top;
+</font><font face="Courier">...
+</font><font face="Courier">// a gate instantiation
+</font><font face="Courier">Gate_inst I0 (.In(net_00), .Out(net_10);   
+</font><font face="Courier">Gate_inst I1 (.In(net_01), .Out(net_11);
+</font><font face="Courier">...
+</font><font face="Courier">Gate_inst I10 (.In(net_0a), .Out(net_1a); 
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_STR08 fires -- the number of Gate_inst &gt; 10 (10 is the default)
+</b></font></font><font face="Courier">...
+</font><font face="Courier">endmodule
+</font></pre>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Secondary Message</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif">
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The number of instantiated gates in the instance is %d1: %s2.</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The instantiated gate:  %s3.</font>
+</p>
+</font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Argument</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif">
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">%d1 is the total number of instantiated gates in the instance.</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">%s2 is the hierarchy name of the instance.</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">%s3 is the hierarchy name of the detected gate.</font>
+</p>
+</font></td>
+  </tr>
+</table>
+</font></font>
+</p>
+<h3>
+</body>
+</html>

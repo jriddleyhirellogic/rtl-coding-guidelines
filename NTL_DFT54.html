@@ -1,0 +1,72 @@
+<html>
+<body>
+<h3>
+<a name="NTL_DFT54"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_DFT54</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Insert test enable for scan test</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">A test_enable port is needed at the chip boundary in order to set flip-flops to test mode.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">Here are valid and invalid Verilog code examples, followed by a circuit diagram that illustrates the correct approach:</font>
+</p>
+<pre>
+<font face="Courier">// Invalid example
+</font><font face="Courier">module ntl_dft54_top(Clock, Din, Dout); // before scan insert
+</font><font face="Courier">input  Clock, Din;
+</font><font face="Courier">ouput Dout; 
+</font><font face="Courier">//Flop-flop -- DFF
+</font><font face="Courier">DFF U0(.D(Din), .CP(Clock), .Q(net_01));  
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_DFT54 fires -- the scan-enable signal is not inserted in this
+</b></font></font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// design before scan -insert
+</b></font></font><font face="Courier">...
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">// Valid example
+</font><font face="Courier">module ntl_dft54_top(Clock, Scan_in, Scan_en, Din, Dout);
+</font><font face="Courier">//after scan insert
+</font><font face="Courier">input  Clock, Din;
+</font><font face="Courier">input  Scan_in,Scan_en;
+</font><font face="Courier">// there is at least one test-enable signal at the top-level
+</font><font face="Courier">output Dout;
+</font><font face="Courier">//Scan DFF -- SDFF
+</font><font face="Courier">SDFF U0(.D(Din), .CP(Clock), .TI(Dout_int),  .TE( Scan_en), .Q(net_01));  
+</font><font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK -- the scan-enable signal (U0.TE) in this design is available
+</b></font></font><font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>// after scan insert
+</b></font></font><font face="Courier">...
+</font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design147.gif" height="230" width="624" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

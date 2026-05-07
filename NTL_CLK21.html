@@ -1,0 +1,67 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CLK21"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CLK21</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Pulse generator created by self flip-flop</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule detects illegal connections that generate uncontrollable pulses in the design (e.g., a connection from the Q output to the asynchronous clear input). These pulses generate an important switching activity of the chip. Furthermore, these pulses are not controllable and decrease test coverage.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CLOCKS</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_clk21_top (Clock, Din, Dout1, Dout2 );       
+</font><font face="Courier">input  Clock, Din; 
+</font><font face="Courier">output Dout1, Dout2;
+</font><font face="Courier">reg Dout1, Dout2;
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge Clock )
+</font><font face="Courier">begin
+</font><font face="Courier">	if (Dout1)
+</font><font face="Courier">	      Dout1 &lt;= 0;    <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CLK21 fires -- self flip-flop
+</b></font></font><font face="Courier">	else  Dout1 &lt;= 1; 
+</font><font face="Courier">end
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge Clock)
+</font><font face="Courier">begin
+</font><font face="Courier">	if (!Dout2)
+</font><font face="Courier">	      Dout2 &lt;= 1;  <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"> </font><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CLK21 fires -- self flip-flop
+</b></font></font><font face="Courier">	else  Dout2 &lt;= 0; 
+</font><font face="Courier">end
+</font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design62.gif" height="426" width="602" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

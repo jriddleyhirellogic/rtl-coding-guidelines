@@ -1,0 +1,108 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CLK35"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CLK35</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Do not use internally generated clock derived from sequential element: %s1</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule detects internally generated clocks that are derived from sequential elements (flip-flops or latches) in the design. Internally generated clocks reduce the test coverage of your design. It is usually a good idea to add extra logic such as multiplexers or JTAG controllers to control all the clocks in your design. </font><font  face="Verdana, Arial, Helvetica, sans-serif">Arguments: </font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">	 %s1 is the generated clock<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Source Position: </font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">	 The position is the line in which the clock is defined.<br></font>
+</font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CLOCKS</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid code, followed by a diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_clk35_top (Clock, Ctrl, Din, Dout); 
+</font><font face="Courier">input  Clock, Reset, Ctrl, Din;
+</font><font face="Courier">output Dout;
+</font><font face="Courier">reg Clock_gen, net_1, net_2;
+</font><font face="Courier">//DFFR  --  flip-flop with reset
+</font><font face="Courier">GTECH_FD1 I0(.D(Ctrl), .CP(Clock), .Q(Clock_gen));  
+</font><font face="Courier">// generated clock - Clock_gen
+</font><font face="Courier">GTECH_FD1 I1(.D(Din), .CP(Clock_gen), .Q(net_1)); 
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CLK35 fires -- generated clock drives sequential cell
+</b></font></font><font face="Courier">GTECH_LD1 I2(.D(net_1), .G(Clock_gen),  .Q(net_2));
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CLK35 fires -- generated clock drives sequential cell
+</b></font></font><font face="Courier">endmodule
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif"><br><br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"></font>
+</p>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Sample Output <br></font>
+<pre>
+<font face="Courier">4: reg Dout, Clk_gen2_1, D_int2_1;
+</font><font face="Courier">                 ^
+</font><font face="Courier">ntl_clk35.v:4: CLOCKS&gt; [ERROR] NTL_CLK35: Do not use internally 
+               generated clock derived from sequential element 
+               top.Clk_gen2_1
+</font><font face="Courier">   ---  one FF driven by this clock is top.&amp;AS2.~ff0 (file: ntl_clk35.v, 
+                                                      line: 14)
+</font><font face="Courier">
+</font></pre>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">In the above sample output,</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Secondary Message</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">one FF driven by this clock is %s2.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Argument</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">%s2 is the flip-flop which is driven by the clock %s1.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Source Position</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The position is the line where the flip-flop is instantiated.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Schematics in Path Viewer</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Two flip-flops are seen. The output of one flip-flop is used as the clock pin of the other flip-flop</font></font></td>
+  </tr>
+</table>
+</font>
+</p>
+<pre>
+<font face="Courier">
+</font><font face="Courier"><img src="images/pol_design8.gif" height="263" width="794" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

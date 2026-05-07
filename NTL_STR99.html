@@ -1,0 +1,77 @@
+<html>
+<body>
+<h3>
+<a name="NTL_STR99"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_STR99</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Max area size of each module should be less than 10000</font>
+</h3>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Consider hierarchies on a scale of 2,000 to 10,000 gates (basic blocks) to be the standard, and do not place logic gates in upper levels (Exception: CTS buffers). You can use the rule_set_parameter Tcl command to configure the MAX_AREA_SIZE and AREA_LIB parameter. The default value of MAX_AREA_SIZE is 10000 and the default value of .AREA_LIB is vcorelib.</font><font  face="Verdana, Arial, Helvetica, sans-serif">For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_STR99 -parameter 
+MAX_AREA_SIZE -value {20000}
+</b></font></font><font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_STR99 -parameter 
+AREA_LIB -value ...
+</b></font></font></pre>
+<br><font  face="Verdana, Arial, Helvetica, sans-serif">If you want to change the DB library from vcorelib (default) to lsi_10k, you need to set $search_path and $link_library too.</font><font  face="Verdana, Arial, Helvetica, sans-serif">For example:</font><pre>
+<font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>setenv search_path "&lt;path to the lsi_10k.db&gt;"
+</b></font></font><font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>setenv link_library "lsi_10k.db"
+</b></font></font><font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_STR99 -parameter 
+AREA_LIB -value {lsi_10k}
+</b></font></font></pre>
+<br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">STRUCTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Warning</font></font></td>
+  </tr>
+</table>
+</font>
+</p>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">Here is the part of RTL example and the report that Leda generates for it when this rule is on:</font>
+</p>
+<pre>
+<font face="Courier">module top (in1, in2, out);
+</font><font face="Courier">...
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font></pre>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">// Leda reports:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">    1: module top (in1, in2, out);</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">              ^</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">ntl_str99.v:1: STRUCTURE&gt; [WARNING] NTL_STR99: Max area size of each module should be less than 10000 : 20244.617188 top</font>
+</p>
+<h3>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<html>
+<body>
+<h3>
+<a name="NTL_DFT34"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_DFT34</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Use data lookup latches for clock domain crossings</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">When a scan path crosses clock domains, using a lookup latch is the only solution that preserves scan path consistency and avoids the loss of some flip-flops in the scan chain.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of valid Verilog code, followed by a circuit diagram that illustrates the correct approach:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_dft34_top(Clock1,Clock2, Reset, en_int, Din, Dout);
+</font><font face="Courier">input  Clock1, Clock2, Reset, en_int, Din;
+</font><font face="Courier">output Dout;
+</font><font face="Courier">wire Dout_temp1,Dout_temp2;
+</font><font face="Courier">...
+</font><font face="Courier">GTECH_FD1 U0(.D(Din), .CP(Clock1), .Q(Dout_temp1));
+</font><font face="Courier">GTECH_LD1 U1(.D(Dout_temp1), .G(Clock_2), .Q(Dout_temp2));
+</font><font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>// Data lookup latch
+</b></font></font><font face="Courier">GTECH_FD1 U2(.D(Dout_temp2), .CP(Clock2), .Q(Dout)); 
+</font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design132.gif" height="310" width="850" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

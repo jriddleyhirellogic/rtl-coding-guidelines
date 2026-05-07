@@ -1,0 +1,62 @@
+<html>
+<body>
+<h3>
+<a name="NTL_SET01"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_SET01</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Use only one set domain</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects multiple set domains in the design. This can result in sequence errors and cause problems during set tree analysis. </font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">RESETS</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_set01_top ;
+</font><font face="Courier">...
+</font><font face="Courier">always @(posedge Clock)
+</font><font face="Courier">begin
+</font><font face="Courier">     if (Set1) <font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK -- one set domain
+</b></font></font><font face="Courier">            Dout_temp &lt;= 1;
+</font><font face="Courier">     else Dout_temp &lt;= Din;
+</font><font face="Courier">end
+</font><font face="Courier">always @(posedge Clock)
+</font><font face="Courier">begin
+</font><font face="Courier">      if (Set2) <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_SET01 fires -- two set domains
+</b></font></font><font face="Courier">            Dout &lt;= 1;
+</font><font face="Courier">     else Dout &lt;= Dout_temp;
+</font><font face="Courier">end
+</font><font face="Courier">endmodule
+</font></pre>
+<h3>
+</body>
+</html>

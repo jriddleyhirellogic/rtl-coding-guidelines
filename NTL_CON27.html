@@ -1,0 +1,64 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CON27"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CON27</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: The specified pin of the block should be connected to the designated pin</font>
+</h3>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule detects if the mandatory connections are well connected.</font><font  face="Verdana, Arial, Helvetica, sans-serif">Users can describe the block information in a Tcl file based on the following format.</font><font  face="Verdana, Arial, Helvetica, sans-serif">In case the user specifies the block by module name:</font><font  face="Verdana, Arial, Helvetica, sans-serif">rule_set_parameter -rule NTL_CON27 -parameter MANDATORY_MODULE_CONNECTION -value {ModuleName_of_the_Sender1.pinName, ModuleName_of_the_Receiver.PinName1, ModuleName_of_the_Receiver.PinName2, ..., ModuleName_of_the_Sender2.PinName, ModuleName_of_the_Receiver.PinName1, ...}</font><br><font  face="Verdana, Arial, Helvetica, sans-serif">In case the user specifies the block by instance name:                   </font><font  face="Verdana, Arial, Helvetica, sans-serif">rule_set_parameter -rule NTL_CON27 -parameter MANDATORY_INSTANCE_CONNECTION -value {InstanceName_of_the_Sender1.PinName, InstanceName_of_the_Receiver.PinName1, InstanceName_of_the_Receiver.PinName2, ..., InstanceName_of_the_Sender2.PinName, InstanceName_of_the_Receiver1.PinName ...}</font><br><font  face="Verdana, Arial, Helvetica, sans-serif">User specifies the Tcl file with +tcl_config option. </font><font  face="Verdana, Arial, Helvetica, sans-serif">Leda checks the block described in the Tcl file</font><pre>
+<font face="Courier">leda&gt; leda -top top test.v +tcl_config+script.tcl
+</font></pre>
+<br><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CONNECTIVITY</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+</font>
+</p>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">rule_set_parameter -rule NTL_CON27 -parameter MANDATORY_MODULE_CONNECTION -value {M1.out1 M2_1.in1 M3_2.in1}</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_design29.gif" height="228" width="299" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<pre>
+<font face="Courier">
+</font></pre>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">rule_set_parameter -rule NTL_CON26 -parameter MANDATORY_INSTANCE_CONNECTION -value {top.I1.out1 top.I2.I2.in1, top.I7.out2 top.I3.I3.I3.in1}</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_design17.gif" height="264" width="275" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<h3>
+</body>
+</html>

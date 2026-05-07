@@ -1,0 +1,77 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CLK44"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CLK44</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Clock gating enable is illegal</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">When using gated clock, the design structure needs to have an enable signal driven by latch or flip-flop to avoid any hazard or must have set_input_delay on enable signal.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CLOCKS</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Warning</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<pre>
+<font face="Courier">
+</font><font face="Courier">/* Fail: The two ffs all use posedge of CLK */ 
+</font><font face="Courier">module GE_NG_1 (CLK,EN,Q,A);
+</font><font face="Courier">   input CLK,EN,A;
+</font><font face="Courier">   output Q;
+</font><font face="Courier">   reg Q,tmp_en;
+</font><font face="Courier">   wire tmp_clk;
+</font><font face="Courier">
+</font><font face="Courier">always@(CLK) begin
+</font><font face="Courier">   if (CLK)
+</font><font face="Courier">      tmp_en &lt;= EN;
+</font><font face="Courier">end
+</font><font face="Courier">assign tmp_clk = tmp_en &amp; CLK;
+</font><font face="Courier">always@(posedge tmp_clk) begin
+</font><font face="Courier">   Q &lt;= A;
+</font><font face="Courier">end
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font></pre>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The below schematic demonstrates the behavior of this rule:</font>
+</p>
+<pre>
+<font face="Courier"><img src="images/pol_design70.gif" height="407" width="603" align="center" border="0" hspace="0" vspace="0">
+<font  face="Verdana, Arial, Helvetica, sans-serif"><b>PASS TESTCASE
+</b></font></font><font face="Courier">
+</font><font face="Courier"><img src="images/pol_design73.gif" height="384" width="619" align="center" border="0" hspace="0" vspace="0">
+</font><font face="Courier">
+</font><font face="Courier">FAIL TESTCASE
+</font><font face="Courier"><img src="images/pol_design76.gif" height="384" width="618" align="center" border="0" hspace="0" vspace="0">
+</font><font face="Courier">
+</font><font face="Courier"><img src="images/pol_design79.gif" height="384" width="618" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CON08"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CON08</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Floating output pin</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule verifies that no output pins of instances are left unconnected. In some cases (for sequential cells) you don't need to have all output pins driving. If all output pins are unconnected, this is a design error, and another rule related to all output pin connections fires (see NTL_CON09).</font><font  face="Verdana, Arial, Helvetica, sans-serif">By default, this rule checks leaf cells only (ignores hierarchical modules). If you want this rule to check all hierarchical modules, set the ONLY_APPLY_ON_LEAF_CELL parameter to 0 (the default value is 1). For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_CON08 \
+-parameter ONLY_APPLY_ON_LEAF_CELL -value {0}
+</b></font></font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">By default, this check is applied on the inout ports. You can set parameter APPLY_ONLY_ON_OUTPUTS to 1, to apply this check only on output ports (the default value is 0). For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_CON08 \
+-parameter APPLY_ONLY_ON_OUTPUTS -value {1}
+</b></font></font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">If an inout port is derived with the "PAD" attribute from a DB cell, or if the inout port is owned by an analog DB cell (with the attribute "is_analog") yet the inout port is not a digital pin (without the attribute "is_digital_pin"), such an inout port will not be taken as an output to be checked by this rule even if the parameter APPLY_ONLY_ON_OUTPUTS is set to 0. Connection of such inout ports to supply is considered to be fine.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CONNECTIVITY</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">Here are examples of invalid Verilog code that illustrate the problem. In the first example, the ONLY_APPLY_ON_LEAF_CELL parameter is left at the default value of 1. In the second example, the ONLY_APPLY_ON_LEAF_CELL is set to 0:</font>
+</p>
+<pre>
+<font face="Courier">// ONLY_APPLY_ON_LEAF_CELL = 1
+</font><font face="Courier">module ntl_con08_top (Clock, Reset, Din, Dout);
+</font><font face="Courier">input Clock, Reset, Din;
+</font><font face="Courier">output Dout;
+</font><font face="Courier">GTECH_FD2 I0 (.D(Din), .CP(Clock), .CD(Reset), .Q(Dout), .QN( ) );  
+</font><font face="Courier">// NTL_CON08 fires - QN is a floating output pin
+</font><font face="Courier">...
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">// ONLY_APPLY_ON_LEAF_CELL = 0
+</font><font face="Courier">module ntl_con08_top (Clock, Reset, Din, Dout);
+</font><font face="Courier">input Clock, Reset, Din;
+</font><font face="Courier">output Dout;
+</font><font face="Courier">ntl_con08_sub U0(.Clock(Clock),.Reset(Reset), .Din(Din),.Dout1(Dout), 
+.Dout2( )); 
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CON08 fires - Dout2 is a floating output pin
+</b></font></font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module ntl_con08_sub (Clock, Reset, Din, Dout1, Dout2);
+</font><font face="Courier">input Clock, Reset, Din;
+</font><font face="Courier">output Dout1, Dout2;
+</font><font face="Courier">...
+</font><font face="Courier">endmodule
+</font></pre>
+<h3>
+</body>
+</html>

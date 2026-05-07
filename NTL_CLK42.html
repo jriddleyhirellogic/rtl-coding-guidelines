@@ -1,0 +1,80 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CLK42"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CLK42</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: SET and RESET of F/F which drives enable signal must be clamped</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule detects if the set/reset of the flip-flop which drives enable signal is connected to a fixed value.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CLOCKS</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Warning</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<pre>
+<font face="Courier">
+</font><font face="Courier">module NTL_CLK42(q1, q2, clk, data, enable, set);
+</font><font face="Courier">    output q1, q2;
+</font><font face="Courier">    input clk, data, enable, set;
+</font><font face="Courier"> 
+</font><font face="Courier">    RTL_NTL_CLK42 U1_FIRE ( .out0(q1), .clock0(clk), .data0(data), 
+   .enable0(eanble), .set0(set));
+</font><font face="Courier">    RTL_NTL_CLK42 U2_NOT_FIRE ( .out0(q2), .clock0(clk), .data0(data), 
+   .enable0(eanble), .set0(1'b1));
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module RTL_NTL_CLK42 (out0, clock0, data0, enable0, set0);
+</font><font face="Courier">output out0;
+</font><font face="Courier">input  clock0, data0, enable0, set0;
+</font><font face="Courier">reg out0, N5;
+</font><font face="Courier">wire N4, N6;
+</font><font face="Courier">
+</font><font face="Courier">    not inv0 ( N4, clock0 );
+</font><font face="Courier">    and and0 ( N6, N5, clock0 );
+</font><font face="Courier">
+</font><font face="Courier">    always @ (posedge N4 ) begin
+</font><font face="Courier">        if ( set0 == 1'b0 ) 
+</font><font face="Courier">            N5 &lt;= 1'b1;
+</font><font face="Courier">        else 
+</font><font face="Courier">            N5 &lt;= enable0;
+</font><font face="Courier">    end
+</font><font face="Courier">
+</font><font face="Courier">    always @ ( posedge N6 ) begin
+</font><font face="Courier">        out0 &lt;= data0;
+</font><font face="Courier">    end
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">
+</font><font face="Courier"><img src="images/pol_design67.gif" height="276" width="429" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

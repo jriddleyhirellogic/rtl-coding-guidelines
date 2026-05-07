@@ -1,0 +1,71 @@
+<html>
+<body>
+<h3>
+<a name="NTL_SET03"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_SET03</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Don't use one set signal for both asynchronous set and synchronous set %s</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule flags when Leda detects a set signal that is used both as an asynchronous set and a synchronous set in the design. Such signals are dangerous in sequential designs because they can cause sequence errors and data failures. Using set signals as only synchronous or asynchronous (not both) also improves set tree analysis.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">RESETS</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module top (clk1, clk2, din1, din2, set, dout1, dout2);
+</font><font face="Courier">
+</font><font face="Courier">input clk1, clk2, din1, din2, set;
+</font><font face="Courier">output dout1, dout2;
+</font><font face="Courier">reg dout1, dout2;
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge clk1 or posedge set)
+</font><font face="Courier">begin
+</font><font face="Courier">  if(set == 1)
+</font><font face="Courier">    dout1 &lt;= 1;
+</font><font face="Courier">  else
+</font><font face="Courier">    dout1 &lt;= din1;
+</font><font face="Courier">
+</font><font face="Courier">end
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge clk2)
+</font><font face="Courier">begin
+</font><font face="Courier">  if(set == 1) <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_SET03 fires - signal set used as synchronous set
+</b></font></font><font face="Courier">    dout2 &lt;= 1;
+</font><font face="Courier">  else
+</font><font face="Courier">    dout2 &lt;= din2;
+</font><font face="Courier">end
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font></pre>
+<h3>
+</body>
+</html>

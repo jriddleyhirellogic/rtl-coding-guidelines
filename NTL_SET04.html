@@ -1,0 +1,71 @@
+<html>
+<body>
+<h3>
+<a name="NTL_SET04"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_SET04</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Locally gated asynchronous sets should be avoided %s</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule flags when Leda detects locally gated asynchronous sets in the design. You can avoid sequence errors caused by gate logic competition by removing locally gated asynchronous sets from your design.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">RESETS</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module top (rst, ren, clk, data, q);
+</font><font face="Courier">
+</font><font face="Courier">input rst, ren, clk, data;
+</font><font face="Courier">output q;
+</font><font face="Courier">reg q;
+</font><font face="Courier">wire grst;
+</font><font face="Courier">
+</font><font face="Courier">assign grst = rst | ren; <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_SET04 flags - gated async. set found
+</b></font></font><font face="Courier">
+</font><font face="Courier">always @(posedge clk or posedge grst)
+</font><font face="Courier">begin
+</font><font face="Courier">  if (grst == 1)
+</font><font face="Courier">    q &lt;= 1;
+</font><font face="Courier">  else
+</font><font face="Courier">    q &lt;= data;
+</font><font face="Courier">end
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font></pre>
+<h2>
+
+</h2>
+<p>
+
+</p>
+<h3>
+</body>
+</html>

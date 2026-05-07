@@ -1,0 +1,69 @@
+<html>
+<body>
+<h3>
+<a name="NTL_STR20"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_STR20</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Each output enable signal should be assigned to no more than MAX_DRIVING_NUMBER primary outputs</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects an output enable signal used to control more than MAX_DRIVING_NUMBER of primary outputs. Removing such signals from the design helps avoid data faults in primary outputs caused by poor driving strength of the enable signal.</font><font  face="Verdana, Arial, Helvetica, sans-serif">You can configure this rule using the rule_set_parameter Tcl command and the MAX_DRIVING_NUMBER parameter. The default value is 6. For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_STR20 \
+-parameter MAX_DRIVING_NUMBER -value {8}
+</b></font></font></pre>
+<br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">STRUCTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_str20_top;
+</font><font face="Courier">...
+</font><font face="Courier">output Dout_0, Dout_1, Dout_2, Dout_3, Dout_4, Dout_5, Dout_6;
+</font><font face="Courier">...
+</font><font face="Courier">wire Enable;   //enable signal 
+</font><font face="Courier">wire Din_0, Din_1, Din_2, Din_3, Din_4, Din_5, Din_6, Din_7;
+</font><font face="Courier">
+</font><font face="Courier">bufif0 I0(Dout_0, Din_0, Enable);
+</font><font face="Courier">bufif0 I1(Dout_1, Din_1, Enable);
+</font><font face="Courier">bufif0 I2(Dout_2, Din_2, Enable);
+</font><font face="Courier">bufif0 I3(Dout_3, Din_3, Enable);
+</font><font face="Courier">bufif0 I4(Dout_4, Din_4, Enable);
+</font><font face="Courier">bufif0 I5(Dout_5, Din_5, Enable);
+</font><font face="Courier">bufif0 I6(Dout_6, Din_6, Enable);
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_STR20 fires -- enable signal is assigned to 7 times
+</b></font></font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// (the default is 6)
+</b></font></font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design101.gif" height="542" width="696" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

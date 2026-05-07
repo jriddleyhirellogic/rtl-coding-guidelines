@@ -1,0 +1,54 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CON13A"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CON13A</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Non-driving internal net: %s1</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">                --- Total range of %s2: %s3 bits (%s4: %s5)</font>
+</h3>
+<pre>
+<font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Non-driving internal nets are useless and must be removed. This rule will fire on non-driving internal net, but will not fire on unused internal net, because unused internal nets do not cause any problem and another rule NTL_LAN15 will detect such nets. If the illegal net is a part selected from a vector, a secondary message appears to report the vector's width and range information.</font><font  face="Verdana, Arial, Helvetica, sans-serif">Arguments: </font><font  face="Verdana, Arial, Helvetica, sans-serif">%s1 is the non-driving net source position which is the line where the non-driving net is defined.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s2 is the signal name of the non-driving net.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s3 is the bit size of the no-driving net (if it is a vector or part select of a vector).</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s4 is the left bound of the vector.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s5 is the right bound of the vector.</font><font  face="Verdana, Arial, Helvetica, sans-serif">You can use the rule_set_parameter Tcl command and the NTL_CON13A_APPLY_ON_UNUSED_NET parameter to specify if you want Leda to examine for unused internal net. If you don t want this rule to examine the unused internal nets, set the value of this parameter to 0. The default value is 1. For example:</font><pre>
+<font face="Courier">leda&gt; rule_set_parameter -rule NTL_CON13A \ -
+parameter NTL_CON13A_APPLY_ON_UNUSED_NET -value  0
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">You can use the rule_set_parameter Tcl command and the NTL_CON13A_IGNORE_SUPPLY_ASSIGNMENT parameter to specify if you want Leda to ignore net that has been assigned to supply. If you want this rule to ignore net that has been assigned to supply, set the value of this parameter to 1. The default value is 0. For example:</font><pre>
+<font face="Courier">leda&gt; rule_set_parameter -rule NTL_CON13A \ -
+parameter NTL_CON13A_IGNORE_SUPPLY_ASSIGNMENT -
+value  1
+</font></pre>
+</font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CONNECTIVITY</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+</font></font></pre>
+<h3>
+</body>
+</html>

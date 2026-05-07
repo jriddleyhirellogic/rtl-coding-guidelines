@@ -1,0 +1,99 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CLK05"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CLK05</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: All asynchronous inputs to a clock system must be clocked twice.</font>
+</h3>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Leda flags this rule when it detects asynchronous inputs to a clock system in the design that are not clocked twice. When asynchronous inputs converge on one clock domain, it can affect timing analysis and cause metastability. To synchronize the inputs with the target clock system, clock the asynchronous inputs twice. If there is no synchronizer in the destination clock domain where clock domains cross or there is a synchronizer, but the crossing is handled with any combinational gate, this rule is flagged.</font><font  face="Verdana, Arial, Helvetica, sans-serif">This rule reports the source register, source clock, destination register, and destination clock.</font><font  face="Verdana, Arial, Helvetica, sans-serif">You can configure this rule using the rule_set_parameter Tcl command to set the SYNCHRONIZER_FF_NUMBER to indicate the required number of flip-flops (connected as a shift register with the same clock) used as synchronizers. The default value is 2. For example:</font><font  face="Verdana, Arial, Helvetica, sans-serif">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_CLK05 -parameter SYNCHRONIZER_FF_NUMBER -value {3}</b></font></font><font  face="Verdana, Arial, Helvetica, sans-serif">You can set the parameter ALLOW_LOGIC_BEFORE_SYNC to 1, that configures the rule to allow combinational logic before synchronizer. The default value is 0. For example: </font><font  face="Verdana, Arial, Helvetica, sans-serif">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_CLK05 -parameter ALLOW_LOGIC_BEFORE_SYNC -value {1}</b></font></font><font  face="Verdana, Arial, Helvetica, sans-serif">You can set the parameter ALLOW_LOGIC_AMONG_SYNC to 1, that configures the rule to allow combinational logic among synchronizer. The default value is 0. For example:</font><font  face="Verdana, Arial, Helvetica, sans-serif">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_CLK05 -parameter ALLOW_LOGIC_AMONG_SYNC -value {1}</b></font></font><font  face="Verdana, Arial, Helvetica, sans-serif">You can set the parameter ALLOW_BUFF_INV_IN_SYNC_FFS to 1, that configures the rule to allow buffer and inverter before synchronizer. The default value is 1. </font><font  face="Verdana, Arial, Helvetica, sans-serif">You can set the parameter ALLOW_INVERTED_CLOCK to 1, that configures the rule not to flag if data crosses 2 flip-flops using different clock edges of the same clock. The default value is 1.</font><font  face="Verdana, Arial, Helvetica, sans-serif">By default, this rule checks the synchronizers present between different clock domains. You can set the parameter CHECK_DIFFERENT_CLOCK_ORIGINS to 1 to also check synchronizers present between different clock origins. The default value of this parameter is 0. </font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CLOCKS</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+</font>
+</p>
+<h3>
+<a name="Example"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Example</font>
+</h3>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of valid Verilog code, followed by a circuit diagram that illustrates the correct clocking of asynchronous inputs using back-to-back flip-flops:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_clk05_top (Clk_asyn, Clk_sys, Reset, Data, Dout); 
+</font><font face="Courier">input  Clk_asyn, Clk_sys, Reset, Data;
+</font><font face="Courier">output Dout;
+</font><font face="Courier">
+</font><font face="Courier">reg Din_asyn, Dout_temp, Dout;
+</font><font face="Courier">
+</font><font face="Courier">//DFFR  --  flip-flop with reset
+</font><font face="Courier">DFFR I0(.D(Data), .CP(Clock_asyn), .CD(Reset), .Q(Din_asyn));  
+</font><font face="Courier">//Din_asyn is an asynchronous signal
+</font><font face="Courier">DFFR I1(.D(Din_asyn), .CP(Clock_sys), .CD(Reset), .Q(Dout_temp)); 
+<font  face="Verdana, Arial, Helvetica, sans-serif"><b>// Clocked  once</b></font> 
+</font><font face="Courier">DFFR I2(.D(Dout_temp), .CP(Clock_sys), .CD(Reset), .Q(Dout));          
+<font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK -- Clocked  twice</b></font> 
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier"><img src="images/pol_design12.gif" height="436" width="874" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Secondary Message</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">---  Target Clock:  %s1</font><font  face="Verdana, Arial, Helvetica, sans-serif">---  Source Register:  %s2</font><font  face="Verdana, Arial, Helvetica, sans-serif">---  Source Clock:  %s3</font><font  face="Verdana, Arial, Helvetica, sans-serif">---  Gate on path: %s4</font><font  face="Verdana, Arial, Helvetica, sans-serif">---  Combinatorial path between registers:  %s5</font><font  face="Verdana, Arial, Helvetica, sans-serif">---  %s6</font><font  face="Verdana, Arial, Helvetica, sans-serif">... Gate before synchronizer (or Gate among synchronizer): %s4 </font><font  face="Verdana, Arial, Helvetica, sans-serif">---  %sN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Argument</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif">
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">%s1 is the hierarchy name of the clock origin of target flip-flop.</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">%s2 is the hierarchy name of the source flip-flop.</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">%s3 is the hierarchy name of the clock origin of source flip-flop.</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">%s4 is the hierarchy name of the combinational gate (only one for example) before (or among) synchronizer, when parameter ALLOW_LOGIC_BEFORE_SYNC (or ALLOW_LOGIC_AMONG_SYNC) is set to 0, if there is any. </font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">%s5 - %sN is the hierarchy name of elements on the data path.</font>
+</p>
+</font></td>
+  </tr>
+</table>
+</font></font>
+</p>
+<h3>
+</body>
+</html>

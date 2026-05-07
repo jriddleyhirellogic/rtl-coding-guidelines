@@ -1,0 +1,135 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CLK45"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CLK45</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Do not assign fix value to enable signal of clock gating cell %s1</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">                The sequential that uses this clock: %s2</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">                Element on path: %s3</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">                ...</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">                Element on path: %sN</font>
+</h3>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when LEDA detects a fixed value is assigned to the enable signal of clock gating cell. When the input signal of gated clock is a fixed value, the clock signal may be a fixed value.</font><br><font  face="Verdana, Arial, Helvetica, sans-serif">Argument: </font><font  face="Verdana, Arial, Helvetica, sans-serif">%s1 is the hierarchy name of an illegal cell.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s2 is the hierarchy name of sequential element (flip-flop or latch) that uses the clock.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s3 - %sN is the hierarchy name of elements on the path from fix value component to the sequential element (flip-flop or latch).</font><font  face="Verdana, Arial, Helvetica, sans-serif">You can use the rule_set_parameter Tcl command to configure the below parameter:</font><br><font  face="Verdana, Arial, Helvetica, sans-serif">CLK45_PRINT_PATH_INFO - You can configure this parameter to enable LEDA report all elements on path from the fix value component to the sequential (flip-flop or latch) in secondary messages.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CLOCKS</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+</font>
+</p>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<pre>
+<font face="Courier">`timescale 1ns/1ps
+</font><font face="Courier">module top(Y1,Y2,Y3,Y4,Y5,Y6,Y7,D1,D2,D3,D4,D5,D6,D7,T,EN,T2,EN2,T3);
+</font><font face="Courier">input D1,D2,D3,D4,D5,D6,D7,T,EN,T2,EN2,T3;
+</font><font face="Courier">output Y1,Y2,Y3,Y4,Y5,Y6,Y7;
+</font><font face="Courier">
+</font><font face="Courier">	TB2DFFQXL I1(.Q(Y1), .DATA(D1), .CLK(I8_Y));
+</font><font face="Courier">	TB2DFFQXL I2(.Q(Y2), .DATA(D2), .CLK(I8_Y));
+</font><font face="Courier">	TB2DFFQXL I3(.Q(Y3), .DATA(D3), .CLK(I9_Y));
+</font><font face="Courier">	TB2DFFQXL I4(.Q(Y4), .DATA(D4), .CLK(I9_Y));
+</font><font face="Courier">	TB2DFFQXL I5(.Q(Y5), .DATA(D5), .CLK(I9_Y));
+</font><font face="Courier">	TB2DFFQXL I6(.Q(Y6), .DATA(D6), .CLK(I11_Y));
+</font><font face="Courier">	TB2DFFQXL I7(.Q(Y7), .DATA(D7), .CLK(I11_Y));
+</font><font face="Courier">
+</font><font face="Courier">
+</font><font face="Courier">	TB2AND2XL I8(.Y(I8_Y),.A(1'b1),.B(T)); // FAIL
+</font><font face="Courier">	TB2AND2XL I9(.Y(I9_Y),.A(1'b0),.B(T2)); // FAIL
+</font><font face="Courier">	TB2AND2XL I10(.Y(I10_Y),.A(1'b0),.B()); // FAIL
+</font><font face="Courier">	TB2AND2XL I11(.Y(I11_Y),.A(I10_Y),.B(T3));
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Configuration<br></font>
+<pre>
+<font face="Courier">rule_deselect -all
+</font><font face="Courier">rule_select -policy DESIGN -rule NTL_CLK45
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Case schematic<br></font>
+<pre>
+<font face="Courier"><img src="images/pol_designa100.gif" height="531" width="624" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Violations<br></font>
+<pre>
+<font face="Courier">
+</font><font face="Courier">15:  TB2AND2XL I8(.Y(I8_Y),.A(1'b1),.B(T)); // FAIL
+</font><font face="Courier">         ^
+</font><font face="Courier">clk45_case.v:15: CLOCKS&gt; [ERROR] NTL_CLK45: Do not assign fix value to 
+enable signal of clock gating cell  top.I8
+</font><font face="Courier">   ---  The sequential that uses this clock:  top.I1.Q (file: 
+clk45_case.v, line: 6)
+</font><font face="Courier">   ---  Element on path:  top.&amp;AS1.~sup1_2 (file: clk45_case.v, line: 
+15)
+</font><font face="Courier">   ---  Element on path:  top.&amp;AS1.~iw2 (file: clk45_case.v, line: 15)
+</font><font face="Courier">   ---  Element on path:  top.I8.~band0 (file: clk45_case.v, line: 15)
+</font><font face="Courier">   ---  Element on path:  top.I1.CLK (file: clk45_case.v, line: 6)
+</font><font face="Courier">   ---  Element on path:  top.I1.~ff0 (file: clk45_case.v, line: 6)
+</font><font face="Courier">
+</font><font face="Courier">16:  TB2AND2XL I9(.Y(I9_Y),.A(1'b0),.B(T2)); // FAIL
+</font><font face="Courier">         ^
+</font><font face="Courier">clk45_case.v:16: CLOCKS&gt; [ERROR] NTL_CLK45: Do not assign fix value to 
+enable signal of clock gating cell  top.I9
+</font><font face="Courier">   ---  The sequential that uses this clock:  top.I3.Q (file: 
+clk45_case.v, line: 8)
+</font><font face="Courier">   ---  Element on path:  top.&amp;AS1.~sup0_1 (file: clk45_case.v, line: 
+16)
+</font><font face="Courier">   ---  Element on path:  top.&amp;AS1.~iw1 (file: clk45_case.v, line: 16)
+</font><font face="Courier">   ---  Element on path:  top.I9.~band0 (file: clk45_case.v, line: 16)
+</font><font face="Courier">   ---  Element on path:  top.I3.CLK (file: clk45_case.v, line: 8)
+</font><font face="Courier">   ---  Element on path:  top.I3.~ff0 (file: clk45_case.v, line: 8)
+</font><font face="Courier">
+</font><font face="Courier">17:  TB2AND2XL I10(.Y(I10_Y),.A(1'b0),.B()); // FAIL
+</font><font face="Courier">         ^
+</font><font face="Courier">clk45_case.v:17: CLOCKS&gt; [ERROR] NTL_CLK45: Do not assign fix value to 
+enable signal of clock gating cell  top.I10
+</font><font face="Courier">   ---  The sequential that uses this clock:  top.I6.Q (file: 
+clk45_case.v, line: 11)
+</font><font face="Courier">   ---  Element on path:  top.&amp;AS1.~sup0_0 (file: clk45_case.v, line: 
+17)
+</font><font face="Courier">   ---  Element on path:  top.&amp;AS1.~iw0 (file: clk45_case.v, line: 17)
+</font><font face="Courier">   ---  Element on path:  top.I10.~band0 (file: clk45_case.v, line: 17)
+</font><font face="Courier">   ---  Element on path:  top.I11.A (file: clk45_case.v, line: 18)
+</font><font face="Courier">   ---  Element on path:  top.I11.~band0 (file: clk45_case.v, line: 18)
+</font><font face="Courier">   ---  Element on path:  top.I6.CLK (file: clk45_case.v, line: 11)
+</font><font face="Courier">   ---  Element on path:  top.I6.~ff0 (file: clk45_case.v, line: 11)
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Violation schematic<br></font>
+<pre>
+<font face="Courier"><img src="images/pol_designa103.gif" height="752" width="624" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

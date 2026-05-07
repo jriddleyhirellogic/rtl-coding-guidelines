@@ -1,0 +1,89 @@
+<html>
+<body>
+<h3>
+<a name="NTL_STR90"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_STR90</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: No bus contention on &lt;bus&gt;</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">                --- Proof vector 1 on %s2</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">                --- ...</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">                --- Proof vector 1 on %sN</font>
+</h3>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Avoid bus contention. If the bus control signals are combinational one-hot encoded, this rule does not fire. However, if more than one driver is active at the same time, the rule flags an error. This rule does not analyzes the data driven by the bus, but only the control signals. The rule uses a formal engine and proves formally the one-hot encoding.</font><font  face="Verdana, Arial, Helvetica, sans-serif">Arguments: </font><font  face="Verdana, Arial, Helvetica, sans-serif">%s1 is the hierarchy name of contention point.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s2 - %sN is the hierarchy name of bus control signals.</font><font  face="Verdana, Arial, Helvetica, sans-serif">You can use the rule_set_parameter Tcl command to configure the below parameter:</font><font  face="Verdana, Arial, Helvetica, sans-serif">MAX_BACKTRACK - You can configure this parameter to set the maximum backtrack number that is allowed for formal engine to find the violation.</font><font  face="Verdana, Arial, Helvetica, sans-serif">STR90_ALLOW_BUS_HOLD - You can configure this parameter for Leda to ignore the violation when there is a bus hold cell driving the bus. If set to 1, LEDA ignores the violation when there is a bus hold cell driving the bus.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">STRUCTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+</font>
+</p>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">Here is some example of Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_str90_top (Clk, Rst, Ctrl, Din, Dout);
+</font><font face="Courier">input Clk, Rst, Ctrl;
+</font><font face="Courier">input [3:0] Din;
+</font><font face="Courier">output Dout;
+</font><font face="Courier">wire[3:0] Ctrl_out;
+</font><font face="Courier">
+</font><font face="Courier">ntl_str90_sub1 U0(Clk, Rst, Ctrl, Ctrl_out);
+</font><font face="Courier">assign Dout1 = Ctrl_out [0] ? Din1[0] : 1'bz;
+</font><font face="Courier">assign Dout1 = Ctrl_out [1] ? Din1[1] : 1'bz;
+</font><font face="Courier">assign Dout1 = Ctrl_out [2] ? Din1[2] : 1'bz;
+</font><font face="Courier">assign Dout1 = Ctrl_out [3] ? Din1[3] : 1'bz;
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module ntl_str90_sub1 (Clk, Rst, Ctrl, Ctrl_out);
+</font><font face="Courier">input Clk, Rst, Ctrl;
+</font><font face="Courier">output[3:0] Ctrl_out;
+</font><font face="Courier">reg[3:0] Ctrl_out;
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge Clk)
+</font><font face="Courier">begin
+</font><font face="Courier">    if (!Rst) 
+</font><font face="Courier">           Ctrl_out &lt;= 0;
+</font><font face="Courier">    else 
+</font><font face="Courier">      begin
+</font><font face="Courier">         if (Ctrl)
+</font><font face="Courier">                Ctrl_out &lt;= Ctrl_out + 1;
+</font><font face="Courier">         else Ctrl_out &lt;= 0;
+</font><font face="Courier">      end  
+</font><font face="Courier">end
+</font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design151.gif" height="571" width="714" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

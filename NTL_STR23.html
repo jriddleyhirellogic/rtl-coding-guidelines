@@ -1,0 +1,76 @@
+<html>
+<body>
+<h3>
+<a name="NTL_STR23"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_STR23</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Max number of fanout between modules</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects a net whose fanout load exceeds its max fanout driving strength between modules. Removing such nets helps avoid signal faults caused by poor fanout driving strength. This rule is useful early in the design flow to identify highly connected nets that require special attention during synthesis and place-and-route.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">STRUCTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_str23_top ;
+</font><font face="Courier">...
+</font><font face="Courier">wire net_01; 
+</font><font face="Courier">modu_1 U0(.Dout(net_01), ...); //net_01 is a output signal of U0
+</font><font face="Courier">modu_2 U1(.Din(net_01), ...); //net_01 is a input signal of U1
+</font><font face="Courier">...
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module modu_1;
+</font><font face="Courier">output Dout;
+</font><font face="Courier">...
+</font><font face="Courier">//inv1 - a real cell inverter cell which is provided by Foundry/Vendor
+</font><font face="Courier">inv1 I0(.A(net_01), .Z(Dout));  
+</font><font face="Courier">//for example, the fanout of inv1 is 5 (unit)
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module modu_2;
+</font><font face="Courier">intput Din;
+</font><font face="Courier">...
+</font><font face="Courier">//and2 - a real AND cell which is provided by Foundry/Vendor
+</font><font face="Courier">and2 I0(.A(Din), .B(net_01), .Z(net_11));
+</font><font face="Courier">//the fanin of and2.(A or B) is 1.4 (unit)
+</font><font face="Courier">and2 I1(.A(Din), .B(net_02), .Z(net_12)); 
+</font><font face="Courier">and2 I2(.A(Din), .B(net_03), .Z(net_13)); 
+</font><font face="Courier">and2 I3(.A(Din), .B(net_04), .Z(net_14)); 
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_STR23 fires -- the sum of fanin of (I0~I3).A is 
+</b></font></font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// 5.6 (= 1.4 x 4), which is  &gt; 5
+</b></font></font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design103.gif" height="514" width="878" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

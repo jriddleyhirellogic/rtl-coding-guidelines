@@ -1,0 +1,94 @@
+<html>
+<body>
+<h3>
+<a name="NTL_STR110"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_STR110</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: A signal without a resolution function cannot have multiple sources driving it</font>
+</h3>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule checks for signals not having a resolution function but driven by multiple sources.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">STRUCTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Warning</font></font></td>
+  </tr>
+</table>
+</font>
+</p>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">entity full_adder is port (</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">					A, b, c: in bit;</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Sum,c_out: out bit) end full_adder;</font></font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">	</font></font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">architecture full_adder_arch of full_adder is </font></font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Signal s1: bit; </font><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// Signal driven by multiple sources, doesn't have a 				<br>										 			               // resolution function.</b></font></font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">begin</font></font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">S1 &lt;= A;</font></font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">S1 &lt;= B;</font></font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">S1 &lt;= C_in;</font></font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"></font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">end full_adder_arch</font></font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"></font>
+</p>
+</blockquote>
+<hr>
+<table align="right" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="right"><font size="1">
+    </font></td>
+  </tr>
+</table>
+<table width="331" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+  </tr>
+</table>
+</body>
+</html>

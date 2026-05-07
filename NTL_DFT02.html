@@ -1,0 +1,80 @@
+<html>
+<body>
+<h3>
+<a name="NTL_DFT02"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_DFT02</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Separate DFT functionality from regular functionality</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Using DFT functionality (e.g., scan in, scan enable, or scan out pins) for functional use may prevent the scan insertion tool (or the synthesis tool if it also inserts scan circuitry) from inserting test logic.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">wire Sel_syn;
+</font><font face="Courier">parameter 
+</font><font face="Courier">	CLEAR = 1'b1;
+</font><font face="Courier">	PASS 		= 1'b0; 
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge Clock)
+</font><font face="Courier">         Sel_syn &lt;= Sel;
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge Clock)
+</font><font face="Courier">case (Sel_syn)
+</font><font face="Courier">     CLEAR		 : Dout &lt;= 1'b0;
+</font><font face="Courier">     PASS	 	: Dout &lt;= Din;
+</font><font face="Courier">endcase
+</font><font face="Courier">...
+</font><font face="Courier"><img src="images/pol_design80.gif" height="420" width="812" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"></font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">Following is the related gate-level design, but using scan cells to realize some functions that are not for DFT. For example, use SDFF for MUX &amp; DFF, or use TE for a functional enable or select signal. </font>
+</p>
+<pre>
+<font face="Courier">...
+</font><font face="Courier">DFF  U0 (.Q(Sel_syn), .D(Sel), .CP(Clock));
+</font><font face="Courier">//SDFF - scan cell 
+</font><font face="Courier">SDFF U1 (.Q(Dout), .D(Din), .CP(Clock), 
+</font><font face="Courier">.TI(1'b0), .TE(Sel_syn));
+</font><font face="Courier">...
+</font></pre>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_design82.gif" height="449" width="832" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<h3>
+</body>
+</html>

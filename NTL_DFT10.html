@@ -1,0 +1,67 @@
+<html>
+<body>
+<h3>
+<a name="NTL_DFT10"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_DFT10</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Scan chain too long (default is 10)</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">To reduce manufacturing test time, it is a good idea to use a scan chain that is as short as possible. You can set the maximum acceptable number of flip-flops in the Tcl shell using the rule_set_parameter command and the NB_MX_FFS parameter. The default is 10. For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_DFT10 \
+-parameter NB_MX_FFS -value {50}
+</b></font></font></pre>
+<br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_dft10_top(Clock, Scan_en, Scan_in, Din, Dout );
+</font><font face="Courier">input  Clock, Scan_en, Scan_in, Din;
+</font><font face="Courier">output Dout;
+</font><font face="Courier">reg D_1, D_2, D_3, D_4, ...... , D_500;
+</font><font face="Courier">
+</font><font face="Courier">// Scan DFF 
+</font><font face="Courier">SDFF U0 (.D(Din), .CP(Clock), .TI(Scan_in), .TE(Scan_en), .Q(D_1));
+</font><font face="Courier">SDFF U1 (.D(D_1), .CP(Clock), .TI(D_1), .TE(Scan_en), .Q(D_2));
+</font><font face="Courier">SDFF U2 (.D(D_2), .CP(Clock), .TI(D_2), .TE(Scan_en), .Q(D_3));  
+</font><font face="Courier">SDFF U3 (.D(D_3), .CP(Clock), .TI(D_3), .TE(Scan_en), .Q(D_4));
+</font><font face="Courier">SDFF U4 (.D(D_4), .CP(Clock), .TI(D_4), .TE(Scan_en), .Q(D_5));
+</font><font face="Courier">...
+</font><font face="Courier">SDFF U500 (.D(D_500), .CP(Clock), .TI(D_500), .TE(Scan_en), .Q(Dout));                                                             
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_DFT10 fires -- scan chain too long (&gt; 10)
+</b></font></font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design92.gif" height="237" width="625" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

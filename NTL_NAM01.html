@@ -1,0 +1,84 @@
+<html>
+<body>
+<h3>
+<a name="NTL_NAM01"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_NAM01</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Use the same name for all clocks that are driven from the same source</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when the name of clock signal from the same source is changed when it passes through a hierarchy module or renamed by assign statement.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">NAMING</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module Name01_top(); ...
+</font><font face="Courier">assign clk_1 = clk; <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// fired because clock is assigned to another name
+</b></font></font><font face="Courier">always @(posedge clk)
+</font><font face="Courier">   din_temp1 &lt;= din;
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge clk_1)
+</font><font face="Courier">   din_temp2 &lt;= din;
+</font><font face="Courier">
+</font><font face="Courier">name01_sub1 U1(.clk(clk_sub), .din(din_temp1), .dout(din_temp2));
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// fired
+</b></font></font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module name01_sub1(clk, din, dout);  ...
+</font><font face="Courier">always @(posedge clk)
+</font><font face="Courier">   dout &lt;= din;
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font></pre>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of a valid Verilog code</font>
+</p>
+<pre>
+<font face="Courier">module Name01_top();
+</font><font face="Courier">input clk; //clock signal
+</font><font face="Courier">...
+</font><font face="Courier">always @(posedge clk)
+</font><font face="Courier">   din_temp1 &lt;= din;
+</font><font face="Courier">
+</font><font face="Courier">name01_sub1 U1(.clk(clk), .din(din_temp1), .dout(din_temp2)); // fired
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module name01_sub1(clk, din, dout);
+</font><font face="Courier">...
+</font><font face="Courier">always @(posedge clk)
+</font><font face="Courier">   dout &lt;= din;
+</font><font face="Courier">endmodule
+</font></pre>
+<h3>
+</body>
+</html>

@@ -1,0 +1,1632 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<title>1  DFT Coding Rules  </title>
+</head>
+<body link="#3366CC" vlink="#9999CC" text="#000000" alink="#0000CC" bgcolor="#FFFFFF"
+background="images/backgrnd.gif">
+<table width="331" border="0" align="right" cellpadding="0" cellspacing="0">
+  <tr>
+  </tr>
+</table>
+<p><img src="images/leda_w.gif" width="200" height="200"></p>
+
+<hr align="left">
+<blockquote>
+</blockquote>
+<blockquote>
+<div align="right">
+<h2>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">1 <br>DFT Coding Rules</font>
+</h2>
+</div>
+<h2>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Introduction</font>
+</h2>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This chapter provides detailed reference information for the Design For Test (DFT) policy for the Leda Checker tool. This set of rules checks for test design rule violations within your RTL-level design. Most of the DFT rules have both flip-flop versions (check on flip-flop) and latch versions (check on latch). The DFT rules are used to check for design errors that can prevent scan insertion and data capture or reduce fault coverage.</font>
+</p>
+<font  face="Verdana, Arial, Helvetica, sans-serif">There are more DFT rules in the DFT ruleset for the Design policy.<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">Most of the DFT rules are extracted from the set of rules used by the Synopsys RTL DRC tool. Therefore, each DFT rule label in the Leda Checker tool exactly matches the corresponding rule label prefixed with "TEST" in the RTL DRC tool. If you need more detailed information on these DFT rules, see the RTL DRC help. Run dc_shell, and at the prompt type:</font>
+</p>
+<pre>
+<font face="Courier">% <font  face="Verdana, Arial, Helvetica, sans-serif"><b>help</b></font> <font  face="Verdana, Arial, Helvetica, sans-serif"><b>TEST</b></font><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif"><b>-</b></font><font  face="Verdana, Arial, Helvetica, sans-serif"><i>rulenumber
+</i></font></font></pre>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information about differences between the Leda DFT policy and the RTL DRC checker, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The Leda DFT rules are grouped into the following rulesets, each of which impose constraints on different aspects of the applicable language:</font>
+</p>
+<ul>
+  <ul>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li><a href="pol_dft.html#1066868"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Data Capture Ruleset" </font></a></font>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li><a href="pol_dft.html#1073971"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Fault Coverage Ruleset" </font></a></font>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li><a href="pol_dft.html#1073979"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Informational Ruleset" </font></a></font>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li><a href="pol_dft.html#1073987"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Scan Insertion Ruleset" </font></a></font>
+  </ul>
+</ul>
+<h2>
+  <a name="1074318"> </a><font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Using the DFT Policy</font>
+</h2>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">Because the Leda DFT rules are based on RTL DRC checks, you must enter some information about the test clocks when you use some rules of this policy. The Leda Checker prompts for information about test clocks when you select some DFT rules among TEST_953, TEST_954, TEST_966, TEST_967, TEST_970, TEST_971, TEST_972, TEST_973. In batch mode, you must use the following options described in <a href="pol_dft.html#1074904"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">Table 2</font></a>.
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"><a name="1074904"> </a><font face="Helvetica">Table 2:   Leda Batch DFT Options</font></font></i></b></caption>
+  <tr align="center" bgcolor="#CCCCCC">
+    <th><font face="Verdana, Arial, Helvetica, sans-serif" color="#003366"><div align="center">
+<font  face="Verdana, Arial, Helvetica, sans-serif">Batch DFT Options<br></font>
+</div>
+</font></th>
+    <th><font face="Verdana, Arial, Helvetica, sans-serif" color="#003366"><div align="center">
+<font  face="Verdana, Arial, Helvetica, sans-serif">Description<br></font>
+</div>
+</font></th>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>-test_asynch &lt;RST&gt;</b></font></font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This is the same as set_signal_type test_asynch &lt;RST&gt; in the RTL DRC. This command specifies that the signal &lt;RST&gt; is active on 1 and has a hold value of 0 during the scan shift phase.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>-test_asynch_inverted &lt;RST&gt;</b></font></font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This is the same as set_signal_type test_asynch_inverted &lt;RST&gt; in the RTL DRC This command specifies that the signal &lt;RST&gt; is active on 0 and has a hold value of 1 during the scan shift phase.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>-test_clk_falling &lt;CLK&gt;</b></font></font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This is the same as create_test_clk &lt;CLK&gt; -w {N1 N1-N2} in the RTL DRC (where N1 and N2 are positive integers and N 1&gt; N2). This command specifies the test clock signal &lt;CLK&gt; and states that the first edge is the falling edge</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>-test_clk_rising &lt;CLK&gt;</b></font></font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This is the same as create_test_clk &lt;CLK&gt; -w {N1 N1+N2} in the RTL DRC (where N1 and N2 are positive integers). This specifies the test clock signal &lt;CLK&gt; and states that the first edge is the rising edge.</font></font></td>
+  </tr>
+</table>
+</font>
+</p>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Limitations of DFT Policy with Respect to RTL DRC</font>
+</h3>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">In Leda's DFT checks, no delay is taken into account; it is always assumed that the test clock period is 100 ns and the strobe point occurs at 95 ns (default RTL DRC values). Leda also assumes that all test clock events occur before this strobe point.</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following RTL DRC commands (used to define the test protocol) are ignored by the Leda Checker tool, since no signal value propagation is performed. </font>
+</p>
+<ul>
+  <ul>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li>set_test_hold </font>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li>set_test_initial </font>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li>set_test_assume </font>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li>set_test_isolate </font>
+  </ul>
+</ul>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The Checker tool also ignores the scan style. Leda only checks rules that are checkable using the LSSD (Level Sensitive Scan Design). This may lead to some differences between the Leda tests and the RTL DRC. In general, Leda's tests are more conservative.</font>
+</p>
+<h2>
+  <a name="1066868"> </a><font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Data Capture Ruleset</font>
+</h2>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following rules are from the data capture ruleset:</font>
+</p>
+<h3>
+<a name="DFT_003"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">DFT_003</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Avoid using both positive-edge and negative-edge triggered flip-flops in your design</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule checks whether both rising and falling edge clocks exist within the design.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DATA_CAPTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Warning</font></font></td>
+  </tr>
+</table>
+<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="TEST_972"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">TEST_972</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Clock affects both clock and data inputs of flipflops</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule checks if a clock signal drives both the data input and the clock pin of a flip-flop.</font><font  face="Verdana, Arial, Helvetica, sans-serif">For this rule to work, you must specify a test clock. For more information, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DATA_CAPTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following circuit diagram illustrates the problem:</font>
+</p>
+<font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_dft2.gif" height="163" width="289" align="center" border="0" hspace="0" vspace="0">
+<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="TEST_973"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">TEST_973</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Clock affects both clock and data inputs of latches</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule checks if a clock signal drives both the data input and the clock pin of a latch.</font><font  face="Verdana, Arial, Helvetica, sans-serif">For this rule to work, you must specify a test clock. For more information, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DATA_CAPTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following circuit diagram illustrates the problem:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_dft3.gif" height="163" width="289" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="TEST_974"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">TEST_974</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Latch enabled by a clock feeds latches enabled by the same clock</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The rule detects if a latch output enabled by a given clock affects the data input of latches using the same clock.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DATA_CAPTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following circuit diagram illustrates the problem:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_dfta.gif" height="183" width="385" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="TEST_975"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">TEST_975</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Latch enabled by a clock affects data input of flipflops clocked by the trailing edge of the same clock</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The rule detects if a latch output enabled by a given clock affects the data input of flip-flops using the trailing edge of the same clock.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DATA_CAPTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following circuit diagram illustrates the problem:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_dft4.gif" height="183" width="385" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="TEST_978"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">TEST_978</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Latch data gates clocks of flipflops. Combination of latch data and clock signal to clock a flipflop is not allowed</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule detects if a signal used to clock a flip-flop is a combination of a latch output and a given clock where the latch and the flip-flop are within the same clock domain.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DATA_CAPTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following circuit diagram illustrates the problem:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_dft5.gif" height="183" width="385" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="TEST_979"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">TEST_979</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Latch data gates clocks enabling latches. Combination of latch data and clock signal to clock a latch is not allowed</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule detects if a signal used to enable a latch is a combination of a latch output and a given clock, and the two latches are within the same clock domain.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DATA_CAPTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following circuit diagram illustrates the problem:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_dft6.gif" height="183" width="385" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="TEST_980"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">TEST_980</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Flipflop data gates clocks to flipflops. Combination of flipflop data and clock signal to clock a flipflop is not allowed</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule detects if a signal used to clock a flip-flop is a combination of a flip-flop output and a given clock and the two flip-flops are within the same clock domain.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DATA_CAPTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following circuit diagram illustrates the problem:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_dft7.gif" height="183" width="385" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="TEST_981"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">TEST_981</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Flipflop data gates clocks enabling latches. Combination of flipflop data and clock signal to clock a latch is not allowed</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule detects if a signal used to enable a latch is a combination of a flip-flop output and a given clock and the latch and flip-flop are within the same clock domain.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DATA_CAPTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following circuit diagram illustrates the problem:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_dft8.gif" height="183" width="385" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="TEST_994"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">TEST_994</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Clock affects multiple clock or async ports of register</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule detects if a clock feeds into a clock pin and a asynchronous control of a given register.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DATA_CAPTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following circuit diagram illustrates the problem:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_dft9.gif" height="163" width="268" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<h2>
+<a name="Fault Coverage Ruleset"> </a>
+<a name="1073971"> </a><font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Fault Coverage Ruleset</font>
+
+</h2>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following rules are from the fault coverage ruleset. For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="DFT_006"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">DFT_006</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Multiple clocks in the unit</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">None.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">FAULT_COVERAGE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Block-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="DFT_008"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">DFT_008</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Tri-state is detected</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">None.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">FAULT_COVERAGE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Block-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="DFT_009"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">DFT_009</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Register all outputs from the block for improved coverage: %s</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule only checks at the architecture/module level. There is a similar rule in the Leda general coding guidelines policy that you can use to check the entire design.</font><font  face="Verdana, Arial, Helvetica, sans-serif">This rule only works if you specify the top level of the design using the -top switch.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">FAULT_COVERAGE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="TEST_960"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">TEST_960</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Avoid asynchronous feedback loops</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule checks for combinatorial asynchronous path loops.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">FAULT_COVERAGE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="TEST_970"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">TEST_970</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Clock affects data inputs of flipflops</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule checks if a clock interacts with the data input of a flip-flop.</font><font  face="Verdana, Arial, Helvetica, sans-serif">For this rule to work, you must specify a test clock. For more information, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">FAULT_COVERAGE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following circuit diagram illustrates the problem:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_dft10.gif" height="167" width="234" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="TEST_971"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">TEST_971</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Clock affects data inputs of latches</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule checks if a clock interacts with the data input of a latch.</font><font  face="Verdana, Arial, Helvetica, sans-serif">For this rule to work, you must specify a test clock. For more information, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">FAULT_COVERAGE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following circuit diagram illustrates the problem:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_dft11.gif" height="167" width="234" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="TEST_976"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">TEST_976</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Latches capture only when more than one clock is on</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule checks if a latch can be used as a part of a scan chain. If so, a latch having multiple clocks to enable data must be able to capture data with one clock active and all others off.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">FAULT_COVERAGE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following circuit diagram illustrates the problem:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_dft12.gif" height="260" width="256" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="TEST_977"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">TEST_977</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Flipflops capture only when more than one clock is on</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule checks if a flip-flop can be used as a part of a scan chain. If so, a flip-flop having multiple clocks to clock data must be able to capture data with one clock active and all others off.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">FAULT_COVERAGE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following circuit diagram illustrates the problem:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_dft13.gif" height="163" width="250" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<h2>
+  <a name="1073979"> </a><font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Informational Ruleset</font>
+</h2>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following rules are from the informational ruleset:</font>
+</p>
+<h3>
+<a name="DFT_017"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">DFT_017</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Synchronous reset/set/load &lt;%item&gt; detected</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">None.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">INFORMATIONAL</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Block-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Warning</font></font></td>
+  </tr>
+</table>
+<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="DFT_019"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">DFT_019</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Asynchronous reset/set/load &lt;%item&gt; detected</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">None.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">INFORMATIONAL</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Block-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Note</font></font></td>
+  </tr>
+</table>
+<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="DFT_021"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">DFT_021</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Latch inferred</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule only checks at the architecture/module level. There is a similar rule in the Leda general coding guidelines policy that you can use to check the entire design.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">INFORMATIONAL</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Block-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="DFT_022"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">DFT_022</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Incomplete case statement</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires if all the alternatives of the case statement are not covered and if there is no default clause.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">INFORMATIONAL</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Block-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following examples show valid and invalid coding styles:</font>
+</p>
+<pre>
+<font face="Courier">module doc_hyd (gate, q);
+</font><font face="Courier">input [1:0] gate;
+</font><font face="Courier">output q;
+</font><font face="Courier">reg q;
+</font><font face="Courier">
+</font><font face="Courier">always @gate begin <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// DFT_022:Incomplete case statement
+</b></font></font><font face="Courier">  case (gate)
+</font><font face="Courier">	2'b00: q = 1'b0;
+</font><font face="Courier">	2'b10: q = 1'b1;
+</font><font face="Courier">  endcase
+</font><font face="Courier">end
+</font><font face="Courier">
+</font><font face="Courier">always @gate begin <font  face="Verdana, Arial, Helvetica, sans-serif"><b>// no DFT_022 error
+</b></font></font><font face="Courier">  case (gate)
+</font><font face="Courier">	2'b00: q = 1'b0;
+</font><font face="Courier">	2'b10: q = 1'b1;
+</font><font face="Courier">	default:q = 1'b0;
+</font><font face="Courier">  endcase
+</font><font face="Courier">end
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font></pre>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h2>
+  <a name="1073987"> </a><font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Scan Insertion Ruleset</font>
+</h2>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following rules are from the scan insertion ruleset:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="DFT_002"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">DFT_002</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Internally generated clock detected</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule verifies that all clocks are controllable from the top level of the design and not internally generated via a sequential block.</font><font  face="Verdana, Arial, Helvetica, sans-serif">Rationale: internally generated clocks may not be controllable from the boundary of the chip. This reduces test coverage.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">SCAN_INSERTION</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="TEST_953"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">TEST_953</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Flipflops with clocks tied to a signal that is not driven by Test Clock. Flipflops' clock signal is not reached by any Test Clock</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule checks whether the flip-flop clock is uncontrollable. That case occurs when the test clock does not reach any signal which drives the clock input pins of flip-flops.</font><font  face="Verdana, Arial, Helvetica, sans-serif">For this rule to work, you must specify a test clock. For more information, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a> .</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">SCAN_INSERTION</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following circuit diagram illustrates the problem:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_dft14.gif" height="145" width="303" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="TEST_954"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">TEST_954</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Latches with clocks tied to a signal that is not driven by Test Clock. Latch clock signal is not reached by any Test Clock</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule checks whether the latch clock is uncontrollable. That case occurs when the test clock does not reach any signal which drives the clock input pins of latches.</font><font  face="Verdana, Arial, Helvetica, sans-serif">For this rule to work, you must specify a test clock. For more information, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">SCAN_INSERTION</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following circuit diagram illustrates the problem:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_dft15.gif" height="145" width="303" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="TEST_963"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">TEST_963</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Flipflops have clocks with no off-state controllability. Test Clock reaches flipflops but does not control them at beginning of cycle</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule detects if the test clock reaches flip-flops but the flip-flop clocks cannot change state as result of test clock toggling.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">SCAN_INSERTION</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following circuit diagram illustrates the problem:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_dft16.gif" height="205" width="374" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="TEST_964"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">TEST_964</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Latches have clocks with no off-state controllability. Test Clock reaches latches but does not control them at beginning of cycle</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule detects if the test clock reaches latches but the latch clocks cannot change state as result of test clock toggling.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">SCAN_INSERTION</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following circuit diagram illustrates the problem:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_dft17.gif" height="206" width="374" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="TEST_965"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">TEST_965</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Latches not holding data in off-state. Test Clock reaches latch but does not hold data in them at beginning of cycle</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule detects if the test clock does not hold data at the beginning of the test clock cycle.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">SCAN_INSERTION</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following circuit diagram illustrates the problem:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_dft18.gif" height="147" width="502" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="TEST_966"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">TEST_966</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Flipflops have no asynch controllability. No Test Asynch reaches flipflop's async control pin</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule checks whether the flip-flop asynchronous control signal is uncontrollable. That case occurs when the test asynch does not reach any signal which drives the asynchronous control input pins of flip-flops.</font><font  face="Verdana, Arial, Helvetica, sans-serif">For this rule to work, you must specify a test clock. For more information, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">SCAN_INSERTION</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following circuit diagram illustrates the problem:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_dft19.gif" height="182" width="323" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="TEST_967"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">TEST_967</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Latches have no asynch controllability. No Test Asynch reaches latches async control pin</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule detects if the latch asynchronous control signal is uncontrollable. That case occurs when the test asynch does not reach any signal which drives the asynchronous control input pins of latches.</font><font  face="Verdana, Arial, Helvetica, sans-serif">For this rule to work, you must specify a test clock. For more information, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">SCAN_INSERTION</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following circuit diagram illustrates the problem:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_dft20.gif" height="182" width="323" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="TEST_968"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">TEST_968</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Flipflops have asynchs that cannot be disabled. Test Asynch reaches flipflops but cannot disable their asynch controls</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule detects if the test asynch reaches flip-flops but cannot disable their async controls.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">SCAN_INSERTION</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following circuit diagram illustrates the problem:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_dft21.gif" height="181" width="306" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<h3>
+<a name="TEST_969"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">TEST_969</font>
+
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Latches have asynchs that cannot be disabled. Test Asynch reaches latches but cannot disable their asynch controls</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule detects if the Test_async reaches latches but cannot disable their async controls.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">SCAN_INSERTION</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Chip-level</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following circuit diagram illustrates the problem:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_dft22.gif" height="181" width="306" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">For information on differences between Leda DFT checks and RTL DRC checks, see <a href="pol_dft.html#1074318"><font  color="#0000ff" face="Verdana, Arial, Helvetica, sans-serif">"Using the DFT Policy" </font></a>.</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"></font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"></font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"></font>
+</p>
+</blockquote>
+<hr>
+<table align="right" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="right"><font size="1">
+    </font></td>
+  </tr>
+</table>
+<table width="331" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CON14"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CON14</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: All input pins must be connected</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">A leaf cell having some input pins unconnected can, in most cases, propagate Xs in the design. It is a good idea to fix such structures.</font><font  face="Verdana, Arial, Helvetica, sans-serif">Note that an unconnected pin in a hierarchical cell may be intentional when instantiating IP; in this case it does not need to be fixed.</font><font  face="Verdana, Arial, Helvetica, sans-serif">By default, this rule checks leaf cells only (ignores hierarchical modules). </font><font  face="Verdana, Arial, Helvetica, sans-serif">If you want Leda to examine the hierarchical modules, set the parameter ONLY_APPLY_ON_LEAF_CELL to 0. The default value is 1. For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_CON14 \
+-parameter ONLY_APPLY_ON_LEAF_CELL -value {0}
+</b></font></font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">By default, this check is applied on the inout ports. You can set parameter APPLY_ONLY_ON_INPUTS to 1, to apply this check only on input ports (the default value is 0). For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_CON14 \
+-parameter APPLY_ONLY_ON_INPUTS -value {1}
+</b></font></font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">If an inout port is derived with the "PAD" attribute from a DB cell, or if the inout port is owned by an analog DB cell (with the attribute "is_analog") yet the inout port is not a digital pin (without the attribute "is_digital_pin"), such an inout port will not be taken as an input to be checked by this rule even if the parameter APPLY_ONLY_ON_INPUTS is set to 0. Connection of such inout ports to supply is considered to be fine.</font><font  face="Verdana, Arial, Helvetica, sans-serif">You can also configure this rule to check the connectivity outside of a module by specifying parameter NTL_CON14_ONLY_CHECK_OUTSIDE_CONNECTIVITY to 1. In this case, this rule only checks if the input pin is connected or not outside of the module. The default value is 0. For example:</font><pre>
+<font face="Courier">leda&gt; rule_set_parameter -rule NTL_CON14 \ -
+parameter  
+NTL_CON14_ONLY_CHECK_OUTSIDE_CONNECTIVITY -value 
+{1}
+</font></pre>
+<br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CONNECTIVITY</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_con14_top (Clock, Dout);
+</font><font face="Courier">input  Clock; 
+</font><font face="Courier">output Dout;
+</font><font face="Courier">
+</font><font face="Courier">GTECH_FD1 U0 ( .D( ), <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CON14 fires -- input pin D is not connected
+</b></font></font><font face="Courier">            .CP(Clock), 
+</font><font face="Courier">            .Q(Dout) ,
+</font><font face="Courier">		.QN( ) // non-driving net 
+</font><font face="Courier">);
+</font><font face="Courier">endmodule
+</font></pre>
+<h3>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CON09"> </a>
+<a name="1048481"> </a><font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CON09</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: All output pins are unconnected (dead gates)</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects that all output pins of an instance are unconnected. An instance without any driving output pins is useless. If it does not come from a user error (connection lost that has to be regenerated) a cell without any driving pin must be removed (this is done automatically during synthesis or netlist optimization).</font><font  face="Verdana, Arial, Helvetica, sans-serif">By default, this rule checks leaf cells only (ignores hierarchical modules). If you want this rule to check all hierarchical modules, set the ONLY_APPLY_ON_LEAF_CELL parameter to 0 (the default value is 1). For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_CON09 \
+-parameter ONLY_APPLY_ON_LEAF_CELL -value {0}
+</b></font></font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">If you want this rule to return redundant logic cone information, set the APPLY_LOGIC_CONE_INFO parameter to 1 (the default value is 1). For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_CON09 \
+-parameter APPLY_LOGIC_CONE_INFO -value {1}
+</b></font></font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">When you set this parameter, Leda returns redundant logic cone information for the dead gate's inputs backward to primary inputs or sequentials. The redundant logic cone includes any signal track from the dead gates's driving logic cone that is only used to drive the dead gate. </font><font  face="Verdana, Arial, Helvetica, sans-serif">By default, this check is applied on the inout ports. You can set parameter APPLY_ONLY_ON_OUTPUTS to 1, to apply this check only on output ports (the default value is 0). For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_CON09 \
+-parameter APPLY_ONLY_ON_OUTPUTS -value {0}
+</b></font></font></pre>
+<br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CONNECTIVITY</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">Here are examples of invalid Verilog code that illustrate the problem. In the first example, the ONLY_APPLY_ON_LEAF_CELL parameter is left at the default value of 1. In the second example, the ONLY_APPLY_ON_LEAF_CELL is set to 0:</font>
+</p>
+<pre>
+<font face="Courier">// ONLY_APPLY_ON_LEAF_CELL = 1
+</font><font face="Courier">module ntl_con09_top (Clock, Reset, Din, Dout);
+</font><font face="Courier">input Clock, Reset, Din;
+</font><font face="Courier">output Dout;
+</font><font face="Courier">GTECH_FD2 I0 (.D(Din), .CP(Clock), .CD(Reset), .Q( ), .QN( ) );  
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CON09 fires - all output pins (Q &amp; QN) are unconnected
+</b></font></font><font face="Courier">...
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">// ONLY_APPLY_ON_LEAF_CELL = 0
+</font><font face="Courier">module ntl_con09_top (Clock, Reset, Din, Dout);
+</font><font face="Courier">input   Clock, Reset, Din;
+</font><font face="Courier">output Dout;
+</font><font face="Courier">ntl_con09_sub U0(.Clock(Clock),.Reset(Reset), .Din(Din), .Dout1( ), 
+.Dout2( )); 
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CON09 fires - all output pins (Dout1 &amp; Dout2) are unconnected
+</b></font></font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module ntl_con09_sub (Clock, Reset, Din, Dout1, Dout2);
+</font><font face="Courier">input Clock, Reset, Din;
+</font><font face="Courier">output Dout1, Dout2;
+</font><font face="Courier">...
+</font><font face="Courier">endmodule
+</font></pre>
+<h3>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CON02"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CON02</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Unconnected top-level output port %s1</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">               --- Unconnected output: %s2</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">               --- ...</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">               --- Unconnected output: %sN</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects an output port that is not connected internally at the top level of the design. Output ports should be connected internally to the top-level module (primary input) to improve performance of synthesis and test insertion tools.</font><font  face="Verdana, Arial, Helvetica, sans-serif">Arguments: </font><font  face="Verdana, Arial, Helvetica, sans-serif">%s1 is the location of unconnected top-level output port.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s2 (, ..., %sN) is (are) the location(s) of port(s) connected to top- level output port in lower design hierarchy.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CONNECTIVITY</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_con02_top  (Clock, Reset, Din, Dout_uncon, Dout);
+</font><font face="Courier">input Clock, Reset, Din; 
+</font><font face="Courier">output Dout_uncon; <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>//NTL_CON02 fires - unconnected top-level output port
+</b></font></font><font face="Courier">output Dout;
+</font><font face="Courier">reg    Dout;
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge Clock)
+</font><font face="Courier">begin
+</font><font face="Courier">   if (!Reset)
+</font><font face="Courier">         Dout &lt;= 0;
+</font><font face="Courier">    else  Dout &lt;= ~Din;
+</font><font face="Courier">end
+</font><font face="Courier">endmodule
+</font></pre>
+<h3>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CLK15"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CLK15</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Clock pin not connected to clock net</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule verifies that all clock pins of standard cells are connected to a clock net. Most often, an unconnected clock pin is an error that must be fixed. Sequential cells with unconnected clock pins behave unpredictably.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CLOCKS</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_clk15_top (Clock, Reset, Din, Dout1, Dout2); 
+</font><font face="Courier">input  Clock, Reset, Din;
+</font><font face="Courier">output Dout1, Dout2;
+</font><font face="Courier">
+</font><font face="Courier">Date_sub U0 ( .Clock(); .Reset(Reset), .Din(Din), .Dout(Dout1);
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CLK15 fires -- clock pin not connected to clock net (CP)</b></font> 
+</font><font face="Courier">
+</font><font face="Courier">//DFFR  --  flip-flop with reset
+</font><font face="Courier">DFFR U1(.D(Din), .CP(Clock), .CD(Reset), .Q(Dout2); 
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module Date_sub  ( Clock, Reset, Din, Dout);
+</font><font face="Courier">input  Clock_div, Reset, Din;
+</font><font face="Courier">output Dout;
+</font><font face="Courier">reg Dout;
+</font><font face="Courier">
+</font><font face="Courier">//DFFR  --  flip-flop with reset
+</font><font face="Courier">DFFR I0(.D(Din), .CP(Clock), .CD(Reset), .Q(Dout));
+</font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design48.gif" height="541" width="573" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

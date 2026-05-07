@@ -1,0 +1,89 @@
+<html>
+<body>
+<h3>
+<a name="NTL_STR82"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_STR82</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Reset/Set of FF/LATCH should be connected to system reset/set or noise cancel circuit</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects set or reset pins for flip-flops or latches that are not connected to system reset/set signal or noise cancel circuit. Connecting such set or reset pins to a system reset/set signal or noise cancel circuit makes them observable and controllable, and helps prevents sequence errors caused by circuit noise, where system reset/set are an external ports or buffered/inverted external ports, and noise cancel circuit is an AND/NAND/OR/NOR gate whose inputs come from the same signal and there are some buffers in one of the paths. </font><font  face="Verdana, Arial, Helvetica, sans-serif">Another legal case by this rule is: N number of flip-flops serial connected circuit is connected to the reset/set of flip-flops or latches, even if there are same buffered/inverted, and/or there are fanouts between these flip-flops.</font><font  face="Verdana, Arial, Helvetica, sans-serif">The circuit diagram that illustrates this case can be found below.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">STRUCTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_str82_top ;
+</font><font face="Courier">input Reset_sys;  // a system reset for whole chip reset
+</font><font face="Courier">...
+</font><font face="Courier">wire Reset_int;     // internal reset signal
+</font><font face="Courier">
+</font><font face="Courier">GTECH_FD2 U0(.D(Din), .CP(Clock), .CD(Reset_sys), .Q(Dout1)); 
+</font><font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK -- reset of U0.cd is connected to system reset signal
+</b></font></font><font face="Courier">GTECH_FD2 U1(.D(Din), .CP(Clock), .CD(Reset_int), .Q(Dout2));      
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_STR82 fires -- reset of U1.CD is connected to
+</b></font></font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// internal reset signal 
+</b></font></font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design141.gif" height="513" width="813" align="center" border="0" hspace="0" vspace="0">
+</font><font face="Courier">
+</font></pre>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"></font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">Another 2 usages are:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_design47.gif" height="278" width="624" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"></font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"></font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"></font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"></font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"></font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_design50.gif" height="246" width="624" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<h3>
+</body>
+</html>

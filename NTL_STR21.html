@@ -1,0 +1,167 @@
+<html>
+<body>
+<h3>
+<a name="NTL_STR21"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_STR21</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: The level of the design hierarchy should not exceed %d: %s</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects the hierarchy level of design is more than the parameter NB_MAX_HIERARCHY_LEVEL. You can use the rule_set_parameter Tcl command and the NB_MAX_HIERARCHY_LEVEL parameter to configure the maximum number of acceptable hierarchy levels. The default is 5. For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_STR21 \
+-parameter NB_MAX_HIERARCHY_LEVEL -value {7}
+</b></font></font></pre>
+<br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">STRUCTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_str21 (in1, in2, out1, out2);
+</font><font face="Courier">input in1, in2;
+</font><font face="Courier">output  out1, out2;
+</font><font face="Courier">
+</font><font face="Courier">hier1 u1 (in1, in2, out1 );   
+</font><font face="Courier">hier1a u1a (in1, in2, out2 );  
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module hier1 (in1, in2 ,out1 );
+</font><font face="Courier">input in1, in2;
+</font><font face="Courier">output  out1;
+</font><font face="Courier">
+</font><font face="Courier">hier2 u1 (in1, in2, out1 );
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module hier2 (in1, in2 ,out1 );
+</font><font face="Courier">input in1, in2;
+</font><font face="Courier">output  out1;
+</font><font face="Courier">
+</font><font face="Courier">hier3 u1 (in1, in2, out1 );
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module hier3 (in1, in2 ,out1 );
+</font><font face="Courier">input in1, in2;
+</font><font face="Courier">output  out1;
+</font><font face="Courier">
+</font><font face="Courier">hier4 u1 (in1, in2, out1 );
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module hier4 (in1, in2 ,out1 );
+</font><font face="Courier">input in1, in2;
+</font><font face="Courier">output  out1;
+</font><font face="Courier">
+</font><font face="Courier">hier5 u1 (in1, in2, out1 );
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module hier5 (in1, in2 ,out1 );
+</font><font face="Courier">input in1, in2;
+</font><font face="Courier">output  out1;
+</font><font face="Courier">
+</font><font face="Courier">hier6 u1 (in1, in2, out1 );
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module hier6 (in1, in2 ,out1 );
+</font><font face="Courier">input in1, in2;
+</font><font face="Courier">output  out1;
+</font><font face="Courier">
+</font><font face="Courier">assign out1  = in1 &amp; in2;
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">
+</font><font face="Courier">module hier1a (in1, in2 ,out1 );
+</font><font face="Courier">input in1, in2;
+</font><font face="Courier">output  out1;
+</font><font face="Courier">
+</font><font face="Courier">hier2a u1 (in1, in2, out1 );
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module hier2a (in1, in2 ,out1 );
+</font><font face="Courier">input in1, in2;
+</font><font face="Courier">output  out1;
+</font><font face="Courier">
+</font><font face="Courier">hier3a u1 (in1, in2, out1 );
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module hier3a (in1, in2 ,out1 );
+</font><font face="Courier">input in1, in2;
+</font><font face="Courier">output  out1;
+</font><font face="Courier">
+</font><font face="Courier">hier4a u1 (in1, in2, out1 );
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module hier4a (in1, in2 ,out1 );
+</font><font face="Courier">input in1, in2;
+</font><font face="Courier">output  out1;
+</font><font face="Courier">
+</font><font face="Courier">hier5a u1 (in1, in2, out1 );
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module hier5a (in1, in2 ,out1 );
+</font><font face="Courier">input in1, in2;
+</font><font face="Courier">output  out1;
+</font><font face="Courier">
+</font><font face="Courier">hier6a u1 (in1, in2, out1 );
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module hier6a (in1, in2 ,out1 );
+</font><font face="Courier">input in1, in2;
+</font><font face="Courier">output  out1;
+</font><font face="Courier">
+</font><font face="Courier">assign out1  = in1 &amp; in2;
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// Violation of NTL_STR21 
+</b></font></font><font face="Courier">
+</font><font face="Courier">45: hier6 u1 (in1, in2, out1 );
+</font><font face="Courier">        ^
+</font><font face="Courier">9000097690.v:45: STRUCTURE&gt; [ERROR] NTL_STR21: The level of the design 
+hierarchy should not execeed 5: m9000097690.u1.u1.u1.u1.u1.u1
+</font><font face="Courier">
+</font><font face="Courier">    93: hier6a u1 (in1, in2, out1 );
+</font><font face="Courier">        ^
+</font><font face="Courier">9000097690.v:93: STRUCTURE&gt; [ERROR] NTL_STR21: The level of the design 
+hierarchy should not execeed 5: m9000097690.u1a.u1.u1.u1.u1.u1
+</font></pre>
+<h3>
+</body>
+</html>

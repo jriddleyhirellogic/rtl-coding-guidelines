@@ -1,0 +1,72 @@
+<html>
+<body>
+<h3>
+<a name="NTL_STR24"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_STR24</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Number of logical levels between 2 flip-flops exceeds maximum limit</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects two flip-flops with a number of logical levels between them that exceeds the specified maximum. Limiting the number of logic levels between flip-flops improves synthesis performance and avoids timing problems in combinatorial    logic. You can use the rule_set_parameter command and the MAX_LOGIC_LEVEL parameter to set the maximum number of logical levels. The default is 15. For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_STR24 \
+-parameter MAX_LOGIC_LEVEL -value {10}
+</b></font></font></pre>
+<br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">STRUCTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_str24_top;
+</font><font face="Courier">...
+</font><font face="Courier">wire Data_0, Data_1, Data_2, Data_3, Data_4, Data_5, Data_6, Data_7, 
+Data_8, Data_9, Data_10, Data_11, Data_12, Data_13, Data_14, Data_15, 
+Data_16;
+</font><font face="Courier">...
+</font><font face="Courier">//DFF - flip-flop  
+</font><font face="Courier">DFF I0(.Clock(Clock), .Din(Din), .Dout(Data_0)); 
+</font><font face="Courier">
+</font><font face="Courier">//Logic_1~16 - combination logics    
+</font><font face="Courier">Logic_1 I1 (.Din(Data_0), .Dout(Data_1));
+</font><font face="Courier">Logic_2 I2(.Din(Data_1), .Dout(Data_2));
+</font><font face="Courier">Logic_3 I3(.Din(Data_2), .Dout(Data_3));
+</font><font face="Courier">...
+</font><font face="Courier">Logic_14 I15(.Din(Data_14), .Dout(Data_15));
+</font><font face="Courier">Logic_16 I16(.Din(Data_15), .Dout(Data_16)); 
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_STR24 fires -- &gt; 15 logical levels (default) between flip-flops
+</b></font></font><font face="Courier">
+</font><font face="Courier">DFF I17(.Clock(Clock), .Din(Data_16), .Dout(Dout));
+</font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design105.gif" height="225" width="701" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

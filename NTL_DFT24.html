@@ -1,0 +1,81 @@
+<html>
+<body>
+<h3>
+<a name="NTL_DFT24"> </a>
+<a name="1049516"> </a><font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_DFT24</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Internally generated clock must be observable/controllable</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">All flip-flops that are not controllable (e.g., the clock signal is not controllable) are removed from the scan path, This either decreases test coverage or forces the test engineer to use sequential automatic test pattern generation (ATPG).</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_dft24_top(Clock, Scan_en, Test_mode, Din, DataIn, Dout);
+</font><font face="Courier">...
+</font><font face="Courier">wire Clock_gen;  // internally generated clock.                           
+</font><font face="Courier">DPLL  U_PLL (.Data(DataIn), .Clock_pll(Clock_gen));   // Digital PLL 
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_DFT24 fires -- this generates an uncontrollable and 
+</b></font></font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// unobservable internally generated clock (Clock_gen)
+</b></font></font><font face="Courier">// Scan FF cell -- SDFF
+</font><font face="Courier">SDFF U1(.D(Din), .CP(Clock_gen), .TI(Scan_in), .TE(Test_mode), 
+.Q(Dout_temp));
+</font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design112.gif" height="423" width="901" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of valid Verilog code, followed by a circuit diagram that illustrates the correct approach to avoiding internally generated clocks that are not observable and controllable (see NTL_DFT24):</font>
+</p>
+<pre>
+<font face="Courier">module ntl_dft24_top(Clock, Scan_en, Scan_in, Din, DataIn, Dout, 
+Clock_gen_out);
+</font><font face="Courier">...
+</font><font face="Courier">input Clock; // an input port
+</font><font face="Courier">output Clock_gen_out ; // an output port for Clock_gen
+</font><font face="Courier">wire Clock_gen;  // internally generated clock. 
+</font><font face="Courier">Wire Clock_mux; //a muxed clock, when Scan_ene =1, Clock_mux &lt;= Clock,                         
+</font><font face="Courier">DPLL  U_PLL (.Data(DataIn), .Clock_pll(Clock_gen));   // Digital PLL 
+</font><font face="Courier">//generate a uncontrollable internally clock - Clock_gen
+</font><font face="Courier">MUX I0 (.A(Clock_gen), .B(Clock), .S(Scan_en) , .Z(Clock_mux));
+</font><font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK -- a mux cell to make it controllable
+</b></font></font><font face="Courier">// Scan FF cell -- SDFF
+</font><font face="Courier">SDFF U1(.D(Din), .CP(Clock_gen), .TI(Scan_in), .TE(Test_mode), 
+.Q(Dout_temp));
+</font><font face="Courier">BUF I1(.A(Clock_mux), .Z(Clock_gen_out)); <font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK -- makes it observable
+</b></font></font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design114.gif" height="470" width="917" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

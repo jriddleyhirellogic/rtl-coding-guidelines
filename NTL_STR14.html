@@ -1,0 +1,77 @@
+<html>
+<body>
+<h3>
+<a name="NTL_STR14"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_STR14</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Check that circuits labeled _meta are really proper metastable circuits</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects circuits labeled with _meta that are not really metastable circuits. Metastable circuits are handled seriously in timing analysis and synthesis. </font><font  face="Verdana, Arial, Helvetica, sans-serif">You can configure this rule to specify the circuit label that Leda checks using the rule_set_parameter Tcl command and the NAME_SHOULD_BE_SYNCHRONIZER parameter. The default value is _meta. For example:</font><pre>
+<font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif">leda&gt; </font><font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_STR14 \
+-parameter NAME_SHOULD_BE_SYNCHRONIZER \
+-value {_sync}
+</b></font></font></pre>
+<br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">STRUCTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_str14_top;
+</font><font face="Courier">...
+</font><font face="Courier">B1_meta U0(net_01, Clock, net_21);
+</font><font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK -- a real metastable circuit labeled _meta
+</b></font></font><font face="Courier">
+</font><font face="Courier">B2_metr U1(net_02, Clock, net_22);
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_STR14 fires - not a real metastable circuit, but labeled _meta
+</b></font></font><font face="Courier">...
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module B1_meta (D1, Clk1, Q1);
+</font><font face="Courier">...
+</font><font face="Courier">wire net_1, net_2;   //internal wire
+</font><font face="Courier">not I0 (.Z(net_2), .A(net_1));
+</font><font face="Courier">nad I1(.Z(net_1), .A(Clk1), .B(net_2));
+</font><font face="Courier">//DFF -- flip-flop 
+</font><font face="Courier">DFF I2 (.D(D1), .CP(net_1), .Q(Q1));
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module B2_meta (D2, Clk2, Q2);
+</font><font face="Courier">...
+</font><font face="Courier">//DFF -- flip-flop 
+</font><font face="Courier">DFF I0 (.D(D2), .CP(Clk2), .Q(Q2));
+</font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design95.gif" height="406" width="900" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

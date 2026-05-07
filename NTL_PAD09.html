@@ -1,0 +1,77 @@
+<html>
+<body>
+<h3>
+<a name="NTL_PAD09"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_PAD09</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Forbidden PAD connection</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects nets connected to PAD pins of cells (named PAD or DQ) in the design, and returns a list of such nets. </font><font  face="Verdana, Arial, Helvetica, sans-serif">You can configure this rule using the rule_set_parameter Tcl command and the SUPPLY_LIST parameter to specify the power signals that cannot be connected to PADs. The default power signal names for this rule are VSS and VDD. For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_PAD09 \
+-parameter SUPPLY_LIST -value {POWER_P}
+</b></font></font></pre>
+<br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">PAD</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_pad09_top;
+</font><font face="Courier">.. 
+</font><font face="Courier">supply1 VDD; //VDD is an signal in the 'supply _list'(user provided)
+</font><font face="Courier">supply0 VSS;  //VSS is an signal in the 'supply_list' (user provide)
+</font><font face="Courier">
+</font><font face="Courier">// signal named with '_pad' is an input/output of top-level
+</font><font face="Courier">Design _core U0(.Ctrl(Ctrl), .Din(Din), .Dout(Dout));
+</font><font face="Courier">
+</font><font face="Courier">// PAD cells: PGI_ECS277Ex - input PAD cell; PGO_CDPA77Ex 
+</font><font face="Courier">// output PAD cell
+</font><font face="Courier">PGI_ECS277Ex  U1( .PULL(VSS), .ENABQ(VSS), .PULLQ(VDD),
+</font><font face="Courier">                        .PAD(VDD), .OUTI(Ctrl));  
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_PAD09 fires -- VDD is in supply_list (user provided). It is a
+</b></font></font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// violation when a signal listed in supply_list is connected to PAD pin 
+// of IOLIB cells
+</b></font></font><font face="Courier">
+</font><font face="Courier">PGI_ECS277Ex  U2( .PULL(VSS), .ENABQ(VSS), .PULLQ(VDD), 
+</font><font face="Courier">.PAD(Din_pad), .OUTI(Din)); <font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK
+</b></font></font><font face="Courier">
+</font><font face="Courier">PGO_CDPA77Ex  U3( .PULL(VSS), .PP_EN(VDD), .ENQ(VDD), .PULLQ(VDD), 
+</font><font face="Courier">.PAD(Dout_pad), .DQ(VSS));  
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_PAD09 fires -- VSS is in supply_list (user provided). It is a
+</b></font></font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// violation when a signal listed in supply_list is connected to the 
+</b></font></font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// DQ pin of IOLIB cells
+</b></font></font><font face="Courier"> 
+</font><font face="Courier">endmodule
+</font></pre>
+<h3>
+</body>
+</html>

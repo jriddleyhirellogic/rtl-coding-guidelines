@@ -1,0 +1,72 @@
+<html>
+<body>
+<h3>
+<a name="NTL_RST23"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_RST23</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Use asynchronous reset for initial reset to register</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Leda flags this rule if the initial reset of a register is not asynchronous.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">RESETS</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Fatal</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This following example illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_rst23 (Clk, Rst1, Rst2,Din);
+</font><font face="Courier">input Clk, Rst1,Rst2, Din;
+</font><font face="Courier">reg Rst_int1, Rst_int2, Temp1, Temp2;
+</font><font face="Courier">always @(posedge Clk or posedge Rst1) begin
+</font><font face="Courier">	if (!Rst1)
+</font><font face="Courier">		Rst_int1 &lt;= 0;
+</font><font face="Courier">	else 
+</font><font face="Courier">		Rst_int1 &lt;= 1; 
+</font><font face="Courier">end
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge Clk) begin
+</font><font face="Courier">	if (!Rst2)
+</font><font face="Courier">		Rst_int2 &lt;= 0;
+</font><font face="Courier">	else 
+</font><font face="Courier">		Rst_int2 &lt;= 1; <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>/ NTL_RST23 flags here
+</b></font></font><font face="Courier">end
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge Clk) begin
+</font><font face="Courier">	if (Rst2) 
+</font><font face="Courier">		Temp2 &lt;= 0;
+</font><font face="Courier">	else
+</font><font face="Courier">		Temp2 &lt;= Din; <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_RST23 flags here
+</b></font></font><font face="Courier">end
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font></pre>
+<h3>
+</body>
+</html>

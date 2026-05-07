@@ -1,0 +1,63 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CLK25"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CLK25</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Control signal crossing clock domain</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects a control signal crossing clock domains. Such control signals can adversely affect the performance of scan insertion and timing analysis. You can activate this rule to double check such signals and avoid data failures caused by clock skew. </font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CLOCKS</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Note</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_clk25_top;
+</font><font face="Courier">...
+</font><font face="Courier">reg   Ctrl_01, Ctrl_02, Ctrl_03;
+</font><font face="Courier">wire Ctrl, net_04, net_05, net_06;
+</font><font face="Courier">wire  Ctrl; 
+<font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CLK25 fires - control signal crossing Clock_1 and Clock_2 domains
+</b></font></font><font face="Courier">
+</font><font face="Courier">//DFF  --  flip-flop 
+</font><font face="Courier">DFFR U0(.D(Ctrl), .CP(Clock_1), .Q(Ctrl_01);
+</font><font face="Courier">DFFR U1(.D(Ctrl_01), .CP(Clock_2), .Q(Ctrl_02);   
+</font><font face="Courier">DFFR U3(.D(Ctrl_02), .CP(Clock_2), .Q(Ctrl_03);
+</font><font face="Courier">
+</font><font face="Courier">assign net_06 = Ctrl_03 ?  net_04 : net_05;
+</font><font face="Courier">...
+</font><font face="Courier">endmodule 
+</font><font face="Courier"><img src="images/pol_design77.gif" height="377" width="825" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

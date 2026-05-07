@@ -1,0 +1,51 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CON12C"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CON12C</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Undriven port: %s1</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">               --- Signal fanout: %s2</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">               --- Total range of %s3: %s4 bits (%s5: %s6)
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">An undriven port driving a cell, propagates X in the design. This rule will fire only on undriven port and not on unused port because unused port does not cause any problem and another rule NTL_LAN15 will detect such ports. This rule also detects undriven signals that have been defined in VHDL packages. If the illegal port is a part selected from an vector, a secondary message appears to report the vector's width and range information.</font><font  face="Verdana, Arial, Helvetica, sans-serif">Arguments: </font><font  face="Verdana, Arial, Helvetica, sans-serif">%s1 is the location of the undriven port.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s2 is the location of fanout of the undriven port.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s3 is the signal name of the undriven port.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s4 is the bit size of the undriven port (if it is a vector or part select of a vector).</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s5 is the left bound of the vector.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s6 is the right bound of the vector.</font><font  face="Verdana, Arial, Helvetica, sans-serif">Use the parameter NTL_CON12C_APPLY_ON_UNUSED_PORT to specify if this rule should report on unused pin. </font><font  face="Verdana, Arial, Helvetica, sans-serif">You can use the rule_set_parameter Tcl command and the NTL_CON12C_APPLY_ON_UNUSED_PORT parameter to specify if you want Leda to examine for unused ports. If you don t want this rule to examine the unused port, set the value of this parameter to 0. The default value is 1. For example: </font><pre>
+<font face="Courier">leda&gt; rule_set_parameter -rule NTL_CON12C \ -
+parameter NTL_CON12C_APPLY_ON_UNUSED_PORT -value  
+0
+</font></pre>
+</font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CONNECTIVITY</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+</font>
+</h3>
+<h3>
+</body>
+</html>

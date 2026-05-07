@@ -1,0 +1,126 @@
+<html>
+<body>
+<h3>
+<a name="NTL_RST04"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_RST04</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Reset/Set must not be used as data %s</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects a reset/set signal is used as data. You can avoid data failures caused by logic competition and improve the performance of reset tree analysis by not using reset signals as data.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">RESETS</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module top1 ();  <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// This case illustrates a set is used as data.
+</b></font></font><font face="Courier">wire d0, w0, w1, w2, w3, w4, clk, set_org, set_derived;
+</font><font face="Courier">reg q0, q1;
+</font><font face="Courier">// Set origin
+</font><font face="Courier">assign set_org = w0 &amp; w1;
+</font><font face="Courier">
+</font><font face="Courier">// Flip-flop uses set_org as set
+</font><font face="Courier">assign set_derived = ~ set_org;
+</font><font face="Courier">always @ (posedge clk)
+</font><font face="Courier">  if (set_derived)
+</font><font face="Courier">    q0 &lt;= 1;
+</font><font face="Courier">  else 
+</font><font face="Courier">    q0 &lt;= d0;
+</font><font face="Courier">
+</font><font face="Courier">// Flip-flop uses set_org as data
+</font><font face="Courier">assign w2 = set_org;
+</font><font face="Courier">assign w4 = w2 | w3;
+</font><font face="Courier">always @ (posedge clk)
+</font><font face="Courier">  q1 &lt;= w4;
+</font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design34.gif" height="504" width="558" align="center" border="0" hspace="0" vspace="0">
+</font><font face="Courier">
+</font><font face="Courier">module top2 ();  <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// This case illustrates a reset is used as data.
+</b></font></font><font face="Courier">wire d0, w0, w1, w2, w3, w4, clk, reset_org, reset_derived;
+</font><font face="Courier">reg q0, q1;
+</font><font face="Courier">
+</font><font face="Courier">// Reset origin
+</font><font face="Courier">assign reset_org = w0 &amp; w1;
+</font><font face="Courier">
+</font><font face="Courier">// Flip-flop uses reset_org as reset
+</font><font face="Courier">assign reset_derived = ~ reset_org;
+</font><font face="Courier">always @ (posedge clk)
+</font><font face="Courier">  if (reset_derived)
+</font><font face="Courier">    q0 &lt;= 0;
+</font><font face="Courier">  else 
+</font><font face="Courier">    q0 &lt;= d0;
+</font><font face="Courier">
+</font><font face="Courier">// Flip-flop uses reset_org as data
+</font><font face="Courier">assign w2 = reset_org;
+</font><font face="Courier">assign w4 = w2 | w3;
+</font><font face="Courier">always @ (posedge clk)
+</font><font face="Courier">  q1 &lt;= w4;
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design20.gif" height="576" width="624" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Secondary Message</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">---Location where the signal is used: %s0</font><font  face="Verdana, Arial, Helvetica, sans-serif">---Element on path: %s1</font><font  face="Verdana, Arial, Helvetica, sans-serif">....</font><font  face="Verdana, Arial, Helvetica, sans-serif">---Element on path: %sN</font><font  face="Verdana, Arial, Helvetica, sans-serif">---Location where the signal is used as reset/set: %sN+1</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Argument</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif">
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">%s is the hierarchy name of the set/reset signal.</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">%s0 is the hierarchy name of output of the sequential element that uses the set/reset signal as data.</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">%s1 is the hierarchy name of No. 1 element on the path from set/reset signal to the sequential that uses it as data.</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">%sN is the hierarchy name of No. N element on path from set/reset signal to the sequential that uses it as data.</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">%sN+1 is the hierarchy name of output of the sequential element that uses the signal as set/reset.</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"></font>
+</p>
+</font></td>
+  </tr>
+</table>
+</font></font>
+</p>
+<h3>
+</body>
+</html>

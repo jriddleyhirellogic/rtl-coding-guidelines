@@ -1,0 +1,74 @@
+<html>
+<body>
+<h3>
+<a name="NTL_STR53"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_STR53</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Anti-skew latch enable not controlled by main clock</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects anti-skew latch enables that are not controlled by the main clock. An anti-skew latch is one that is used to save data at the crossing of two clock domains. </font><font  face="Verdana, Arial, Helvetica, sans-serif">When latches are used as anti-skew elements, their enable signals should be controlled by the main clock of the circuit. They should be transparent on the inactive state of this clock. In any other case, if a transparent latch is absolutely needed, its enable signal should be accessible in test mode.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">STRUCTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">Here are examples of valid and invalid Verilog code that illustrate the problem and the solution:</font>
+</p>
+<pre>
+<font face="Courier">// Invalid example
+</font><font face="Courier">module ntl_str53_top ;
+</font><font face="Courier">input Clock_sys, Clock_2; 
+</font><font face="Courier">//Clock_sys is a main clock, Clock_2 is a clock
+</font><font face="Courier">...
+</font><font face="Courier">wire net_01; // an internal signal 
+</font><font face="Courier">GTECH_FD2S I1(.D(Din), .CP(Clock_sys), .CD(Reset), 
+</font><font face="Courier">.TI(test_in), .TE(test_enable), .Q(Dout_int1));
+</font><font face="Courier">
+</font><font face="Courier">GTECH_LD1   I2(.D(Dout_int1), .G(net_01), .Q(Dout_int2));     
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_STR53 fires -- latch enable not controlled by main clock 
+</b></font></font><font face="Courier">GTECH_FD2S I3(.D(Dout_int2), .CP(Clock_2), .CD(Reset), 
+</font><font face="Courier">.TI(Dout_int2), .TE(test_enable), .Q(Dout));
+</font><font face="Courier">...
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">// Valid example
+</font><font face="Courier">module ntl_str53_top ;
+</font><font face="Courier">...
+</font><font face="Courier">GTECH_FD2S I1(.D(Din), .CP(Clock_sys), .CD(Reset), 
+</font><font face="Courier">.TI(test_in), .TE(test_enable), .Q(Dout_int1));
+</font><font face="Courier">GTECH_LD1  I2(.D(Dout_int1), .G(Clock_sys), .Q(Dout_int2));  
+</font><font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK -- latch enable is controlled by main clock Clock_sys, data will
+</b></font></font><font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>// pass transparently in the contrary state of clocking data
+</b></font></font><font face="Courier">GTECH_FD2S I3(.D(Dout_int2), .CP(Clock_2), .CD(Reset), 
+</font><font face="Courier">.TI(Dout_int2), .TE(test_enable), .Q(Dout));
+</font><font face="Courier">endmodule
+</font></pre>
+<h3>
+</body>
+</html>

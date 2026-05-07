@@ -1,0 +1,68 @@
+<html>
+<body>
+<h3>
+<a name="NTL_RST18"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_RST18</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Reset/Set signal must not interact with the other latch pins</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects a reset or set signal that interacts with other latch pins in the design. This can cause sequence errors and data failures.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">RESETS</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_rst18_top (din, rst, clk, dout);
+</font><font face="Courier">input din, rst, clk;
+</font><font face="Courier">output dout;
+</font><font face="Courier">reg dout, net1, net2;
+</font><font face="Courier">wire rst2,net03;
+</font><font face="Courier">assign rst2 = rst &amp; net03;    
+</font><font face="Courier">always @(posedge clk)
+</font><font face="Courier">begin
+</font><font face="Courier">   if (rst)
+</font><font face="Courier">          dout &lt;= 0;
+</font><font face="Courier">   else dout &lt;= din;
+</font><font face="Courier">end
+</font><font face="Courier">
+</font><font face="Courier">always @(rst2 or net1)
+</font><font face="Courier">begin
+</font><font face="Courier">if (rst2)    <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_RST18 fires -- reset signal interacts with latch
+</b></font></font><font face="Courier">         net2 &lt;= net1;
+</font><font face="Courier">end
+</font><font face="Courier">
+</font><font face="Courier">endmodule 
+</font><font face="Courier"><img src="images/pol_design75.gif" height="373" width="614" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

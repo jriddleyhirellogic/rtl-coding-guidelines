@@ -1,0 +1,70 @@
+<html>
+<body>
+<h3>
+<a name="NTL_STR67"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_STR67</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: The maximum number of flip-flops that belong to one clock domain should not exceed %d1:%s The number of flip-flops that belong to this clock domain is %d2:%s</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects that the number of flip-flops in one clock domain exceeds the maximum allowed. </font><font  face="Verdana, Arial, Helvetica, sans-serif">Arguments: </font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">	 %d1 is the maximum number of flip-flops specified using the parameter MX_FFS_NUMBER.<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">	 %d2 is the number of flip-flops that belong to the clock domain.<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">	 %s is the clock domain signal.<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">You can configure this rule using the rule_set_parameter Tcl command and the MX_FFS_NUMBER parameter to specify the maximum number of flip-flops based on the demands on timing constraints, clock driving strength, or your partitioning plan. The default value is 32. For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_STR27 \
+-parameter MX_FFS_NUMBER -value {38}
+</b></font></font></pre>
+<br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">STRUCTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_str67_top (Clock, Reset,  Din, Dout);
+</font><font face="Courier">input  Clock, Reset;
+</font><font face="Courier">input[32:0] Din;
+</font><font face="Courier">output[32:0] Dout;
+</font><font face="Courier">reg[32:0] Dout;     
+</font><font face="Courier">
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_STR67 fires -- the mumber of flip-flops is 33 in one clock
+</b></font></font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// domain, but the default value is 32
+</b></font></font><font face="Courier">always @(posedge Clock) 
+</font><font face="Courier">begin
+</font><font face="Courier">       if(!Reset)
+</font><font face="Courier">               Dout&lt;= 0;
+</font><font face="Courier">       else  Dout&lt;= Din;
+</font><font face="Courier">end
+</font><font face="Courier">endmodule
+</font></pre>
+<h3>
+</body>
+</html>

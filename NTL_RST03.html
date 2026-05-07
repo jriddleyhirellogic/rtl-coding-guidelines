@@ -1,0 +1,67 @@
+<html>
+<body>
+<h3>
+<a name="NTL_RST03"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_RST03</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: All registers must be asynchronously set or reset %s1</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects a register in the design that is not asynchronously set or reset. Here, a flip-flop is taken as a register. You can activate this rule for checking in special cases such as design for test (DFT).</font><font  face="Verdana, Arial, Helvetica, sans-serif">Arguments:</font><ul>
+  <ul>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li>%s1 is the non-asynchronous flip-flop</font>
+  </ul>
+</ul>
+<font  face="Verdana, Arial, Helvetica, sans-serif">The position is the line in which the non-asynchronous flip-flop is instantiated.</font><font  face="Verdana, Arial, Helvetica, sans-serif">The secondary message of this rule is "Other instance %s2".</font><font  face="Verdana, Arial, Helvetica, sans-serif">Arguments:</font><ul>
+  <ul>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li>%s2 is another non-asynchronous flip-flop which is instanced the same instance %s1.<br></font>
+  </ul>
+</ul>
+</font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">RESETS</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of valid Verilog code that illustrates the correct approach:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_rst03_top;
+</font><font face="Courier">...
+</font><font face="Courier">always @(posedge Clock or posedge Reset_asyn)
+</font><font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK -- asynchronously reset
+</b></font></font><font face="Courier">begin
+</font><font face="Courier">   if (Reset_asyn)
+</font><font face="Courier">           Dout &lt;= 0;
+</font><font face="Courier">   else  Dout &lt;= Din;
+</font><font face="Courier">end
+</font><font face="Courier">endmodule
+</font></pre>
+<h3>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<html>
+<body>
+<h3>
+<a name="NTL_DFT12"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_DFT12</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Separate scan chains for different clock domains</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects scan chains for different clock domains in the same module. To improve the performance of scan insertion and timing analysis, separate the scan chains for different clock domains.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_dft12_top(Clock1, Clock2, Scan_en, Scan_in1, Scan_in2, Din, 
+Dout1, Dout2);
+</font><font face="Courier">input  Clock1, Clock2, Scan_en, Scan_in1, Scan_in2, Din;
+</font><font face="Courier">output Dout1, Dout2;
+</font><font face="Courier">reg net_11, net_12, net_21, net_22;
+</font><font face="Courier">
+</font><font face="Courier">// Scan DFF - SDFF
+</font><font face="Courier">//scan chain 1: Scan_in1 -&gt; Dout1, one clock domain in this scan chain
+</font><font face="Courier">SDFF U0(.D(Din1), .CP(Clock1), .TI(Scan_in1), .TE(Scan_en), .Q(net_11));
+</font><font face="Courier">SDFF U1(.D(net_11), .CP(Clock1), .TI(net_11), .TE(Scan_en), .Q(net_12));
+</font><font face="Courier">SDFF U2(.D(net_12), .CP(Clock1), .TI(net_12), .TE(Scan_en), .Q(Dout1)); 
+</font><font face="Courier">                                                                
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_DFT12 fires -- Scan chain 2 Scan_in2 -&gt; Dout2, another scan clock 
+// in this scan chain
+</b></font></font><font face="Courier">SDFF U3 (.D(Din2), .CP(Clock2), .TI(Scan_in2), .TE(Scan_en), 
+.Q(net_21));
+</font><font face="Courier">SDFF U4 (.D(net_21), .CP(Clock2), .TI(net_21), .TE(Scan_en), 
+.Q(net_22));
+</font><font face="Courier">SDFF U5 (.D(net_22), .CP(Clock2), .TI(net_22), .TE(Scan_en), .Q(Dout2)); 
+</font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design96.gif" height="201" width="632" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

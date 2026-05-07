@@ -1,0 +1,176 @@
+<html>
+<body>
+<h3>
+<a name="NTL_STR77"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_STR77</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Prohibit Cell</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects prohibited cells in the design. You can use the rule_set_parameter Tcl command and the PROHIBITED_CELLS parameter to configure the list of prohibited cells. The default value is FD1P FD2P. For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_STR77 \
+-parameter PROHIBITED_CELLS -value {CELL1, CELL2, 
+CELL3}
+</b></font></font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Wild cards can also be used to specify the parameter values. For example, -value {[A-I]CELL? CELL* *CELL}</font><font  face="Verdana, Arial, Helvetica, sans-serif">By default, this rule will report only once even if the prohibited cell is instantiated multiple times. To enable reporting violation for each prohibited cell instantiation, the following parameter should be set as follows:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_STR77 \
+-parameter MSG_ON_EACH_INSTANCE -value {1}
+</b></font></font></pre>
+<br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">STRUCTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module top;
+</font><font face="Courier">
+</font><font face="Courier">sub1 sub1;
+</font><font face="Courier">sub2 sub2;
+</font><font face="Courier">AN2 an2 (.A(), .B(), .Z());
+</font><font face="Courier">AN2I an21 (.A(), .B(), .Z());
+</font><font face="Courier">AN2I an21_ (.A(), .B(), .Z());
+</font><font face="Courier">OR2 or2 (.A(), .B(), .Z());
+</font><font face="Courier">OR2I or2i (.A(), .B(), .Z());
+</font><font face="Courier">IV iv (.A(), .Z());
+</font><font face="Courier">IV iv_ (.A(), .Z());
+</font><font face="Courier">IVI ivi (.A(), .Z());
+</font><font face="Courier">IVI ivi_ (.A(), .Z());
+</font><font face="Courier">IVP ivp (.A(), .Z());
+</font><font face="Courier">IVA iva (.A(), .Z());
+</font><font face="Courier">IVAP ivap (.A(), .Z());
+</font><font face="Courier">IVDA ivda (.A(), .Y(), .Z());
+</font><font face="Courier">IVDA ivda_ (.A(), .Y(), .Z());
+</font><font face="Courier">IVDA ivda$ (.A(), .Y(), .Z());
+</font><font face="Courier">IVDAP ivdap (.A(), .Y(), .Z());
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module sub1;
+</font><font face="Courier">
+</font><font face="Courier">sub3 sub3;
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module sub3;
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module sub2;
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">Configuration:
+</font><font face="Courier">
+</font><font face="Courier">rule_set_parameter -rule NTL_STR77 -parameter PROHIBITED_CELLS -value 
+{IV[A-I]? *2 *2?} 
+</font><font face="Courier">rule_set_parameter -rule NTL_STR77 -parameter MSG_ON_EACH_INSTANCE -
+value {0}
+</font><font face="Courier">
+</font></pre>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">Result: </font>
+</p>
+<pre>
+<font face="Courier">
+</font><font face="Courier">     5: AN2 an2 (.A(), .B(), .Z());
+</font><font face="Courier">        ^
+</font><font face="Courier">test.v:5: STRUCTURE&gt; [ERROR] NTL_STR77: Prohibited Cell top.an2
+</font><font face="Courier">
+</font><font face="Courier">     6: AN2I an21 (.A(), .B(), .Z());
+</font><font face="Courier">        ^
+</font><font face="Courier">test.v:6: STRUCTURE&gt; [ERROR] NTL_STR77: Prohibited Cell top.an21
+</font><font face="Courier">
+</font><font face="Courier">     8: OR2 or2 (.A(), .B(), .Z());
+</font><font face="Courier">        ^
+</font><font face="Courier">test.v:8: STRUCTURE&gt; [ERROR] NTL_STR77: Prohibited Cell top.or2
+</font><font face="Courier">
+</font><font face="Courier">     9: OR2I or2i (.A(), .B(), .Z());
+</font><font face="Courier">        ^
+</font><font face="Courier">test.v:9: STRUCTURE&gt; [ERROR] NTL_STR77: Prohibited Cell top.or2i
+</font><font face="Courier">
+</font><font face="Courier">    16: IVAP ivap (.A(), .Z());
+</font><font face="Courier">        ^
+</font><font face="Courier">test.v:16: STRUCTURE&gt; [ERROR] NTL_STR77: Prohibited Cell top.ivap
+</font><font face="Courier">
+</font><font face="Courier">    17: IVDA ivda (.A(), .Y(), .Z());
+</font><font face="Courier">        ^
+</font><font face="Courier">test.v:17: STRUCTURE&gt; [ERROR] NTL_STR77: Prohibited Cell top.ivda
+</font><font face="Courier">
+</font><font face="Courier">
+</font><font face="Courier">If below configuration is used:
+</font><font face="Courier">
+</font><font face="Courier">rule_set_parameter -rule NTL_STR77 -parameter PROHIBITED_CELLS -value 
+{IV[A-I]? *2 *2?} 
+</font><font face="Courier">rule_set_parameter -rule NTL_STR77 -parameter MSG_ON_EACH_INSTANCE -
+value {1}
+</font><font face="Courier">
+</font><font face="Courier">The result is:
+</font><font face="Courier">
+</font><font face="Courier">     5: AN2 an2 (.A(), .B(), .Z());
+</font><font face="Courier">        ^
+</font><font face="Courier">test.v:5: STRUCTURE&gt; [ERROR] NTL_STR77: Prohibited Cell top.an2
+</font><font face="Courier">
+</font><font face="Courier">     6: AN2I an21 (.A(), .B(), .Z());
+</font><font face="Courier">        ^
+</font><font face="Courier">test.v:6: STRUCTURE&gt; [ERROR] NTL_STR77: Prohibited Cell top.an21
+</font><font face="Courier">
+</font><font face="Courier">     7: AN2I an21_ (.A(), .B(), .Z());
+</font><font face="Courier">        ^
+</font><font face="Courier">test.v:7: STRUCTURE&gt; [ERROR] NTL_STR77: Prohibited Cell top.an21_
+</font><font face="Courier">
+</font><font face="Courier">     8: OR2 or2 (.A(), .B(), .Z());
+</font><font face="Courier">        ^
+</font><font face="Courier">test.v:8: STRUCTURE&gt; [ERROR] NTL_STR77: Prohibited Cell top.or2
+</font><font face="Courier">
+</font><font face="Courier">     9: OR2I or2i (.A(), .B(), .Z());
+</font><font face="Courier">        ^
+</font><font face="Courier">test.v:9: STRUCTURE&gt; [ERROR] NTL_STR77: Prohibited Cell top.or2i
+</font><font face="Courier">
+</font><font face="Courier">    16: IVAP ivap (.A(), .Z());
+</font><font face="Courier">        ^
+</font><font face="Courier">test.v:16: STRUCTURE&gt; [ERROR] NTL_STR77: Prohibited Cell top.ivap
+</font><font face="Courier">
+</font><font face="Courier">    17: IVDA ivda (.A(), .Y(), .Z());
+</font><font face="Courier">        ^
+</font><font face="Courier">test.v:17: STRUCTURE&gt; [ERROR] NTL_STR77: Prohibited Cell top.ivda
+</font><font face="Courier">
+</font><font face="Courier">    18: IVDA ivda_ (.A(), .Y(), .Z());
+</font><font face="Courier">        ^
+</font><font face="Courier">test.v:18: STRUCTURE&gt; [ERROR] NTL_STR77: Prohibited Cell top.ivda_
+</font><font face="Courier">
+</font><font face="Courier">    19: IVDA ivda$ (.A(), .Y(), .Z());
+</font><font face="Courier">        ^
+</font><font face="Courier">test.v:19: STRUCTURE&gt; [ERROR] NTL_STR77: Prohibited Cell top.ivda$
+</font><font face="Courier">
+</font></pre>
+<h3>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CON15"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CON15</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Power rails belonging to different supply types should not short %s1</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule verifies the power supply connection. You can use the rule_set_parameter Tcl command and the following parameters to configure thus rule:</font><ul>
+  <ul>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li>VDD for digital high power. The default is VDD.</font>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li>GND for digital low power. The default is GND.</font>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li>ANALOG_VDDA for analog high power. The default is VDDA.</font>
+    <font  face="Verdana, Arial, Helvetica, sans-serif"><li>ANALOG_GND for analog low power. The default is GNDA.</font>
+  </ul>
+</ul>
+<font  face="Verdana, Arial, Helvetica, sans-serif">For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_CON15 \
+-parameter ANALOG_VDD -value {AN_VDD}
+</b></font></font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Arguments:</font><pre>
+<font face="Times">%s1 is the falsely connected supply pin.
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">The source position of this rule is the line in which the pin is instantiated.</font><font  face="Verdana, Arial, Helvetica, sans-serif">A new parameter STRICTLY_CHECK, if set to TRUE, will check if the signal is connected to another signal of same polarity. For example, signal VDD connected to VDD, signal GND connected to GND and signal VDD(A) is connected to signal VDD(A).</font><pre>
+<font face="Times">
+</font></pre>
+</font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CONNECTIVITY</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_con15_top (Din,Dout  );
+</font><font face="Courier">input   Din; 
+</font><font face="Courier">output Dout;
+</font><font face="Courier">wire VDD;		//digital core power 
+</font><font face="Courier">wire GND; 		//digital core power 
+</font><font face="Courier">wire VDDA; 		//analog core power
+</font><font face="Courier">wire GNDA; 			//analog core power
+</font><font face="Courier">
+</font><font face="Courier">lib_cell_inv1  
+</font><font face="Courier">U0 (.A(Din),
+</font><font face="Courier">      .Z(Dout),
+</font><font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif">      .VDD(VDDA), </font><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CON15 fires -- power of VDD short to VDDA
+</b></font></font><font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif">	.GND(GNDA) </font><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CON15 fires -- power of GND short to GNDA
+</b></font></font><font face="Courier">);
+</font><font face="Courier">endmodule 
+</font><font face="Courier">
+</font><font face="Courier">module lib_cell_inv1(A, Z, VDD, GND);    // library cell
+</font><font face="Courier">inout VDD, GND;
+</font><font face="Courier">input A;
+</font><font face="Courier">output Z;
+</font><font face="Courier">
+</font><font face="Courier">assign  Z = ~A;
+</font><font face="Courier">endmodule
+</font></pre>
+<h3>
+</body>
+</html>

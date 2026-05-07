@@ -1,0 +1,122 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CON29"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CON29</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Should not connect the output ports of user defined modules/instances to VDD/GND internally: %s1</font>
+</h3>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects output ports of user defined modules/instances are connected to VDD/GND internally. This help designer to control output port connections in some specific modules (e.g. the output ports in layout hierarchy which are same as user- defined module/instance by parameters should not be connected to VDD/GND internally inout ports).</font><br><font  face="Verdana, Arial, Helvetica, sans-serif">Argument: </font><font  face="Verdana, Arial, Helvetica, sans-serif">%s1 is the hierarchy name of illegal output port.</font><font  face="Verdana, Arial, Helvetica, sans-serif">You can use the rule_set_parameter Tcl command to configure below parameters:</font><font  face="Verdana, Arial, Helvetica, sans-serif">CON29_APPLY_MODULE - You can configure this parameter to allow LEDA to only apply this rule check on specific instances that are instantiated by the modules specified in this parameter.</font><br><font  face="Verdana, Arial, Helvetica, sans-serif">CON29_APPLY_INSTANCE - You can configure this parameter to allow LEDA to only apply this rule check on specific instances that are specified in this parameter.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CONNECTIVITY</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+</font>
+</p>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<pre>
+<font face="Courier">`timescale 1ns/1ps
+</font><font face="Courier">module top(Y1,Y2,Y3,Y4,A);
+</font><font face="Courier">output Y1,Y2,Y3,Y4;
+</font><font face="Courier">input A;
+</font><font face="Courier">
+</font><font face="Courier">	M1 I1(.Y(Y1), .A(A));
+</font><font face="Courier">	M2 I2(.Y(), .A(A));
+</font><font face="Courier">	M3 I3(.H(Y3), .L(Y4), .A(A));
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module M1(Y,A);
+</font><font face="Courier">output Y;
+</font><font face="Courier">input A;
+</font><font face="Courier">
+</font><font face="Courier">supply1 Y;
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module M2(Y,A);
+</font><font face="Courier">output Y;
+</font><font face="Courier">input A;
+</font><font face="Courier">
+</font><font face="Courier">supply1 VCC;
+</font><font face="Courier">	assign Y = VCC;
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module M3(H,L,A);
+</font><font face="Courier">output H,L;
+</font><font face="Courier">input A;
+</font><font face="Courier">
+</font><font face="Courier">	TB2CLHL G1(.H(H), .L(L));
+</font><font face="Courier">endmodule
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Configuration<br></font>
+<pre>
+<font face="Courier">rule_deselect -all
+</font><font face="Courier">rule_select -policy DESIGN -rule NTL_CON29
+</font><font face="Courier">rule_set_parameter -rule NTL_CON29 -parameter CON29_APPLY_INSTANCE -
+value { top.I1, top.I3 }
+</font><font face="Courier">rule_set_parameter -rule NTL_CON29 -parameter CON29_APPLY_MODULE -value 
+{ M2 }
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Case schematic<br></font>
+<pre>
+<font face="Courier"><img src="images/pol_designa85.gif" height="480" width="624" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Violations<br></font>
+<pre>
+<font face="Courier">
+</font><font face="Courier">    13:     output Y;
+</font><font face="Courier">                   ^
+</font><font face="Courier">con29_case2.v:13: CONNEC&gt; [ERROR] NTL_CON29: Should not connect the 
+output ports of user defined modules/instances to VDD/GND internally 
+top.I1.Y
+</font><font face="Courier">
+</font><font face="Courier">    21:     output Y;
+</font><font face="Courier">                   ^
+</font><font face="Courier">con29_case2.v:21: CONNEC&gt; [ERROR] NTL_CON29: Should not connect the 
+output ports of user defined modules/instances to VDD/GND internally 
+top.I2.Y
+</font><font face="Courier">
+</font><font face="Courier">    30:     output H,L;
+</font><font face="Courier">                   ^
+</font><font face="Courier">con29_case2.v:30: CONNEC&gt; [ERROR] NTL_CON29: Should not connect the 
+output ports of user defined modules/instances to VDD/GND internally 
+top.I3.H
+</font><font face="Courier">
+</font><font face="Courier">    30:     output H,L;
+</font><font face="Courier">                     ^
+</font><font face="Courier">con29_case2.v:30: CONNEC&gt; [ERROR] NTL_CON29: Should not connect the 
+output ports of user defined modules/instances to VDD/GND internally 
+top.I3.L
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Violation schematic<br></font>
+<pre>
+<font face="Courier"><img src="images/pol_designa91.gif" height="752" width="624" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

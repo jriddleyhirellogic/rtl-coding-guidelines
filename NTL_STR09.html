@@ -1,0 +1,71 @@
+<html>
+<body>
+<h3>
+<a name="NTL_STR09"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_STR09</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Avoid snake paths</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule shall report an error for all combinatorial path between a primary input or inout and a primary output or inout. Basically, if you can reach from an input or inout, another inout or output without being registered, you have to report an error.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">STRUCTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_str09_top(in, out1, out2);
+</font><font face="Courier">input in;
+</font><font face="Courier">output out1, out2;
+</font><font face="Courier">...
+</font><font face="Courier">// combinational logic module - Combo_logic
+</font><font face="Courier">Combo_logic1 U0(.Data_in(in), Data_out(net_01));
+</font><font face="Courier">Combo_logic1 U1(.Data_in(net_01), Data_out(net_02));
+</font><font face="Courier">Combo_logic2 U2(.Data_in(net_02), Data_out(net_03));
+</font><font face="Courier">Combo_logic3 U3(.Data_in(net_03), Data_out(net_04));
+</font><font face="Courier">Combo_logic4 U4(.Data_in(net_04), Data_out(net_05));
+</font><font face="Courier">Combo_logic5 U5(.Data_in(net_05), Data_out(net_06));
+</font><font face="Courier">Combo_logic6 U6(.Data_in(net_06), Data_out(net_07));
+</font><font face="Courier">Combo_logic6 U7(.Data_in(net_07), Data_out(out1));
+</font><font face="Courier">
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_STR09 fires -- snake path through U0~U76 without being registered
+</b></font></font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>between PI: in and PO: out1
+</b></font></font><font face="Courier">
+</font><font face="Courier">//flip-flop --DFF
+</font><font face="Courier">DFF U8( .Clock(Clock), .Din(net_07), .Dout(out2));
+</font><font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK -- out2 is registered
+</b></font></font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">
+</font><font face="Courier"><img src="images/pol_design87.gif" height="328" width="602" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

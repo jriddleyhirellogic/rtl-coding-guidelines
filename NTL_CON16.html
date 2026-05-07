@@ -1,0 +1,65 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CON16"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CON16</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Nets or cell pins should not be tied to logic 0 / logic 1</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule verifies that no nets or cell pins are connected to logic 0 or logic 1. Connections to supplies must be done using dedicated tie-off cells.</font><font  face="Verdana, Arial, Helvetica, sans-serif">This rule only detects direct connections to supply (1'b0 or 1'b1) or connections to nets detect as supplies using the suplly1 or supply0 constructs. If the supply connection is implemented through a tie-off cell, this rule does not fire. You can use the rule_set_parameter Tcl command and the TIE_OFF_CELLS parameter to specify tie-off cells for this rule. This parameter is specified along with rule NTL_CON17, so you must specify the tie-off cells as follows:</font><pre>
+<font face="Courier">leda&gt;<font  face="Verdana, Arial, Helvetica, sans-serif"><b> rule_set_parameter -rule NTL_STR100 \
+-parameter MAX_AREA_SIZE -value {20000}
+</b></font></font><font face="Courier">leda&gt;<font  face="Verdana, Arial, Helvetica, sans-serif"><b> rule_set_parameter -rule NTL_CON17 \
+-parameter TIE_OFF_CELLS -value {TIE1, TIE2}
+</b></font></font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Note that the setting for TIE_OFF_CELLS also affects the behavior of NTL_CON06, NTL_CON10, and NTL_CON17.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CONNECTIVITY</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_con16_top (Clock, Din, Dout  );
+</font><font face="Courier">input  Clock, Din; 
+</font><font face="Courier">output Dout;
+</font><font face="Courier">wire D_int1, D_int2;
+</font><font face="Courier">
+</font><font face="Courier">assign D_int1 = 1'b0; <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CON 16 fires -- net tied to logic 0
+</b></font></font><font face="Courier">assign D_int2 = 1'b1; <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CON 16 fires -- net tied to logic 1
+</b></font></font><font face="Courier">GTECH_FD1 U0 (
+</font><font face="Courier">            .D(1'b1), <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CON 16 fires -- net tied to logic 1
+</b></font></font><font face="Courier">            .CP(Clock), 
+</font><font face="Courier">            .Q(Dout));
+</font><font face="Courier">endmodule
+</font></pre>
+<h3>
+</body>
+</html>

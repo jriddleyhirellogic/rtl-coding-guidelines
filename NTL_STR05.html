@@ -1,0 +1,69 @@
+<html>
+<body>
+<h3>
+<a name="NTL_STR05"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_STR05</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: A signal that passes through several hierarchical levels must have the same name throughout</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects a signal that passes through several hierarchical levels and is not named with the same string. Naming a signal with the same string makes it easy to identify the signal through all hierarchical levels. </font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">STRUCTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_str05_top;
+</font><font face="Courier">input Reser;
+</font><font face="Courier">...
+</font><font face="Courier">assign Reset1 = Reset;
+</font><font face="Courier">B_hier1 U0(.Clock(Clock),<font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK -- Clock with the same name 
+</b></font></font><font face="Courier">	.Reset_hier1(Reset1), ...); 
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_STR05 fires -- Reset1 without the same name
+</b></font></font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module B_hier1 (Clock, Reset_hier1, ...);
+</font><font face="Courier">input  Clock, Reset_hier1;
+</font><font face="Courier">...
+</font><font face="Courier">assign Reset2 = Reset1;    
+</font><font face="Courier">B_hier2 I0(.Clock(Clock), <font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK -- Clock with the same name 
+</b></font></font><font face="Courier">	.Reset_hier2(Reset2), ...); 
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_STR05 fires -- Reset2 without the same name
+</b></font></font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module B_hier2 (Clock, Reset_hier2, ...);
+</font><font face="Courier">...
+</font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design83.gif" height="508" width="696" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

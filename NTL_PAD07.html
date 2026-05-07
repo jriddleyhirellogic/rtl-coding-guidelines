@@ -1,0 +1,72 @@
+<html>
+<body>
+<h3>
+<a name="NTL_PAD07"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_PAD07</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Push pull always disabled</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects push pull pins that are disabled in the design. When a push pull enable pin is connected to a low-level power net, it is treated as disabled. </font><font  face="Verdana, Arial, Helvetica, sans-serif">You can configure this rule using the rule_set_parameter Tcl command and the SUPPLY_LOW_LIST parameter to specify the low-power signals that cannot be connected to the push pull pin and the PUSH_PULL_EN_PIN parameter to specify the push pull signal. Use rule NTL_PAD05 to configure the SUPPLY_LOW_LIST parameter. The default power signal name for this rule is VSS and the default push pull pin name is PP_EN. For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_PAD05 \
+-parameter SUPPLY_LOW_LIST -value {LOW_P}
+</b></font></font><font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_PAD07 \
+-parameter PUSH_PULL_EN_PIN -value {DQ}
+</b></font></font></pre>
+<br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">PAD</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_pad07_top;
+</font><font face="Courier">...
+</font><font face="Courier">supply1 VDD; //VDD is an signal in the supply_high_list(user provided)
+</font><font face="Courier">supply0 VSS; /VSS is an signal in the supply_low_list (user provide)
+</font><font face="Courier">
+</font><font face="Courier">// signal named with '_pad' is an input/output of top-level
+</font><font face="Courier">Design_core U0(Ctrl, Din, Dout1, Dout2);
+</font><font face="Courier">
+</font><font face="Courier">//PAD cells - PGO_CDPA77Ex is a output cell with push pull pin (PP-EN)
+</font><font face="Courier">PGO_CDPA77Ex  U1( .PULL(VSS), .PP_EN(VSS), .ENQ(VDD), .PULLQ(VDD),
+</font><font face="Courier">.PAD(Dout1_pad), .DQ(Dout1)); 
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// VNTL_PAD07 fires -- VSS is in supply_low_list (user provided). It is 
+// a violation when a signal listed in supply_low_list is connected to 
+// the PP-EN pin of IOLIB cells
+</b></font></font><font face="Courier">
+</font><font face="Courier">PGO_CDPA77Ex  U2( .PULL(VSS), .PP_EN(VDD), .ENQ(VDD), .PULLQ(VDD), 
+</font><font face="Courier">.PAD(Dout2_pad), .DQ(Dout2));  <font  face="Verdana, Arial, Helvetica, sans-serif"><b>// PP-EN is OK</b></font> 
+</font><font face="Courier">...
+</font><font face="Courier">endmodule
+</font></pre>
+<h3>
+</body>
+</html>

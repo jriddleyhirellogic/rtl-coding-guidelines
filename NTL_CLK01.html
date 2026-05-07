@@ -1,0 +1,63 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CLK01"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CLK01</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Use only one clock domain</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Limit as much as possible the number of clock domains in the design. Multiple clock domains can cause metastability and complicate timing analysis, scan insertion, and clock tree synthesis. If multiple clock domains must be used, you can configure this rule using the rule_set_parameter Tcl command and the NB_MAX_CLOCKS parameter to specify the acceptable number of clock domains. For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_CLK01 \
+-parameter NB_MAX_CLOCKS -value {2}
+</b></font></font></pre>
+<br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CLOCKS</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_clk01_top (Clock1,  Clock2, Reset, Din1, Din2, Dout1, Dout2);         
+</font><font face="Courier">input Clock1, Clock2, Reset, Din1, Din2;    
+</font><font face="Courier">output Dout1, Dout2;
+</font><font face="Courier">wire Dout1, Dout2;  
+</font><font face="Courier">
+</font><font face="Courier">//DFFR  --  flip-flop with reset
+</font><font face="Courier">DFFR I0(.D(Din), .CP(Clock1), .CD(Reset), .Q(Dout1)); 
+<font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK -- one clock domain
+</b></font></font><font face="Courier">DFFR I1(.D(Din), .CP(Clock2), .CD(Reset), .Q(Dout2)); 
+<font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CLK01 fires -- another clock domain 
+</b></font></font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design3.gif" height="520" width="881" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

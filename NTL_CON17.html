@@ -1,0 +1,62 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CON17"> </a>
+<a name="1048689"> </a><font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CON17</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Do not connect tie off cell to logic 0 /logic 1</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule verifies that tie-off cells are not connected to supply. Tie-off cells provide the connection to supply, so they must not be connected themselves to supply. Tie-off cells are special cells in a physical library.</font><font  face="Verdana, Arial, Helvetica, sans-serif">This rule only detects direct connections to supply (1'b0 or 1'b1) or connections to nets detected as supplies using the supply1 or supply0 constructs. If the supply connection is implemented through a tie-off cell, this rule does not fire. You can use the rule_set_parameter Tcl command and the TIE_OFF_CELLS parameter to specify tie-off cells for this rule. For example:</font><pre>
+<font face="Courier">leda&gt;<font  face="Verdana, Arial, Helvetica, sans-serif"><b> rule_set_parameter -rule NTL_CON17 \
+-parameter TIE_OFF_CELLS -value {TIE1, TIE2}
+</b></font></font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Note that </font>the TIE_OFF_CELLS parameter that you can configure with this rule also affects NTL_CON06, NTL_CON10, and NTL_CON16.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CONNECTIVITY</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_con17_top ();
+</font><font face="Courier">supply0 GND;
+</font><font face="Courier">supply1 VDD;
+</font><font face="Courier">
+</font><font face="Courier">tohlsx1 U1 (.TH(VDD)); // tie off cell in a physical library 
+</font><font face="Courier">tohlx1 U2 (.TH(VDD)); // tie off cell in a physical library 
+</font><font face="Courier">tohsx1 U3 (.TH(VDD)); // tie off cell in a physical library 
+</font><font face="Courier">tohx1 U4 (.TH(VDD)); // tie off cell in a physical library
+</font><font face="Courier">tolsx1 U5 (.TL(GND)); // tie off cell in a physical library
+</font><font face="Courier">tolx1 U6 (.TL(GND)); // tie off cell in physical library
+</font><font face="Courier">endmodule
+</font></pre>
+<h3>
+</body>
+</html>

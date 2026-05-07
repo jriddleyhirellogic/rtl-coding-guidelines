@@ -1,0 +1,78 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CON21"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CON21</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Diodes should be used at top level</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects diodes that are not used at the top level in the design. You can use the rule_set_parameter Tcl command and the PROTECTION_DIODE parameter to specify diodes that you want Leda to examine for this rule. The default is null. For example:</font><pre>
+<font face="Courier">leda&gt;<font  face="Verdana, Arial, Helvetica, sans-serif"><b> rule_set_parameter -rule NTL_CON21 \
+-parameter PROTECTION_DIODE -value {DIODE1,\
+DIODE2}
+</b></font></font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">If you set this parameter to a list of diodes, Leda checks the specified cells as diodes. When you leave the default setting for this parameter (null), Leda checks cells whose footprint is "antprot" as diodes.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CONNECTIVITY</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Warning</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_con21_top(Din1_pad, Din2_pad, Dout1_pad,Dout2_pad);
+</font><font face="Courier">input   Din1_pad, Din2_pad;
+</font><font face="Courier">output Dout1_pad,Dout2_pad;
+</font><font face="Courier">wire Din1, Din2, Dout1, Dout2;
+</font><font face="Courier">...
+</font><font face="Courier">Design_core U0 (Din1, Din2, Dout1, Dout2);
+</font><font face="Courier">...
+</font><font face="Courier">//PAD cells - PC3O01(output pad cell) /PC3D01 (input pad cell)
+</font><font face="Courier">PC3D01 U0 (.PAD(Din1_PAD), .CIN(Din1));  
+</font><font face="Courier">PC3D01 U1 (.PAD(Din2_PAD), .CIN(Din2));
+</font><font face="Courier">PC3O01 U2 (.I(Dout1), .PAD(Dout1_PAD)); 
+</font><font face="Courier">PC3O01 U3 (.I(Dout1), .PAD(Dout1_PAD));
+</font><font face="Courier">
+</font><font face="Courier">//antpro1 - a diode cell
+</font><font face="Courier">antprot1 I0 (.MINUS(Din1));
+</font><font face="Courier">antprot1 I1 (.MINUS(Din2));
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module Design_core;
+</font><font face="Courier">input Din1, Din2;
+</font><font face="Courier">...
+</font><font face="Courier">//antpro1 - a diode cell
+</font><font face="Courier">antprot1 I1 (.MINUS(Din_1));
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CON21 fires -- violation because this diode is not at top level
+</b></font></font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design14.gif" height="428" width="812" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

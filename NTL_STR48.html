@@ -1,0 +1,64 @@
+<html>
+<body>
+<h3>
+<a name="NTL_STR48"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_STR48</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Latches shall be instantiated using the VLSI generic latch components</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects latches in the design that are not instantiated with VLSI generic latch components. It returns statistics on the latches found.</font><font  face="Verdana, Arial, Helvetica, sans-serif">You can use the rule_set_parameter Tcl command and the GENERIC_LATCHES parameter to specify the name of the VLSI generic latch component that Leda checks. The default value is LD1_GENERIC, LD2_GENERIC. For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_STR48 \
+-parameter GENERIC_LATCHES -value {GEN_LAT1}
+</b></font></font></pre>
+<br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">STRUCTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of valid Verilog code that illustrates the correct approach:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_str48_top ;
+</font><font face="Courier">...
+</font><font face="Courier">LD1_GENERIC U1(.D(Din1), .G(Ctrl), .Q(Dout1)); 
+</font><font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK -- A latch named LD1_GENERIC is a VSLI generic
+</b></font></font><font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>// latch component (default)
+</b></font></font><font face="Courier">LD2_GENERIC U2(.D(Din2), .G(Ctrl), .Q(Dout2)); 
+</font><font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK -- A latch named LD2_GENERIC is a VSLI generic
+</b></font></font><font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>// latch component (default)
+</b></font></font><font face="Courier">// a latch cell -- LATCH_logic
+</font><font face="Courier">LATCH_logic U3 (.D(Din3), .G(Ctrl2), .Q(Dout3));
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_STR48 fires -- this latch is not the VLSI generic latch 
+</b></font></font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// component
+</b></font></font><font face="Courier">endmodule
+</font></pre>
+<h3>
+</body>
+</html>

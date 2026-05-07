@@ -1,0 +1,72 @@
+<html>
+<body>
+<h3>
+<a name="NTL_PAD10"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_PAD10</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Output port always disabled</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects that output enable pin ENQ that is always disabled because it is tied to a low-power signal. </font><font  face="Verdana, Arial, Helvetica, sans-serif">You can configure this rule using the rule_set_parameter Tcl command and the SUPPLY_LOW_LIST parameter to specify the low-power signals that cannot be tied to the output port and the OUTPUT_EN_PIN parameter to specify the output enable port. Use rule NTL_PAD05 to configure the SUPPLY_LOW_LIST parameter. The default power signal name for this rule is VSS and the default output enable port name for this rule is ENQ. For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_PAD05 \
+-parameter SUPPLY_LOW_LIST -value {LOW_P}
+</b></font></font><font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_PAD10 \
+-parameter OUTPUT_EN_PIN -value {DQ}
+</b></font></font></pre>
+<br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">PAD</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_pad10_top ;
+</font><font face="Courier">...
+</font><font face="Courier">supply1 VDD; //VDD is a signal in the supply_high_list (user provided)
+</font><font face="Courier">supply0 VSS;  //VSS is a signal in the supply_low_list (user provide)
+</font><font face="Courier">
+</font><font face="Courier">// signal named with '_pad' is an input/output of top-level
+</font><font face="Courier">Design_core U0(Din, Dout);
+</font><font face="Courier">...
+</font><font face="Courier">//PAD cells: PGI_ECS277Ex - input PAD ; PGO_CDPA77Ex - output PAD;
+</font><font face="Courier">PGI_ECS277Ex U1(.PULL(VSS), .ENABQ(VSS), .PULLQ(VDD), 
+</font><font face="Courier">.PAD(Din_pad), .OUTI(Din));
+</font><font face="Courier">
+</font><font face="Courier">PGO_CDPA77Ex U2(.PULL(VSS), .PP_EN(VDD), .ENQ(VSS), .PULLQ(VDD),
+</font><font face="Courier">.PAD(Dout_pad), .DQ(Dout)); 
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_PAD10 fires -- VSS is in supply_low_list (user provided). It is a 
+// violation when a signal listed in the supply_low_list is connected to 
+// the ENQ pin of IOLIB cells        
+</b></font></font><font face="Courier">...
+</font><font face="Courier">endmodule
+</font></pre>
+<h3>
+</body>
+</html>

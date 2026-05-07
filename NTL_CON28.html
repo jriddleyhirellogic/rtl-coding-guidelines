@@ -1,0 +1,113 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CON28"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CON28</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Should not use inout ports in user defined modules/instances: %s1</font>
+</h3>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when inout port is used (the connection of inout does not matter) in user-defined instance or module (defined by parameters). This helps designer to control inout port connection in some specific modules. For example, the inout ports should not be used in layout hierarchy which is same as user defined module/instance by parameters.</font><br><font  face="Verdana, Arial, Helvetica, sans-serif">Argument: </font><font  face="Verdana, Arial, Helvetica, sans-serif">%s1 is the hierarchy name of an illegal inout port.</font><font  face="Verdana, Arial, Helvetica, sans-serif">You can use the rule_set_parameter Tcl command to configure the below parameters:</font><font  face="Verdana, Arial, Helvetica, sans-serif">CON28_APPLY_MODULE - You can configure this parameter to allow LEDA to only apply this rule check on specific instances that are instantiated by the modules specified in this parameter.</font><font  face="Verdana, Arial, Helvetica, sans-serif">CON28_APPLY_INSTANCE - You can configure this parameter to allow LEDA to only apply this rule check on specific instances that are specified in this parameter.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CONNECTIVITY</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+</font>
+</p>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<pre>
+<font face="Courier">
+</font><font face="Courier">`timescale 1ns/1ps
+</font><font face="Courier">module top(Y1,Y2,A,B);
+</font><font face="Courier">output Y1;
+</font><font face="Courier">inout Y2; // PASS
+</font><font face="Courier">input A,B;
+</font><font face="Courier">
+</font><font face="Courier">	M1 I1(.Y(Y1), .A(A));
+</font><font face="Courier">	M2 I2(.Y(Y2), .A(B), .OK_Y() );
+</font><font face="Courier"> 
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module M1(Y,A);
+</font><font face="Courier">inout Y; // FLAG
+</font><font face="Courier">input A;
+</font><font face="Courier">
+</font><font face="Courier">	M1_m1 I1(.Y(Y), .A(A));
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module M1_m1(Y,A);
+</font><font face="Courier">output Y;
+</font><font face="Courier">input A;
+</font><font face="Courier">
+</font><font face="Courier">	TB2BUFXL I1(.Y(Y), .A(A));
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module M2(Y,A,OK_Y);
+</font><font face="Courier">output Y;
+</font><font face="Courier">inout OK_Y; // PASS
+</font><font face="Courier">input A;
+</font><font face="Courier">
+</font><font face="Courier">	M2_m1 I1(.Y(Y), .A(A), .Y_2() );
+</font><font face="Courier">	assign OK_Y = A;
+</font><font face="Courier">endmodule
+</font><font face="Courier"> 
+</font><font face="Courier">module M2_m1(Y,A,Y_2);
+</font><font face="Courier">inout Y; // FLAG
+</font><font face="Courier">input A;
+</font><font face="Courier">inout Y_2; // FLAG
+</font><font face="Courier">
+</font><font face="Courier">	TB2BUFXL G1(.Y(Y), .A(A) );
+</font><font face="Courier">endmodule
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Configuration<br></font>
+<pre>
+<font face="Courier">rule_deselect -all
+</font><font face="Courier">rule_select -policy DESIGN -rule NTL_CON28
+</font><font face="Courier">rule_set_parameter -rule NTL_CON28 -parameter CON28_APPLY_MODULE 
+-value { M1 M2_m1 }
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Violations<br></font>
+<pre>
+<font face="Courier">13:     inout Y; // FLAG
+</font><font face="Courier">            ^
+</font><font face="Courier">con28_case1.v:13: CONNEC&gt; [ERROR] NTL_CON28: Should not use inout ports 
+in user defined modules/instances  top.I1.Y
+</font><font face="Courier">
+</font><font face="Courier">    37:     inout Y; // FLAG
+</font><font face="Courier">                  ^
+</font><font face="Courier">con28_case1.v:37: CONNEC&gt; [ERROR] NTL_CON28: Should not use inout ports 
+in user defined modules/instances  top.I2.I1.Y
+</font><font face="Courier">
+</font><font face="Courier">    39:     inout Y_2; // FLAG
+</font><font face="Courier">                  ^
+</font><font face="Courier">con28_case1.v:39: CONNEC&gt; [ERROR] NTL_CON28: Should not use inout ports 
+in user defined modules/instances  top.I2.I1.Y_2
+</font><font face="Courier"><img src="images/pol_designa88.gif" height="480" width="624" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

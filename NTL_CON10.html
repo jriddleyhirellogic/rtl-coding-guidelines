@@ -1,0 +1,63 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CON10"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CON10</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Output tied to supply</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule verifies that no output pins of standard cells are connected to a supply. Connecting an output pin to a supply results in a short. This has to be fixed because it increases power consumption.</font><font  face="Verdana, Arial, Helvetica, sans-serif">This rule only detects direct connections to supply (1'b0 or 1'b1) or connections to nets detected as supplies using the suplly1 or supply0 constructs. If the supply connection is implemented through a tie-off cell, this rule does not fire. You can use the rule_set_parameter Tcl command and the TIE_OFF_CELLS parameter to specify tie-off cells for this rule. This parameter is specified along with rule NTL_CON17, so you must specify the tie-off cells as follows:</font><pre>
+<font face="Courier">leda&gt;<font  face="Verdana, Arial, Helvetica, sans-serif"><b> rule_set_parameter -rule NTL_CON17</b></font><font  color="#007f00" face="Verdana, Arial, Helvetica, sans-serif"><b> </b></font><font  face="Verdana, Arial, Helvetica, sans-serif"><b>\
+-parameter TIE_OFF_CELLS -value {TIE1, TIE2}
+</b></font></font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Note that the setting for TIE_OFF_CELLS also affects the behavior of NTL_CON06, NTL_CON16, and NTL_CON17.</font><font  face="Verdana, Arial, Helvetica, sans-serif">By default, this check is applied on the inout ports. You can set parameter APPLY_ONLY_ON_OUTPUTS to 1, to apply this check only on output ports (the default value is 0). For example:</font><pre>
+<font face="Courier">leda&gt;<font  face="Verdana, Arial, Helvetica, sans-serif"><b> rule_set_parameter -rule NTL_CON10</b></font><font  color="#007f00" face="Verdana, Arial, Helvetica, sans-serif"><b> </b></font><font  face="Verdana, Arial, Helvetica, sans-serif"><b>\
+-parameter APPLY_ONLY_ON_OUTPUTS -value {1}
+</b></font></font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">If an inout port is derived with the "PAD" attribute from a DB cell, or if the inout port is owned by an analog DB cell (with the attribute "is_analog") yet the inout port is not a digital pin (without the attribute "is_digital_pin"), such an inout port will not be taken as an output to be checked by this rule even if the parameter APPLY_ONLY_ON_OUTPUTS is set to 0. Connection of such inout ports to supply is considered to be fine.</font><font  face="Verdana, Arial, Helvetica, sans-serif">Parameter "ONLY_APPLY_ON_LEAF_CELL" allows you to configure Leda to apply this check only on leaf cells. A DB cell will be taken as leaf cell. The default value for this parameter is "1".</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CONNECTIVITY</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_con10_top (Clock, Reset, Din, Dout1, Dout2);
+</font><font face="Courier">input  Clock, Reset, Din;
+</font><font face="Courier">output Dout1, Dout2;
+</font><font face="Courier">
+</font><font face="Courier">supply0 Dout1; <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CON10 fires -- output tied to supply
+</b></font></font><font face="Courier">supply1 Dout2; <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CON10 fires -- output tied to supply
+</b></font></font><font face="Courier">...
+</font><font face="Courier">endmodule
+</font></pre>
+<h3>
+</body>
+</html>

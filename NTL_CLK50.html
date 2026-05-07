@@ -1,0 +1,125 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CLK50"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CLK50</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Clock signal gated with a MUX.
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Leda flags this rule when it detects a MUX in the clock path, thus a gated clock is generated in the design. </font><font  face="Verdana, Arial, Helvetica, sans-serif">Arguments</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s: the hierarchy name of the module/cell.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Design</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Clock</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Verilog/VHDL</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Netlist</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+</font>
+</h3>
+<h3>
+<a name="Example:"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Example:</font>
+</h3>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The following example illustrates the rule:</font>
+</p>
+<pre>
+<font face="Courier">module top(Y1,Y2,Y3,D1,D2,D3,T,EN,T2,EN2,EN3);
+</font><font face="Courier"> input D1,D2,D3,T,EN,T2,EN2,EN3;
+</font><font face="Courier"> output Y1,Y2,Y3;
+</font><font face="Courier">
+</font><font face="Courier"> DFF I1(.Q(Y1), .DATA(D1), .CLK(T));
+</font><font face="Courier"> DFF I2(.Q(Y2), .DATA(D2), .CLK(I5_Y));
+</font><font face="Courier"> DFF I3(.Q(Y3), .DATA(D3), .CLK(I6_Y));
+</font><font face="Courier">
+</font><font face="Courier"> XOR2 I5(.Y(I5_Y),.A(EN2),.B(T));
+</font><font face="Courier"> MUX2 I6(.Y(I6_Y),.D0(I5_Y), .D1(T), .S0(EN3));
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Configuration:<br></font>
+<pre>
+<font face="Courier">rule_deselect -all
+</font><font face="Courier">rule_select -rule NTL_CLK50
+</font><font face="Courier">
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Violations:<br></font>
+<pre>
+<font face="Courier">    10:  TB2MUX2XL I6(.Y(I6_Y),.D0(I5_Y), .D1(T), .S0(EN3));
+</font><font face="Courier">         ^
+</font><font face="Courier">doc.v:10: CLOCKS&gt; [ERROR] NTL_CLK50: Clock signal gated with a MUX 
+top.I6.~mux0
+</font><font face="Courier">   ---  1 flip-flops/latches are driven by the MUX top.I6.Y (file: 
+doc.v, line: 10)
+</font><font face="Courier">   ---  Clock input signal is: top.I6.D0 (file: doc.v, line: 10)
+</font><font face="Courier">   ---  Clock input signal is: top.I6.D1 (file: doc.v, line: 10)
+</font><font face="Courier">   ---  Enable input signal is: top.I6.S0 (file: doc.v, line: 10)
+</font></pre>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Secondary Message</font>
+</h3>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">Secondary messages - Number of secondary messages
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Secondary message</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">%d  flip-flops/latches are driven by the MUX %s</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Arguments of</font><font  face="Verdana, Arial, Helvetica, sans-serif">message (if any)</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">%d: the number of flip-flops/latches driven by this MUX</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s: the hierarchy name of MUX</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Source position</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The position of the clock signal</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Secondary message</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Clock signal is: %s</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Arguments of</font><font  face="Verdana, Arial, Helvetica, sans-serif">message (if any)</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">%s: the hierarchy name of clock signal</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Source position</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The position of the clock signal</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Secondary message</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Enable signal is :%s</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Arguments of</font><font  face="Verdana, Arial, Helvetica, sans-serif">message (if any)</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">%s: the hierarchy name of enable signal</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Source position</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The position of the enable signal</font></font></td>
+  </tr>
+</table>
+</font>
+</p>
+<h3>
+</body>
+</html>

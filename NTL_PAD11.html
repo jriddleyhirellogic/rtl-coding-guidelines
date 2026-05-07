@@ -1,0 +1,112 @@
+<html>
+<body>
+<h3>
+<a name="NTL_PAD11"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_PAD11</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Isolate I/O PAD from the core logic %s1</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects an I/O PAD cell that is not isolated from the core design logic. This rule fires, either if I/O PAD is not instantiated in top module or some other cells are also instantiated in top module. Isolating I/O PAD cells from the core design logic improves performance in chip testing and packaging. </font><font  face="Verdana, Arial, Helvetica, sans-serif">Arguments: </font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">	 %s1 is the hierarchy name of the pad.<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Source Position: </font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">	 The position is the line in which the pad is instantiated.<br></font>
+<br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">PAD</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This example shows the associated design file and illustrates this rule.</font>
+</p>
+<pre>
+<font face="Courier">// Design File
+</font><font face="Courier">module ntl_pad11_top( Clk, Din, Dout) ; 
+</font><font face="Courier">   Design_core U0(IClk, IDin, IDout);
+</font><font face="Courier">   GTECH_AND2 U1 (.A(net01), .B(net02),.Z(net03)); <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>//rule fires
+</b></font></font><font face="Courier">   //input PAD
+</font><font face="Courier">   GTECH_INBUF  I0(.PAD_IN(Clk), .DATA_IN(IClk));
+</font><font face="Courier">   GTECH_INBUF  I1(.PAD_IN(Din), .DATA_IN(IDin));
+</font><font face="Courier">   //output PAD
+</font><font face="Courier">   GTECH_OUTBUF I2 (.DATA_OUT(IDout), .OE(Ien), .PAD_OUT(Dout) );
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module Design_core(Clk, Din, Dout); ...
+</font><font face="Courier">   //PAD
+</font><font face="Courier">   GTECH_INBUF  I0(.PAD_IN(Clk), .DATA_IN(DIClk) ); <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>//rule fires
+</b></font></font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design7.gif" height="454" width="629" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Sample Output<br></font>
+<pre>
+<font face="Courier">6:   idcx3 p1 (.QC(in), .PADM(Din));
+</font><font face="Courier">         ^
+</font><font face="Courier">t1.v:10: PAD&gt; [ERROR] NTL_PAD11: Isolate I/O PAD from the core logic 
+test.p1
+</font><font face="Courier">   --- Other PAD: test.p2
+</font><font face="Courier">   --- Other PAD: test.p3
+</font><font face="Courier">   --- The standard cell: test.u1
+</font><font face="Courier">
+</font></pre>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">In the above sample output,</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Secondary Message</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Other PAD %s2</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Argument</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">%s2 is the hierarchy name of the pad.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Source Position</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The position is the line in which the PAD is instantiated.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Secondary Message</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The standard cell: %s3</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Argument</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">%s3 is the hierarchy name of the standard cell instantiation.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Source Position</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The position is the line in which the standard cell is instantiated.</font></font></td>
+  </tr>
+</table>
+</font>
+</p>
+<h3>
+</body>
+</html>

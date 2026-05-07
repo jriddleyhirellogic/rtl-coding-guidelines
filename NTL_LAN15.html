@@ -1,0 +1,65 @@
+<html>
+<body>
+<h3>
+<a name="NTL_LAN15"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_LAN15</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Unused signals</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects unused signals and unused signal ranges in the design. A signal without any connections in the design is considered as an unused signal. Unused signals are untestable and decrease fault coverage. </font><font  face="Verdana, Arial, Helvetica, sans-serif">You can configure this rule using the rule_set_parameter Tcl command and the UNUSED_SIGNAL parameter. The default value is "INPUT, INOUT, OUTPUT, INT_SIGNAL". For example, to configure this rule, to check only for unused input signals in the design:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_LAN15 \
+-parameter UNUSED_SIGNAL -value {INPUT}
+</b></font></font></pre>
+<br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">LANGUAGE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_lan15_top(Clock_no_used, Ctrl, Din, Dout, Dout_not_used, 
+Dout_range);
+</font><font face="Courier">
+</font><font face="Courier">input  Clock_no_used; <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_LAN15 fires -- unused signals
+</b></font></font><font face="Courier">input  Ctrl, Din;
+</font><font face="Courier">output Dout;
+</font><font face="Courier">output Dout_not_used; <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_LAN15 fires -- unused signals
+</b></font></font><font face="Courier">output [2:0]Dout_range; <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_LAN15 fires -- unused signal ranges
+</b></font></font><font face="Courier">wire   not_used_int; <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_LAN15 fires -- unused signals
+</b></font></font><font face="Courier">
+</font><font face="Courier">assign Dout = Ctrl ?  Din : 1'bz;
+</font><font face="Courier">assign Dout_range[1:0] = 2'b00;
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font></pre>
+<h3>
+</body>
+</html>

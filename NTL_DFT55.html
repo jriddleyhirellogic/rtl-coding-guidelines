@@ -1,0 +1,62 @@
+<html>
+<body>
+<h3>
+<a name="NTL_DFT55"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_DFT55</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Test-enable signal must be generated from the scan-mode or directly from the primary inputs</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">All flip-flop scan enable pins must be controllable from the boundary of the chip or through some controllable logic. Flip-flops with uncontrollable scan enable pins are removed from the scan path, thus reducing test coverage.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem and the solution:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_dft55_top(Clock, Test_Mode, Mbist_Test_Mode, Din, Dout);
+</font><font face="Courier">input  Test_Mode; // a primary input, it is used for scan-mode test
+</font><font face="Courier">input  Mbist_Test_Mode;   // a control signal for MBIST test
+</font><font face="Courier">...
+</font><font face="Courier">wire net_int;           //interior signal
+</font><font face="Courier">...
+</font><font face="Courier">//Scan DFF -- SDFF
+</font><font face="Courier">SDFF U0(.D(Din), .CP(Clock), .TI(Din), .TE(Test_Mode), .Q(net_01));  
+</font><font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK -- scan-enable signal (Top.U0.TE) is from the primary input
+</b></font></font><font face="Courier">
+</font><font face="Courier">SDFF U1(.D(net_02), .CP(Clock), .TI(net_01), .TE(net_int), .Q(Dout));        
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_DFT55 fires -- scan-enable signal (Top.U1.TE) is not 
+</b></font></font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// directly from the primary input
+</b></font></font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design148.gif" height="807" width="903" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

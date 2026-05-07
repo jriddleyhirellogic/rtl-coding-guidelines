@@ -1,0 +1,76 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CLK08"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CLK08</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: If gated clocks are necessary, isolate them and make them global</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Grouping all gated clocks in a dedicated structure makes them easier to manage during timing analysis and clock tree insertion.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CLOCKS</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_clk08_top (Clock, Reset, Gate_en, Din, Dout1,Dout2  ); 
+</font><font face="Courier">input  Clock, Reset, Gate_en, Din;
+</font><font face="Courier">output Dout1, Dout2;
+</font><font face="Courier">wire Clock_int; <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CLK08 fires, gated clock in top not isolated
+</b></font></font><font face="Courier">wire Clock_glb; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK -- Gated clock in one module and isolated
+</b></font></font><font face="Courier">
+</font><font face="Courier">assign Clock_int = Clock &amp; Gate_en;   // gated clock Clk_int
+</font><font face="Courier">
+</font><font face="Courier">Clk_gen   U1( .Clock(Clock), .Reset(Reset),.Enable(Gate_en),
+</font><font face="Courier">.Clock_global(Clock_glb) ); //gated global clock
+</font><font face="Courier">Date_gen U2( .Clock1(Clock_int), .Clock2(Clock_glb), .Reset(Reset), 
+</font><font face="Courier">                          .Din(Din), .Dout1(Dout1), .Dout2(Dout2) );
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module Clk_gen  ( Clock, Reset, Enable, Clock_global );
+</font><font face="Courier">input  Clock, Reset, Enable;
+</font><font face="Courier">output Clock_global;
+</font><font face="Courier">assign Clock_global = Enable ^ Clock ;
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module Date_gen  ( Clock1, Clock2, Reset, Din, Dout1, Dout2 );
+</font><font face="Courier">input  Clock1, Clock2, Reset, Din;
+</font><font face="Courier">output Dout1, Dout2;
+</font><font face="Courier">reg Dout1, Dout2;
+</font><font face="Courier">//DFFR  --  flip-flop with reset
+</font><font face="Courier">DFFR I0(.D(Din), .CP(Clock1), .CD(Reset), .Q(Dout1));  
+</font><font face="Courier">DFFR I1(.D(Din), .CP(Clock2), .CD(Reset), .Q(Dout2)); 
+</font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design18.gif" height="559" width="786" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CLK24"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CLK24</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Multibit control signal crossing clock domain should be Gray coded</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects a multibit control signal that is not gray coded crossing a clock domain. Gray code gets only one bit changed every time, so it is easy to tell if the gray code status or data has changed for some critical timing edge. </font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CLOCKS</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Note</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of valid Verilog code, followed by a circuit diagram that illustrates the correct coding style:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_clk24_top (Clock1,Clock2, Reset, Enable, Ctrl_vec);
+</font><font face="Courier">input  Clock1, Clock2, Reset, Enable; //Enable - start Gray counter
+</font><font face="Courier">output[3:0] Ctrl_vec ;
+</font><font face="Courier">reg [3:0] Ctrl_vec;    //Control vector signals 
+</font><font face="Courier">reg [3:0] Gray_out;   //Gray counter
+</font><font face="Courier">reg [3:0] Ctrl_temp; 
+</font><font face="Courier">Sub_Gray U0(.Clock(Clock1), .Reset(Reset), .Enable(Enable), 
+.Gray_out(Gray_out)):
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge Clock2) 
+</font><font face="Courier">Ctrl_temp &lt;= Gray_out;
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge Clock2)   //clock twice for crossing clock domain
+</font><font face="Courier">Ctrl_vec &lt;= Ctrl_temp;
+</font><font face="Courier">
+</font><font face="Courier">//Ctrl_vec[3:0] is used for control signals
+</font><font face="Courier">...
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module Sub_Gray(Clock, Reset, Enable, Gray_out);
+</font><font face="Courier">input Clock, Reset, Enable;
+</font><font face="Courier">output[3:0]   Gray_out; 
+</font><font face="Courier">//Gray_out[3] Gray_out[2] Gray_out[1] Gray_out[0]
+</font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design74.gif" height="322" width="929" align="center" border="0" hspace="0" vspace="0">
+</font><font face="Courier"><img src="images/pol_design71.gif" height="212" width="626" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

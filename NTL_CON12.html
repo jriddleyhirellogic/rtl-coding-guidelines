@@ -1,0 +1,90 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CON12"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CON12</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Undriven net: %s1 </font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">                --- Signal fanout: %s2</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">                --- Total range of %s3: %s4 bits (%s5: %s6)</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">An undriven net driving a cell, propagates X in the design. This rule will fire only on undriven net and not on unused net because unused net does not cause any problem and another rule NTL_LAN15 will detect such nets. This rule also detects undriven signals that have been defined in VHDL packages. If the illegal net is a part select of a vector, then a secondary message appears to report the vector's width and range information.</font><font  face="Verdana, Arial, Helvetica, sans-serif">Arguments: </font><font  face="Verdana, Arial, Helvetica, sans-serif">%s1 is the location of the undriven net.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s2 is the location of fanout of the undriven net.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s3 is the signal name of the undriven net.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s4 is the bit size of the undriven net (if it is a vector or part select of a vector).</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s5 is the left bound of the vector.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s6 is the right bound of the vector.</font><br><font  face="Verdana, Arial, Helvetica, sans-serif">Use the parameter "APPLY_UNUSED_PORT" to specify if this rule should report on unused ports.</font><font  face="Verdana, Arial, Helvetica, sans-serif">You can use the rule_set_parameter Tcl command and the APPLY_UNUSED_PORT parameter to specify if you want Leda to examine for unused ports. If you don't want this rule to examine the unused ports, set the value of this parameter to 0. The default value is 1. For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_CON12 \
+-parameter APPLY_UNUSED_PORTS -value {0}
+</b></font></font></pre>
+<br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CONNECTIVITY</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The below schematic demonstrates the behavior of this rule:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_design52.gif" height="349" width="624" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The default behavior (parameter APPLY_UNUSED_PORT with default value) of this rule for the above circuit is:</font>
+</p>
+<pre>
+<font face="Courier">TOP.v:4:   NTL_CON12: undriven net TOP.SIG1
+</font><font face="Courier">TOP.v:13:  NTL_CON12: undriven net TOP.U0.IN4
+</font><font face="Courier">TOP.v:13:  NTL_CON12: undriven net TOP.U0.IN5
+</font><font face="Courier">TOP.v:14:  NTL_CON12: undriven net TOP.U0.OUT2
+</font><font face="Courier">TOP.v:14:  NTL_CON12: undriven net TOP.U0.OUT3
+</font><font face="Courier">TOP.v:14:  NTL_CON12: undriven net TOP.U0.OUT5
+</font><font face="Courier">TOP.v:15:  NTL_CON12: undriven net TOP.U0.SIG4
+</font><font face="Courier">
+</font></pre>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The behavior (parameter APPLY_UNUSED_PORT with value set to 0) of this rule for the above circuit is:</font>
+</p>
+<pre>
+<font face="Courier">TOP.v:14:  NTL_CON12: undriven net TOP.U0.OUT2
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_con12_top ( Reset, Din, Dout);
+</font><font face="Courier">input  Reset, Din;
+</font><font face="Courier">output Dout;
+</font><font face="Courier">wire  Net_undriven; <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CON12 fires -- undriven net
+</b></font></font><font face="Courier">
+</font><font face="Courier">assign Dout = !Reset ? 0 : (Net_undriven ? 1 :  ~Din );
+</font><font face="Courier">endmodule
+</font></pre>
+<h3>
+</body>
+</html>

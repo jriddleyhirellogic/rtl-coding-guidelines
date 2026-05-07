@@ -1,0 +1,104 @@
+<html>
+<body>
+<h3>
+<a name="NTL_PAD15"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_PAD15</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Primary ports must be connected to PAD cell: %s1</font>
+</h3>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when LEDA detects primary ports (in, out, inout) in top module that are not connected to I/O PAD cell. Floating ports will be ignored in this check.</font><br><font  face="Verdana, Arial, Helvetica, sans-serif">Argument: </font><font  face="Verdana, Arial, Helvetica, sans-serif">%s1 is the hierarchy name of the illegal port.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">PAD</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+</font>
+</p>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<pre>
+<font face="Courier">module top (A,B,C,D,E,F,G,EN,Y1,Y2,Y3,Y4,Y5);
+</font><font face="Courier">input A,B,C,D,G,EN;
+</font><font face="Courier">inout E,F;
+</font><font face="Courier">output Y1,Y2;
+</font><font face="Courier">inout Y3,Y4,Y5;
+</font><font face="Courier">	GTECH_INBUF U0 (.PAD_IN(A), .DATA_IN(n1) );
+</font><font face="Courier">	GTECH_INBUF U1 (.PAD_IN(B), .DATA_IN(n2) );
+</font><font face="Courier">	AN2 U2 (.A(n1), .B(n2), .Z(n3));
+</font><font face="Courier">	GTECH_OUTBUF U3 (.DATA_OUT(n3), .OE(EN), .PAD_OUT(Y1) );
+</font><font face="Courier">	GTECH_INBUF U4 (.PAD_IN(D), .DATA_IN(n4) );
+</font><font face="Courier">	AN2 U5 (.A(C), .B(n4), .Z(Y2));
+</font><font face="Courier">	GTECH_INBUF U6 (.PAD_IN(F), .DATA_IN(n5) );
+</font><font face="Courier">	AN2 U7 (.A(E), .B(n5), .Z(Y3));
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Configuration<br></font>
+<pre>
+<font face="Courier">rule_deselect -all
+</font><font face="Courier">rule_select -policy DESIGN -rule NTL_PAD15
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Case schematic<br></font>
+<pre>
+<font face="Courier"><img src="images/pol_designa94.gif" height="480" width="624" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Violations<br></font>
+<pre>
+<font face="Courier">
+</font><font face="Courier">2:    input A,B,C,D,G,EN;
+</font><font face="Courier">              ^
+</font><font face="Courier">pad15_case1.v:2: PAD&gt; [ERROR] NTL_PAD15: Primary ports must be connected 
+to PAD cell top.C
+</font><font face="Courier">
+</font><font face="Courier">     3:    inout E,F;
+</font><font face="Courier">                 ^
+</font><font face="Courier">pad15_case1.v:3: PAD&gt; [ERROR] NTL_PAD15: Primary ports must be connected 
+to PAD cell top.E
+</font><font face="Courier">
+</font><font face="Courier">     4:    output Y1,Y2;
+</font><font face="Courier">                     ^
+</font><font face="Courier">pad15_case1.v:4: PAD&gt; [ERROR] NTL_PAD15: Primary ports must be connected 
+to PAD cell top.Y2
+</font><font face="Courier">
+</font><font face="Courier">     5:    inout Y3,Y4,Y5;
+</font><font face="Courier">                 ^
+</font><font face="Courier">pad15_case1.v:5: PAD&gt; [ERROR] NTL_PAD15: Primary ports must be connected 
+to PAD cell top.Y3
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Violation schematic<br></font>
+<pre>
+<font face="Courier"><img src="images/pol_designa97.gif" height="752" width="624" align="center" border="0" hspace="0" vspace="0">
+</font><font face="Courier">
+</font></pre>
+<h2>
+
+</h2>
+<p>
+
+</p>
+<h3>
+</body>
+</html>

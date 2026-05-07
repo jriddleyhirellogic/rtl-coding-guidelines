@@ -1,0 +1,63 @@
+<html>
+<body>
+<h3>
+<a name="NTL_DFT22"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_DFT22</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Use one synchronous clock (positive or negative edge) during test</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Testers may be limited in terms of the number of clocks they can handle. Using one synchronous test clock is recommended due to this limitation.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_dft22_top(Clock1, Clock2, Scan_en, Scan_in, Reset, Din, 
+Dout);
+</font><font face="Courier">input  Clock1;
+</font><font face="Courier">input  Clock2; <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_DFT22 fires -- another clock
+</b></font></font><font face="Courier">input  Scan_en, Scan_in, Reset, Din;
+</font><font face="Courier">output Dout;
+</font><font face="Courier">reg Dout_temp;
+</font><font face="Courier">
+</font><font face="Courier">// Scan DFF - SDFF (synchronous)
+</font><font face="Courier">SDFFR U0(.D(Din), .CP(Clock1), .TI(Scan_in), .TE(Scan_en), 
+</font><font face="Courier">                       .Reset(Reset), .Q(Dout_temp));
+</font><font face="Courier">//Scan DFF - SDFFR_a (asynchronous)
+</font><font face="Courier">SDFFR_a U1(.D(Dout_temp), .CP(Clock2), .TI(Dout_temp), .TE(Scan_en), 
+</font><font face="Courier">                           .Reset(Reset), .Q(Dout));                                                                 
+</font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design108.gif" height="429" width="900" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

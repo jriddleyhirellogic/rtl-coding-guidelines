@@ -1,0 +1,68 @@
+<html>
+<body>
+<h3>
+<a name="NTL_DFT57"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_DFT57</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Inputs and Outputs of Black Box should be connected to FFs</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects input and output ports of a black box that are not connected to scan-flip-flops. Using controllable flip-flops to connect the inputs and outputs of black boxes makes them observable and controllable. This improves fault coverage, automatic test pattern generation (ATPG), and timing analysis on the signals connected to the black box. </font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DFT</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of valid Verilog code, followed by a circuit diagram that illustrates the correct approach:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_dft57_top;
+</font><font face="Courier">...
+</font><font face="Courier">wire Din1_black, Din2_black, Dout1_black, Dout2_black;
+</font><font face="Courier">...
+</font><font face="Courier">Black_box U0(.Din1(Din1_black), .Din2(Din2_black),.Dout1(Dout1_black), 
+.Dout2(Dout2_black));
+</font><font face="Courier">
+</font><font face="Courier">//DFF - flip-flop
+</font><font face="Courier">DFF U1(.D(Din1), .CP(Clock), .Q(Din1_black));
+</font><font face="Courier">DFF U2(.D(Din2), .CP(Clock), .Q(Din2_black));
+</font><font face="Courier">DFF U3(.D(Dout_1_black), .CP(Clock), .Q(Dout_1));
+</font><font face="Courier">DFF U4(.D(Dout_2_black), .CP(Clock), .Q(Dout_1));
+</font><font face="Courier">//add FFs to the inputs and outputs of Black Box
+</font><font face="Courier">...
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier">module Black_box (Din1, Din2, Dout1, Dout2);
+</font><font face="Courier">input Din1, Din2;
+</font><font face="Courier">output Dout1, Dout2;
+</font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_design58.gif" height="324" width="769" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

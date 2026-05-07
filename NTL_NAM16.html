@@ -1,0 +1,68 @@
+<html>
+<body>
+<h3>
+<a name="NTL_NAM16"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_NAM16</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Active low signals must end with "_X, _N"</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule fires when Leda detects active-low signal names that do not end with _X or _N. This naming style makes the design more explicit and readable.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">NAMING</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module test(Clock, rst_X, rst, Din_1, Din_2, Dout_1, Dout_2);
+</font><font face="Courier">input Clock, rst_X, rst, Din_1, Din_2;
+</font><font face="Courier">output Dout_1, Dout_2;
+</font><font face="Courier">reg  Dout_1, Dout_2;
+</font><font face="Courier">
+</font><font face="Courier">always @(posedge Clock or negedge rst) begin
+</font><font face="Courier">  if (!rst)          <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_NAM16 fires -- name does not end with _X, _N
+</b></font></font><font face="Courier">     Dout_1 &lt;= 1'b0;
+</font><font face="Courier">  else
+</font><font face="Courier">     Dout_1 &lt;= Din_1;
+</font><font face="Courier">end
+</font><font face="Courier">  
+</font><font face="Courier">always @(posedge Clock or negedge rst_X) begin
+</font><font face="Courier">  if (!rst_X)            <font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK -- Active low signal name ends with _X
+</b></font></font><font face="Courier">     Dout_2 &lt;= 1'b0;
+</font><font face="Courier">  else
+</font><font face="Courier">     Dout_2 &lt;= Din_2;
+</font><font face="Courier">end
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font></pre>
+<h3>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<html>
+<body>
+<h3>
+<a name="NTL_STR83"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_STR83</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Use only parallel connections that are supported by PrimeTime</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">This rule detects parallel connections that are not supported by PrimeTime. This rule also flags on buffered type connections. To improve timing analysis with PrimeTime, use only the supported parallel connections.</font><br></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">STRUCTURE</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code, followed by a circuit diagram that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_str83_top ;
+</font><font face="Courier">wire net_01, net_02,net_03,net_04;
+</font><font face="Courier">...
+</font><font face="Courier">buf I1(net_03, net_01);
+</font><font face="Courier">buf I2(net_03, net_01);  
+</font><font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>// OK -- parallel connections with same signals through BUF 
+</b></font></font><font face="Courier"><font  face="Verdana, Arial, Helvetica, sans-serif"><b>// can be supported by static timing analysis tool
+</b></font></font><font face="Courier">
+</font><font face="Courier">nand I3(net_04, net_01, net_02);
+</font><font face="Courier">nand I4(net_04, net_03, net_02);
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_STR83 fires -- parallel connections with different signals
+</b></font></font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// through NAND not be supported by static timing analysis tool
+</b></font></font><font face="Courier">...
+</font><font face="Courier">endmodule
+</font><font face="Courier"><img src="images/pol_designa82.gif" height="325" width="692" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of a Verilog code, followed by a circuit diagram that illustrates Leda flagging violation on buffered type connections:</font>
+</p>
+<pre>
+<font face="Courier">module top(...);
+</font><font face="Courier">   ...
+</font><font face="Courier">   ...
+</font><font face="Courier">   ...
+</font><font face="Courier">
+</font><font face="Courier"> GTECH_BUF  N1(.Y(Y1), .A(A)); 
+</font><font face="Courier"> GTECH_BUF  N2(.Y(Y1), .A(B));
+</font><font face="Courier">
+</font><font face="Courier">endmodule
+</font><font face="Courier">
+</font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_STR83 fires -- parallel connections with different signals
+</b></font></font><font face="Courier"><font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// through NAND not be supported by static timing analysis tool
+</b></font></font><font face="Courier">...
+</font><font face="Courier">endmodule
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Violation:<br></font>
+<pre>
+<font face="Courier">4:  output Y1,Y2,Y3,Y4,Y5;  // FAIL (for Y1, Y2, Y3)
+</font><font face="Courier">          ^
+</font><font face="Courier">STR83_starc.v:4: STRUCT&gt; [ERROR] NTL_STR83: Use only parallel 
+connections that are supported by Primetime top.Y1
+</font><font face="Courier">   ---  One driver is  top.N2.~buf0 (file: STR83_starc.v, line: 7)
+</font><font face="Courier">   ---  Another driver is  top.N1.~buf0 (file: STR83_starc.v, line: 6)
+</font><font face="Courier">
+</font><font face="Courier"><img src="images/pol_design143.gif" height="217" width="461" align="center" border="0" hspace="0" vspace="0">
+</font></pre>
+<h3>
+</body>
+</html>

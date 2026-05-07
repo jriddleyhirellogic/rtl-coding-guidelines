@@ -1,0 +1,128 @@
+<html>
+<body>
+<h3>
+<a name="NTL_CON13"> </a>
+<font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">NTL_CON13</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">Message: Non-driving net: %s1</font>
+</h3>
+<h3>
+  <font color="#003366"  face="Verdana, Arial, Helvetica, sans-serif">                --- Total range of %s2: %s3 bits (%s4: %s5)</font>
+</h3>
+<font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Description</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Non-driving nets are useless and must be removed. This rule will fire on non-driving nets, but will not fire on unused nets, because unused nets do not cause any problem and another rule NTL_LAN15 detects such nets. If the illegal net is a part select of a vector, then a secondary message appears to report the vector's width and range information.</font><font  face="Verdana, Arial, Helvetica, sans-serif">Arguments: </font><font  face="Verdana, Arial, Helvetica, sans-serif">%s1 is the non-driving net source position which is the line where the non-driving net is defined.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s2 is the signal name of the non-driving net.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s3 is the bit size of the non-driving net (if it is a vector or part select of a vector).</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s4 is the left bound of the vector.</font><font  face="Verdana, Arial, Helvetica, sans-serif">%s5 is the right bound of the vector.</font><font  face="Verdana, Arial, Helvetica, sans-serif">Source Position: </font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">	 The position is the line where the non-driving net is defined.<br></font>
+<font  face="Verdana, Arial, Helvetica, sans-serif">You can use the rule_set_parameter Tcl command and the APPLY_UNUSED_PORT parameter to specify if you want Leda to examine for unused ports. If you don't want this rule to examine for unused ports, set the value of this parameter to 0. The default value  is 1. For example:</font><pre>
+<font face="Courier">leda&gt; <font  face="Verdana, Arial, Helvetica, sans-serif"><b>rule_set_parameter -rule NTL_CON13 \
+-parameter APPLY_UNUSED_PORTS -value {0}
+</b></font></font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">You can use the rule_set_parameter Tcl command and the NTL_CON13_IGNORE_SUPPLY_ASSIGNMENT parameter to specify if you want Leda to ignore net that has been assigned to supply. If you want this rule to ignore net that has been assigned to supply, set the value of this parameter to 1. The default value is 0. For example:</font><pre>
+<font face="Courier">leda&gt; rule_set_parameter -rule NTL_CON13 \ -
+parameter NTL_CON13_IGNORE_SUPPLY_ASSIGNMENT -
+value  1
+</font></pre>
+</font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Policy</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">DESIGN</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Ruleset</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">CONNECTIVITY</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Language</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">VHDL/Verilog</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Type</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Hardware</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Severity</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Error</font></font></td>
+  </tr>
+</table>
+<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The below schematic demonstrates the behavior of this rule:</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif"><img src="images/pol_design55.gif" height="366" width="624" align="center" border="0" hspace="0" vspace="0">
+</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The default behavior (parameter APPLY_UNUSED_PORT with default value) of this rule for the above circuit is:</font>
+</p>
+<pre>
+<font face="Courier">TOP.v:4:   NTL_CON13: non driving net TOP.SIG2
+</font><font face="Courier">TOP.v:5:   NTL_CON13: non driving net TOP.U0.OUT4
+</font><font face="Courier">TOP.v:5:   NTL_CON13: non driving net TOP.U0.OUT5
+</font><font face="Courier">TOP.v:13:  NTL_CON13: non driving net TOP.U0.IN2
+</font><font face="Courier">TOP.v:13:  NTL_CON13: non driving net TOP.U0.IN3
+</font><font face="Courier">TOP.v:13:  NTL_CON13: non driving net TOP.U0.IN5
+</font><font face="Courier">TOP.v:15:  NTL_CON13: non driving net TOP.U0.SIG3
+</font><font face="Courier">
+</font></pre>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">The behavior (parameter APPLY_UNUSED_PORT with value set to 0) of this rule for the above circuit is:</font>
+</p>
+<pre>
+<font face="Courier">TOP.v:13:  NTL_CON13: non driving net TOP.U0.IN2
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Example<br></font>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">This is an example of invalid Verilog code that illustrates the problem:</font>
+</p>
+<pre>
+<font face="Courier">module ntl_con13_top ( Reset, Din, Dout);
+</font><font face="Courier">input  Reset, Din;
+</font><font face="Courier">output Dout; // undriven net 
+</font><font face="Courier">wire  Dout_nondriving ; <font  color="#ff0000" face="Verdana, Arial, Helvetica, sans-serif"><b>// NTL_CON13 fires -- non-driving net
+</b></font></font><font face="Courier">wire  Net_nondriving_nondriven; // undriven net, also non-driving net 
+</font><font face="Courier">assign Dout_nondriving = !Reset ? 0 : Din ;
+</font><font face="Courier">endmodule
+</font></pre>
+<font  face="Verdana, Arial, Helvetica, sans-serif">Sample Output<br></font>
+<pre>
+<font face="Courier">2:    input A;        // no driver
+</font><font face="Courier">            ^
+</font><font face="Courier">test_con13.v:2: CONNECTIVITY&gt; [ERROR] NTL_CON13: non driving net 
+                TEST_CON13.A
+</font><font face="Courier">
+</font></pre>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">In the above sample output,</font>
+</p>
+<p>
+  <font  face="Verdana, Arial, Helvetica, sans-serif">
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><font face="Verdana, Arial, Helvetica, sans-serif"></font></i></b></caption>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Secondary Message</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">the instantiated module is: %s2</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Argument</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">%s2 is the instance whose output port is the non-driving net. But the DB cell whose output is not driving any net will be ignored.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Source Position</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">The position is the line in which the instance %s2 is defined.</font></font></td>
+  </tr>
+  <tr>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">Schematics in Path Viewer</font></font></td>
+    <td><font face="Verdana, Arial, Helvetica, sans-serif"><font  face="Verdana, Arial, Helvetica, sans-serif">No.</font></font></td>
+  </tr>
+</table>
+</font>
+</p>
+<h3>
+</body>
+</html>
