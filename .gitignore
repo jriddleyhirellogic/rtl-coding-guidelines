@@ -1,2 +1,3 @@
 # `claude plugin eval` writes per-run reports and sandboxes here.
 .claude/skills/rtl-coding/evals/results/
+.claude/skills/rtl-coding/probes/
