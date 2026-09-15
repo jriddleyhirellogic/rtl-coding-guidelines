@@ -1,3 +1,4 @@
 summary: an incomplete case infers a latch, and the clock/reset ports are misnamed
 must_flag: NTL_STR47 NTL_NAM03
 must_not_flag: NTL_CLK07
+verilator_expect: CASEINCOMPLETE

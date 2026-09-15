@@ -58,4 +58,21 @@ while read -r id; do
 done < <(grep -rhoE '\b(NTL_[A-Z]{3}[0-9]+[A-Z]?|(AF|DO|ML|FA)_[A-Z0-9]+)\b' \
          "$EVALS_DIR" --include=case.yaml | sort -u)
 
+# tests/lint-generated-rtl.py recovers the model's final message from llm
+# grader evidence, because the eval deletes its trace unless --keep-temp. A
+# generate case with no llm grader focused on last_message therefore yields
+# nothing to lint, and would do so silently.
+for c in $cases; do
+  name=$(basename "$(dirname "$c")")
+  case "$name" in
+    generate-*) ;;
+    *) continue ;;
+  esac
+  if grep -q 'type: llm' "$c" && grep -q 'focus: last_message' "$c"; then
+    ok "$name has an llm grader the RTL linter can extract from"
+  else
+    fail "$name has no llm grader on last_message - lint-generated-rtl.py would skip it"
+  fi
+done
+
 finish

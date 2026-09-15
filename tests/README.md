@@ -31,6 +31,7 @@ Exit status is 0 on success, 1 on any failure — CI-ready as is.
 | `04-build-index-robustness` | The builder is deterministic, locale-independent, cwd-independent, and sorts `STR9` before `STR100`. |
 | `05-skill-references` | Every `pol_*.html`, `checks/*.md` and rule ID named in `SKILL.md` actually exists. The `checks/*.md` docs are progressive-disclosure targets — a broken path there fails rarely and confusingly rather than loudly. |
 | `06-golden-manifest` | Golden fixtures parse, each has expectations, every expected rule ID is real and indexed, no rule is both required and forbidden, and a clean control fixture exists. |
+| `08-verilator-fixtures` | Every fixture elaborates, the clean control is Verilator-clean, and defects Verilator can see still trip. Independent ground truth on what a fixture contains. Skips with a notice if Verilator is absent. |
 | `07-eval-cases` | Every `case.yaml` validates against the schema `claude plugin eval` enforces, generated cases are in sync with the fixtures, and no answer-leaking annotation reached a prompt. |
 
 Adding a check: drop `tests/checks/NN-name.sh` in, source `tests/lib.sh`, use
@@ -206,6 +207,57 @@ claude plugin eval .claude/skills/rtl-coding \
 
 ---
 
+## Verilator
+
+Verilator gives part of the suite a compiler instead of a judge. Its reach is
+narrow and worth being precise about, because assuming otherwise is how you get
+false confidence.
+
+**It catches:** `LATCH`, `CASEINCOMPLETE`, implicit nets (a hard error under
+`` `default_nettype none ``), `WIDTHTRUNC`, `BLKSEQ`, `UNUSEDSIGNAL`.
+
+**It does not catch:** clock-domain crossings or missing synchronizers, gated
+and internally generated clocks, naming conventions, or anything about DO-254.
+`cdc_missing_sync.v` and `gated_clock_div.v` lint **completely clean** despite
+both being defective by design. That is not a gap to work around — those rules
+are what the behavioral suite is for.
+
+The split is not arbitrary: Verilator's wheelhouse is the `ML_*` family, which
+was derived from Verilator, Verible and SpyGlass in the first place. The
+`CLK`/`RST`/`NAM`/`DFT`/`PAD`/`DO_` families are the part a compiler cannot see.
+
+```bash
+apt-get install verilator      # 5.020 on Ubuntu noble
+```
+
+Check `08` skips with a notice when it is missing, so the suite still runs
+without it.
+
+### Linting what an eval generated
+
+```bash
+claude plugin eval .claude/skills/rtl-coding --json results.json
+python3 tests/lint-generated-rtl.py results.json
+```
+
+This is the deterministic answer to a question the judges kept getting
+differently: `no-inferred-latch` passed 1/3 under haiku and 3/3 under sonnet on
+identical RTL. Verilator settles it every time, free.
+
+It is a post-processing pass rather than a grader because `claude plugin eval`'s
+grader types are fixed and none of them runs a command. It recovers each run's
+final message from `llm` grader evidence, since the run's `trace.jsonl` is
+deleted unless the eval ran with `--keep-temp` — check `07` enforces that every
+`generate-*` case carries a grader it can extract from.
+
+Only fenced blocks that open and close a module are linted. Reviews answer in
+fragments — an offending case statement, a corrected always block — and those
+are not compilable alone, so linting them would report errors about the
+extraction rather than about the RTL. A useful side effect: when a review does
+propose a whole replacement module, this checks the proposed fix compiles.
+
+---
+
 ## CI
 
 Nothing is wired up yet, on purpose — the scripts are standalone so a workflow
@@ -221,6 +273,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: pip install pyyaml
+      - run: sudo apt-get update && sudo apt-get install -y verilator
       - run: ./tests/run.sh
 ```
 
