@@ -1,2 +1,4 @@
-# `claude plugin eval` writes per-run reports and sandboxes here.
+# `claude plugin eval` writes per-run reports and sandboxes under the eval
+# directory it ran against. The cases are source; the results are not.
 .claude/skills/rtl-coding/evals/results/
+.claude/skills/rtl-coding/probes/results/
