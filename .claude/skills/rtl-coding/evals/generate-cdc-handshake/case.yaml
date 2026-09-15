@@ -36,14 +36,20 @@ graders:
       payload itself does not need synchronizing if the design holds it stable
       and only synchronizes the request and acknowledge.
   - type: llm
-    name: follows-naming-and-reset-conventions
+    name: one-clock-edge-per-sequential-block
     focus: last_message
     criteria: |
-      Clock signals are named clk* and reset signals rst*, active-low signals
-      carry an _n or _x suffix, and each always block has a single clock edge
-      in its sensitivity list. Registered outputs are consistent with the
-      declared reset polarity. Minor deviations are acceptable only if the
-      response explains them.
+      Each sequential always block is sensitive to exactly one clock edge.
+      Blocks in the source domain use the source clock and blocks in the
+      destination domain use the destination clock; no block mixes them.
+      Judge only this, nothing else about the design.
+  - type: llm
+    name: clock-and-reset-naming
+    focus: last_message
+    criteria: |
+      Clock names start with clk and reset names start with rst, with an _n
+      or _x suffix on active-low resets. Registered output ports end in _r.
+      A documented, explained deviation passes. Judge only the names.
   - type: llm
     name: cites-rules-without-drowning-the-code
     focus: last_message

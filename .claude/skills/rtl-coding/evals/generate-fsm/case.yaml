@@ -32,10 +32,29 @@ graders:
       a default branch. Any path that leaves a signal unassigned in a
       combinational block infers a latch and fails this grader.
   - type: llm
-    name: single-edge-and-clean-reset
+    name: one-clock-edge-per-sequential-block
     focus: last_message
     criteria: |
-      Sequential logic uses one clock edge per always block, the reset is
-      applied the way the prompt asked (synchronous, active low), and reset
-      and clock signals follow the clk*/rst* naming with an _n suffix on the
-      active-low reset.
+      Each sequential always block is sensitive to exactly one clock edge.
+      Two edges of the same clock in one block, or two different clocks,
+      fails. This is the only thing to judge here - ignore reset style,
+      naming, and everything else.
+  - type: llm
+    name: reset-matches-what-was-asked
+    focus: last_message
+    criteria: |
+      The reset is synchronous and active low, as the prompt specified: the
+      sensitivity list carries the clock edge only, and the reset is tested
+      inside the clocked block. An asynchronous reset fails.
+
+      If the response notes that this deviates from a corpus default such as
+      NTL_RST03 and explains that it followed the prompt instead, that is
+      correct behaviour and passes - the prompt is the requirement, the rule
+      is the default. Judge only the reset structure, nothing else.
+  - type: llm
+    name: clock-and-reset-naming
+    focus: last_message
+    criteria: |
+      The clock signal name starts with clk and the reset name starts with
+      rst, and the active-low reset carries an _n or _x suffix. Judge only
+      these names, nothing else about the design.

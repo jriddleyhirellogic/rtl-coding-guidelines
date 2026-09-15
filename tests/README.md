@@ -112,7 +112,8 @@ away. Everything without that marker is hand-written and safe to edit.
 # everything (with/without ablation is the default, so each case runs twice)
 claude plugin eval .claude/skills/rtl-coding
 
-# one case, cheaper
+# one case, cheaper. --case is NOT repeatable - passing it twice silently
+# keeps only the last. Use one glob that covers what you want.
 claude plugin eval .claude/skills/rtl-coding --case 'review-*'
 
 # CI-shaped: no trust prompt, fail under 80%, machine-readable, budget capped
@@ -160,6 +161,36 @@ Prefer `regex` over `llm` wherever the assertion is exact — checking that
 `NTL_CLK05` appears in the output is free, deterministic, and not subject to a
 judge model's mood. Save `llm` graders for the parts that genuinely need
 judgement, like "is this actually a two-stage synchronizer".
+
+But the exactness has to match the question. `must_not_flag` started as a
+`not_contains` regex on the rule ID and was wrong: a thorough review names the
+rules it checked and *cleared*, so the regex punished the behaviour the suite
+wants. Reported-as-a-violation versus checked-and-cleared needs a reader.
+
+**Write one assertion per `llm` grader.** A criterion that bundles several —
+"one clock edge, and the right reset, and correct naming" — fails as a unit, so
+a red result tells you nothing about which clause the judge rejected, and you
+cannot tell a real defect from a judge misreading. The generate cases each
+carry three narrow graders for this reason.
+
+**State when a deviation is legitimate.** If the prompt asks for something the
+corpus discourages, a response that follows the prompt and flags the conflict
+is behaving correctly. Say so in the criterion, or the judge reads the
+deviation notice as an admission of non-compliance.
+
+### Judge model
+
+The default judge is haiku, and it is not always strong enough for structural
+RTL questions. Re-running `generate-fsm` with `--judge-model claude-sonnet-5`
+flipped which grader failed — `no-inferred-latch` went 1/3 → 3/3, while a
+compound reset/naming grader went 3/3 → 0/3 on RTL that satisfied every clause
+of it. When a grader's verdict surprises you, re-run that case with a stronger
+judge before touching the skill:
+
+```bash
+claude plugin eval .claude/skills/rtl-coding \
+  --case generate-fsm --ablation none --judge-model claude-sonnet-5
+```
 
 ---
 
