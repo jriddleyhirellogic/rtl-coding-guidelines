@@ -28,8 +28,8 @@ for fx in $fixtures; do
   [ -z "$must" ] && saw_clean=1
 
   for id in $must $mustnt; do
-    check "$fx expects a real rule $id" test -f "$REPO_ROOT/$id.html"
-    check "$fx's $id is in the index" grep -qF "\`$id\`" "$SKILL_DIR/rule-index.md"
+    check "$fx expects a defined rule $id" rule_is_defined "$id"
+    check "$fx's $id is discoverable by the skill" rule_is_indexed "$id"
   done
 
   # A rule cannot be both required and forbidden in the same review.

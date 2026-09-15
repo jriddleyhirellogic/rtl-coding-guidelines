@@ -25,6 +25,25 @@ while read -r short; do
 done < <(grep -oE '`(CLK|CON|DFT|LAN|NAM|PAD|PAR|RST|SET|STR)[0-9]+[A-Z]?`' "$skill_md" \
          | tr -d '`' | sort -u)
 
+# Reference docs the skill body routes to (checks/*.md and friends). These are
+# progressive-disclosure targets: the skill only reads one when a task needs it,
+# so a broken path fails rarely and confusingly rather than loudly.
+while read -r ref; do
+  [ -z "$ref" ] && continue
+  check "SKILL.md references an existing $ref" test -f "$SKILL_DIR/$ref"
+done < <(grep -oE '\b(checks|references|scripts|assets)/[A-Za-z0-9._-]+\.[a-z]+' "$skill_md" | sort -u)
+
+# Rule IDs from the supplementary check families (AF_*, DO_*, ML_*, ...) are
+# defined in those docs rather than in NTL_*.html, so resolve them there.
+while read -r id; do
+  [ -z "$id" ] && continue
+  if grep -rqF "$id" "$SKILL_DIR/checks" "$SKILL_DIR/rule-index.md" 2>/dev/null; then
+    ok "SKILL.md cites a defined rule $id"
+  else
+    fail "SKILL.md cites $id, which is defined nowhere in the skill"
+  fi
+done < <(grep -oE '\b(AF|DO|ML|FA)_[A-Z0-9]+\b' "$skill_md" | sort -u)
+
 # Files the skill's own directory must contain
 for f in rule-index.md build-index.sh; do
   check "skill ships $f" test -f "$SKILL_DIR/$f"

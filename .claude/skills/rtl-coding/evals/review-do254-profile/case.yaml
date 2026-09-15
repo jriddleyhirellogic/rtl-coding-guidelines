@@ -1,0 +1,74 @@
+# Hand-written. The DO_* family is gated on the project profile: SKILL.md says
+# it applies to certifiable work. This case supplies that context explicitly and
+# checks the gate opens - the same fixture reviewed without a DO-254 profile is
+# covered by review-inferred_latch, which expects only the NTL rules.
+schema_version: "1.0"
+name: review-do254-profile
+description: a certifiable-hardware profile should bring the DO_* family into the review
+tags: [review, do254, profile]
+execution:
+  prompt: |
+    This block is going into airborne hardware - DO-254 DAL B. Review it and
+    tell me everything that would not survive a certification audit. Rule IDs
+    and fixes please.
+
+    ```verilog
+    module inferred_latch (
+      input  wire       CLOCK,
+      input  wire       RESET_L,
+      input  wire [1:0] sel,
+      input  wire [7:0] a,
+      input  wire [7:0] b,
+      output reg  [7:0] result
+    );
+
+      reg [7:0] mux_out;
+
+      always @(*)
+        case (sel)
+          2'b00: mux_out = a;
+          2'b01: mux_out = b;
+          2'b10: mux_out = a ^ b;
+        endcase
+
+      always @(posedge CLOCK or negedge RESET_L)
+        if (!RESET_L) result <= 8'h00;
+        else          result <= mux_out;
+
+    endmodule
+    ```
+  max_turns: 30
+  timeout_seconds: 480
+  allowed_tools: [Read, Glob, Grep, Skill]
+runs: 3
+graders:
+  - type: tool_used
+    name: skill-fired
+    tool: Skill
+    arm: with-only
+  - type: tool_used
+    name: read-the-do254-reference
+    tool: Read
+    input_match: "do254"
+    min: 1
+    arm: with-only
+  - type: regex
+    name: flags-DO_NOLATCH
+    target: last_message
+    pattern: "DO_NOLATCH"
+    match: contains
+    weight: 2
+  - type: regex
+    name: still-flags-the-base-rule
+    target: last_message
+    pattern: "NTL_STR47"
+    match: contains
+  - type: llm
+    name: treats-the-latch-as-certification-blocking
+    focus: last_message
+    criteria: |
+      The response identifies the inferred latch caused by the incomplete case
+      statement and treats it as blocking for DO-254, not as a style nit. It
+      proposes a fix that removes the latch - a default branch, or a default
+      assignment before the case. Naming the latch without connecting it to the
+      certification consequence does not pass.

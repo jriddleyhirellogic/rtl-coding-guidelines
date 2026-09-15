@@ -50,10 +50,12 @@ else
   ok "no fixture annotations leaked into eval prompts"
 fi
 
-# Every rule ID a grader asserts on must be a real rule.
+# Every rule ID a grader asserts on must be a real rule - a typo here makes the
+# case unpassable for a reason that has nothing to do with the skill.
 while read -r id; do
   [ -z "$id" ] && continue
-  check "grader pattern cites an existing rule $id" test -f "$REPO_ROOT/$id.html"
-done < <(grep -rhoE 'NTL_[A-Z]{3}[0-9]+[A-Z]?' "$EVALS_DIR" --include=case.yaml | sort -u)
+  check "grader cites a defined rule $id" rule_is_defined "$id"
+done < <(grep -rhoE '\b(NTL_[A-Z]{3}[0-9]+[A-Z]?|(AF|DO|ML|FA)_[A-Z0-9]+)\b' \
+         "$EVALS_DIR" --include=case.yaml | sort -u)
 
 finish

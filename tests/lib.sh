@@ -42,3 +42,21 @@ expect_field() {
 golden_fixtures() {
   find "$GOLDEN_DIR/rtl" -name '*.v' -printf '%f\n' | sed 's/\.v$//' | sort
 }
+
+# Resolve a rule ID to its definition. NTL_* rules are one file each in the
+# repo root; the supplementary families (AF_*, DO_*, ML_*, FA_*) are defined
+# inside the skill's checks/*.md docs. Returns 0 if the ID is defined anywhere.
+rule_is_defined() {
+  local id="$1"
+  [ -f "$REPO_ROOT/$id.html" ] && return 0
+  grep -rqF "$id" "$SKILL_DIR/checks" 2>/dev/null && return 0
+  return 1
+}
+
+# Is the rule discoverable from the index the skill actually reads?
+rule_is_indexed() {
+  local id="$1"
+  grep -qF "\`$id\`" "$SKILL_DIR/rule-index.md" 2>/dev/null && return 0
+  grep -rqF "$id" "$SKILL_DIR/checks" 2>/dev/null && return 0
+  return 1
+}
