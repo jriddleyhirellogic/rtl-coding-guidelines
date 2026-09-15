@@ -80,12 +80,21 @@ for fx in $(golden_fixtures); do
       echo "    weight: 2"
     done
 
+    # must_not_flag needs a judge, not a regex. A thorough review names the
+    # rules it checked and cleared ("NTL_STR47 - no latch inferred, clean"),
+    # so a not_contains match on the bare ID punishes exactly the behaviour we
+    # want. The distinction is reported-as-a-violation vs explicitly-cleared,
+    # and only a reader can draw it.
     for id in $mustnt; do
-      echo "  - type: regex"
-      echo "    name: silent-on-$id"
-      echo "    target: last_message"
-      echo "    pattern: \"$id\""
-      echo "    match: not_contains"
+      echo "  - type: llm"
+      echo "    name: does-not-report-$id"
+      echo "    focus: last_message"
+      echo "    criteria: |"
+      echo "      The response does not report $id as a violation of this module."
+      echo "      Listing $id among rules that were checked and found clean, or"
+      echo "      saying it does not apply, passes - that is a thorough review, not"
+      echo "      a false positive. Only claiming the module actually violates"
+      echo "      $id fails."
     done
 
     echo "  - type: llm"

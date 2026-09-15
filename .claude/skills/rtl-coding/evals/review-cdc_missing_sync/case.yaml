@@ -46,11 +46,15 @@ graders:
     pattern: "NTL_CLK05"
     match: contains
     weight: 2
-  - type: regex
-    name: silent-on-NTL_STR47
-    target: last_message
-    pattern: "NTL_STR47"
-    match: not_contains
+  - type: llm
+    name: does-not-report-NTL_STR47
+    focus: last_message
+    criteria: |
+      The response does not report NTL_STR47 as a violation of this module.
+      Listing NTL_STR47 among rules that were checked and found clean, or
+      saying it does not apply, passes - that is a thorough review, not
+      a false positive. Only claiming the module actually violates
+      NTL_STR47 fails.
   - type: llm
     name: findings-are-actionable
     focus: last_message
