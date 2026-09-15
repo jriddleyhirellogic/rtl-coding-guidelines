@@ -1,7 +1,19 @@
 # RTL Coding Rule Index
 
-Auto-generated index of all NTL_* rules. Each entry: `RULE_ID` — message.
-Read the corresponding `<RULE_ID>.html` for full description, severity, examples, and policy.
+Auto-generated. Do not edit by hand — run `build-index.sh`.
+
+Two corpora are indexed here:
+
+1. **`NTL_*`** — Synopsys Leda structural/netlist lint. Each entry: `RULE_ID` — message.
+   Read the corresponding `<RULE_ID>.html` in the repo root for full description,
+   severity, examples, and policy.
+2. **`AF_*` / `FA_*` / `DO_*` / `ML_*`** — supplementary check families covering
+   auto-formal, formal apps, DO-254 and modern lint. Read the corresponding file under
+   `checks/` for details. See `checks/README.md` for what each prefix means.
+
+---
+
+# Leda rules (`NTL_*`)
 
 ## CLK
 
@@ -296,4 +308,94 @@ Read the corresponding `<RULE_ID>.html` for full description, severity, examples
 - `NTL_STR99` — Max area size of each module should be less than 10000
 - `NTL_STR100` — When area size of hierarchy is more that 10000, it should not have glue logics
 - `NTL_STR110` — A signal without a resolution function cannot have multiple sources driving it
+
+---
+
+# Supplementary checks
+
+## Auto-Formal Checks (`AF_*`)
+
+Source: `checks/auto-formal.md`
+
+- `AF_FSMDEAD` — FSM deadlock
+- `AF_FSMLIVE` — FSM livelock
+- `AF_FSMREACH` — Unreachable FSM state
+- `AF_OVFL` — Arithmetic overflow / value overflow
+- `AF_DIV0` — Divide by zero
+- `AF_RANGE` — Array / memory index out of bounds
+- `AF_MULTIDRV` — Multiply-driven bus or register
+- `AF_UNDRIVEN` — Undriven / floating bus
+- `AF_ONEHOT` — One-hot / one-cold conformance
+- `AF_STUCK` — Stuck-at register
+- `AF_NORESET` — Un-resettable register
+- `AF_CASEFULL` — `case` not full
+- `AF_CASEPAR` — `case` not parallel
+- `AF_CASEDEF` — Unreachable `default` branch
+- `AF_COMBLOOP` — Combinational feedback loop
+- `AF_DEADCODE` — Dead / unreachable code
+- `AF_UNUSED` — Unused logic
+- `AF_XASSIGN` — Explicit X assignment
+- `AF_SIMSYN` — Simulation / synthesis mismatch
+- `AF_NAMING` — Naming and coding style
+
+## DO-254 Design Assurance (`DO_*`)
+
+Source: `checks/do254.md`
+
+- `DO_NOLATCH` — No inferred latches, ever
+- `DO_SYNC` — Fully synchronous design
+- `DO_NOGATECLK` — No logic-gated or internally generated clocks
+- `DO_NOTRI` — No internal tri-states
+- `DO_NOX` — No X in synthesisable RTL
+- `DO_NOINIT` — No reliance on initial values or `initial` blocks
+- `DO_RSTALL` — Reset all state
+- `DO_RSTSYNC` — Asynchronous assert, synchronous de-assert
+- `DO_SAFEFSM` — FSMs must recover from illegal states
+- `DO_FSMENC` — Justify the state encoding
+- `DO_TRACE` — Every RTL construct traces to a requirement
+- `DO_NODEAD` — No unintended function, no dead code
+- `DO_DERIVED` — Derived requirements go back to safety
+- `DO_ELEM` — Elemental analysis
+- `DO_INDEP` — Verification independence
+- `DO_TOOL` — Tool assessment and qualification
+- `DO_WAIVER` — Every waiver is justified and reviewed
+
+## Formal App Requirements (`FA_*`)
+
+Source: `checks/formal-apps.md`
+
+- `FA_CONSTR` — Design so legal input behaviour is constrainable
+- `FA_SIZE` — Keep formally-verifiable blocks bounded
+- `FA_BBOX` — Make black boxes cleanly separable
+- `FA_CDCSTRUCT` — Use recognisable synchronizer structures
+- `FA_CDCDATA` — Gray-code or handshake multi-bit crossings
+- `FA_RDC` — Reset domain crossing
+- `FA_RSTSEQ` — Make reset assertion/removal analysable
+- `FA_XPROP` — No unexpected X reaches an observable point
+- `FA_SEC` — Keep RTL sequentially comparable across revisions
+- `FA_CONN` — Make top-level connectivity declarative
+- `FA_CSR` — Make registers machine-describable
+- `FA_UNREACH` — Coverage unreachability
+- `FA_SAFETY` — Fault propagation / FMEDA
+- `FA_SPV` — Security path verification
+- `FA_LPV` — Low-power structure
+
+## Modern Lint Checks (`ML_*`)
+
+Source: `checks/modern-lint.md`
+
+- `ML_WIDTH` — Implicit width mismatch
+- `ML_SIGN` — Signed/unsigned mixing
+- `ML_ENUM` — Weak enum typing
+- `ML_ALWAYS` — Use the SystemVerilog always variants
+- `ML_SENS` — Incomplete sensitivity list
+- `ML_BLOCKING` — Blocking/non-blocking misuse
+- `ML_PKG` — Share types through packages
+- `ML_PORTNAME` — Named port connections only
+- `ML_GENLABEL` — Label generate blocks
+- `ML_MAGIC` — Magic numbers
+- `ML_UNDRIVEN` — Undriven or unused signal
+- `ML_IMPLICIT` — Implicit net declaration
+- `ML_CASEX` — No `casex` / `casez`
+- `ML_FUNCAUTO` — Non-automatic functions and tasks
 
