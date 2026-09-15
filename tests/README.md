@@ -1,0 +1,177 @@
+# Tests for the `rtl-coding` skill
+
+Two suites, deliberately separate because they cost very different things.
+
+| Suite | Cost | Runtime | When |
+|-------|------|---------|------|
+| **Mechanical** (`./tests/run.sh`) | free, no model calls | ~2 s | every commit, CI |
+| **Behavioral** (`claude plugin eval`) | model calls | minutes | before releasing a skill change |
+
+The mechanical suite checks that the skill's *data* is coherent. The behavioral
+suite checks that the skill *works* — that it fires when it should, stays quiet
+when it shouldn't, and gives RTL advice that matches the corpus.
+
+---
+
+## Mechanical suite
+
+```bash
+./tests/run.sh          # everything
+./tests/run.sh 02 05    # only checks starting 02 and 05
+VERBOSE=1 ./tests/run.sh
+```
+
+Exit status is 0 on success, 1 on any failure — CI-ready as is.
+
+| Check | What it protects |
+|-------|------------------|
+| `01-frontmatter` | `name`/`description` are well-formed. Malformed frontmatter means the skill silently never triggers, and nothing else would notice. |
+| `02-index-freshness` | `rule-index.md` matches what `build-index.sh` produces. A stale index is the worst failure this repo has, because the skill cites wrong rules confidently. |
+| `03-index-corpus-parity` | Every indexed rule has a file, every file is indexed, no duplicates, and no entry fell back to the `(see …)` stub that means the `Message:` scrape failed. |
+| `04-build-index-robustness` | The builder is deterministic, locale-independent, cwd-independent, and sorts `STR9` before `STR100`. |
+| `05-skill-references` | Every `pol_*.html` and rule ID named in `SKILL.md` actually exists. |
+| `06-golden-manifest` | Golden fixtures parse, each has expectations, every expected rule ID is real and indexed, no rule is both required and forbidden, and a clean control fixture exists. |
+| `07-eval-cases` | Every `case.yaml` validates against the schema `claude plugin eval` enforces, generated cases are in sync with the fixtures, and no answer-leaking annotation reached a prompt. |
+
+Adding a check: drop `tests/checks/NN-name.sh` in, source `tests/lib.sh`, use
+`check`/`ok`/`fail`, end with `finish`. The runner picks it up automatically.
+
+### Keeping the checks honest
+
+A check that cannot fail is worse than no check — it buys false confidence.
+After changing one, mutate the thing it guards and confirm it goes red:
+
+```bash
+sed -i 's/Use only one clock domain/nonsense/' .claude/skills/rtl-coding/rule-index.md
+./tests/run.sh 02        # must fail
+git checkout .claude/skills/rtl-coding/rule-index.md
+```
+
+---
+
+## Golden fixtures
+
+`tests/golden/` is the source of truth for the review-mode tests.
+
+```
+tests/golden/
+  rtl/<name>.v            RTL with known, planted defects
+  expected/<name>.expect  which rules a review must and must not report
+```
+
+An `.expect` file:
+
+```
+summary: a control signal crosses clock domains through a single flop
+must_flag: NTL_CLK05
+must_not_flag: NTL_STR47
+```
+
+- `must_flag` — rule IDs the review **must** name. Keep this short and limited
+  to defects that are unmistakable from the source. A long list measures the
+  grader's patience, not the skill.
+- `must_not_flag` — rule IDs the review **must not** name. Without these the
+  suite only ever rewards flagging things, and a skill that flags everything
+  would score perfectly. `good_pipe_regs` is the clean control; keep at least
+  one fixture with an empty `must_flag`.
+
+Lines starting with `//!` in a fixture are annotations naming the planted
+defect. `gen-eval-cases.sh` strips them before inlining the RTL into a prompt,
+so they can be as explicit as a human needs without handing the model the
+answer. Check `07` fails if one ever leaks through.
+
+### Adding a fixture
+
+```bash
+vim tests/golden/rtl/my_case.v          # //! header describing the defect
+vim tests/golden/expected/my_case.expect
+./tests/gen-eval-cases.sh               # regenerate the eval cases
+./tests/run.sh                          # validate before spending model calls
+```
+
+---
+
+## Behavioral suite
+
+Cases live in `.claude/skills/rtl-coding/evals/`. The `review-*` directories
+are **generated** from the golden fixtures — edit the fixture, not the case.
+The rest are hand-written.
+
+| Case | Asks |
+|------|------|
+| `review-*` | Does review mode find the planted defects and not invent others? |
+| `generate-cdc-handshake` | Does generated RTL synchronize a domain crossing properly? |
+| `generate-fsm` | Does generated RTL avoid the inferred-latch trap, and follow clk/rst naming? |
+| `rule-lookup-clk05` | Does a rule question get answered from the corpus rather than from memory? |
+| `trigger-negative-spi-driver` | Does the skill stay out of a keyword-heavy prompt that isn't RTL? |
+
+```bash
+# everything (with/without ablation is the default, so each case runs twice)
+claude plugin eval .claude/skills/rtl-coding
+
+# one case, cheaper
+claude plugin eval .claude/skills/rtl-coding --case 'review-*'
+
+# CI-shaped: no trust prompt, fail under 80%, machine-readable, budget capped
+claude plugin eval .claude/skills/rtl-coding \
+  --trust-plugin --threshold 0.8 --json results.json --max-cost-usd 5
+```
+
+### Reading the results
+
+The default run uses **with/without ablation**: each case runs once with the
+skill loaded and once without, and reports the delta. That delta is the number
+that matters. A case the baseline already passes isn't testing the skill — it's
+testing the model, and it should be made harder or dropped.
+
+Graders marked `arm: with-only` (the `tool_used: Skill` ones) report whether
+the skill fired at all rather than contributing to the score.
+
+### The negative case
+
+Run `trigger-negative-spi-driver` with `--ablation none`:
+
+```bash
+claude plugin eval .claude/skills/rtl-coding \
+  --case trigger-negative-spi-driver --ablation none
+```
+
+Its no-plugin arm passes trivially — there's no skill to fire — which makes the
+ablation delta meaningless. It's checking over-triggering, and over-triggering
+is expensive: a skill that fires on unrelated work burns context on every task.
+
+### Grader schema
+
+`case.yaml` follows `schema_version: "1.0"`. Grader types: `regex`,
+`tool_used`, `tool_order`, `file_exists`, `llm`, `baseline`. `tests/validate_case.py`
+encodes the schema so check `07` can validate offline; if a future Claude Code
+release changes it, that file is the one to update.
+
+Prefer `regex` over `llm` wherever the assertion is exact — checking that
+`NTL_CLK05` appears in the output is free, deterministic, and not subject to a
+judge model's mood. Save `llm` graders for the parts that genuinely need
+judgement, like "is this actually a two-stage synchronizer".
+
+---
+
+## CI
+
+Nothing is wired up yet, on purpose — the scripts are standalone so a workflow
+drops in without rework. When you want it:
+
+```yaml
+# .github/workflows/tests.yml
+name: tests
+on: [push, pull_request]
+jobs:
+  mechanical:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install pyyaml
+      - run: ./tests/run.sh
+```
+
+Keep the behavioral suite out of per-push CI — it costs model calls and is
+non-deterministic. A manual `workflow_dispatch` job, or a nightly one with
+`--threshold` and `--max-cost-usd`, is the right shape.

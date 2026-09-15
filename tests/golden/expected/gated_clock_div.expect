@@ -1,0 +1,3 @@
+summary: an internally divided clock is AND-gated and then inverted
+must_flag: NTL_CLK04 NTL_CLK07
+must_not_flag: NTL_STR47

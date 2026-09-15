@@ -1,0 +1,11 @@
+# Expectations for the review of tests/golden/rtl/cdc_missing_sync.v
+#
+# must_flag     rule IDs the review MUST name. Keep this list small and only
+#               include defects that are unmistakable from the source, so the
+#               eval measures the skill rather than the grader's patience.
+# must_not_flag rule IDs the review MUST NOT name (false-positive control).
+# summary       one line, shown in the generated eval case.
+
+summary: a control signal crosses clock domains through a single flop
+must_flag: NTL_CLK05
+must_not_flag: NTL_STR47

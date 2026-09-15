@@ -1,0 +1,3 @@
+summary: a clean two-stage pipeline - the false-positive control
+must_flag:
+must_not_flag: NTL_STR47 NTL_CLK04 NTL_CLK05 NTL_CLK07

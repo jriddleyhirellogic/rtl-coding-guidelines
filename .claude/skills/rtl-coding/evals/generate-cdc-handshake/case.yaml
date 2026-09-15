@@ -1,0 +1,54 @@
+# Hand-written. Generation is where the skill earns its keep: an unaided model
+# writes plausible RTL, but not RTL that follows *these* guidelines.
+schema_version: "1.0"
+name: generate-cdc-handshake
+description: generate a request/acknowledge handshake across two clock domains
+tags: [generate, cdc]
+execution:
+  prompt: |
+    I need a Verilog module for a request/acknowledge handshake that carries a
+    32-bit payload from a 50 MHz domain into a 200 MHz domain. The payload is
+    stable while the request is asserted. Async active-low reset on both sides.
+
+    Write the module.
+  max_turns: 30
+  timeout_seconds: 480
+  allowed_tools: [Read, Glob, Grep, Skill]
+runs: 3
+graders:
+  - type: tool_used
+    name: skill-fired
+    tool: Skill
+    arm: with-only
+  - type: regex
+    name: is-verilog
+    target: last_message
+    pattern: "endmodule"
+    match: contains
+  - type: llm
+    name: two-stage-synchronizer-on-the-crossing
+    focus: last_message
+    criteria: |
+      Every control signal that crosses between the two clock domains passes
+      through at least two flip-flops clocked by the destination clock before
+      any logic consumes it. A single flop on a crossing, or combinational
+      logic between the two synchronizer stages, does not pass. The 32-bit
+      payload itself does not need synchronizing if the design holds it stable
+      and only synchronizes the request and acknowledge.
+  - type: llm
+    name: follows-naming-and-reset-conventions
+    focus: last_message
+    criteria: |
+      Clock signals are named clk* and reset signals rst*, active-low signals
+      carry an _n or _x suffix, and each always block has a single clock edge
+      in its sensitivity list. Registered outputs are consistent with the
+      declared reset polarity. Minor deviations are acceptable only if the
+      response explains them.
+  - type: llm
+    name: cites-rules-without-drowning-the-code
+    focus: last_message
+    criteria: |
+      The response ties at least one design decision to a specific rule ID
+      from the guidelines (for example a CLK rule on the synchronizer), but
+      does not annotate every line with a rule ID. Zero citations, or a
+      citation on nearly every line, both fail.

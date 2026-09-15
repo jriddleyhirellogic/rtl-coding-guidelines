@@ -1,0 +1,41 @@
+# Hand-written. FSMs exercise the CON (case/construct) and STR rules that the
+# CDC case does not reach, especially the inferred-latch failure mode.
+schema_version: "1.0"
+name: generate-fsm
+description: generate a small state machine and avoid the latch/default traps
+tags: [generate, fsm]
+execution:
+  prompt: |
+    Write me a SystemVerilog module for an AXI-Stream style flow-control FSM:
+    states IDLE, WAIT_READY, SEND, DONE. It sees tvalid/tready and drives a
+    busy output and a done pulse. Single clock, synchronous active-low reset.
+  max_turns: 30
+  timeout_seconds: 480
+  allowed_tools: [Read, Glob, Grep, Skill]
+runs: 3
+graders:
+  - type: tool_used
+    name: skill-fired
+    tool: Skill
+    arm: with-only
+  - type: regex
+    name: is-systemverilog
+    target: last_message
+    pattern: "endmodule"
+    match: contains
+  - type: llm
+    name: no-inferred-latch
+    focus: last_message
+    criteria: |
+      Combinational blocks assign every output on every path - either through
+      a default assignment before the case statement, or a complete case with
+      a default branch. Any path that leaves a signal unassigned in a
+      combinational block infers a latch and fails this grader.
+  - type: llm
+    name: single-edge-and-clean-reset
+    focus: last_message
+    criteria: |
+      Sequential logic uses one clock edge per always block, the reset is
+      applied the way the prompt asked (synchronous, active low), and reset
+      and clock signals follow the clk*/rst* naming with an _n suffix on the
+      active-low reset.

@@ -1,0 +1,35 @@
+# Hand-written negative control. This prompt is thick with the skill's
+# keywords - clock, reset, FPGA, polarity - but it is host-side C firmware,
+# not RTL. A skill that fires here is over-triggering, which costs context on
+# every unrelated task.
+#
+# Run this one with --ablation none: the no-plugin arm passes it trivially
+# (there is no skill to fire), which makes the ablation delta meaningless.
+schema_version: "1.0"
+name: trigger-negative-spi-driver
+description: a near-miss prompt the skill should stay out of
+tags: [trigger, negative]
+execution:
+  prompt: |
+    I'm writing the Linux-side C driver that talks to our FPGA over SPI. The
+    reset sequence is: hold the device in reset for 10 ms, release, wait for
+    the ready GPIO, then start clocking. I keep getting garbage on the first
+    transfer - I think I have CPOL/CPHA backwards. Here's my spi_transfer()
+    setup, can you check the mode flags and the reset timing?
+  max_turns: 12
+  timeout_seconds: 240
+  allowed_tools: [Read, Glob, Grep, Skill]
+runs: 5
+graders:
+  - type: tool_used
+    name: skill-did-not-fire
+    tool: Skill
+    max: 0
+  - type: llm
+    name: answers-the-firmware-question
+    focus: last_message
+    criteria: |
+      The response engages with the C/SPI driver question - mode flags, CPOL
+      and CPHA, reset timing - rather than redirecting to RTL coding
+      guidelines. It does not need to be a complete fix; it needs to be about
+      the driver.

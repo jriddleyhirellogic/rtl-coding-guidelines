@@ -41,6 +41,17 @@ after adding or editing either:
 ./.claude/skills/rtl-coding/build-index.sh
 ```
 
+## Tests
+
+`./tests/run.sh` is the free, deterministic suite — it checks that `rule-index.md`
+is in sync with the corpus, that `SKILL.md` only cites files and rule IDs that
+exist, and that the eval cases are valid. Run it after touching a rule file, the
+index, or the skill.
+
+The behavioral suite (`claude plugin eval .claude/skills/rtl-coding`) costs model
+calls and is for before you release a skill change. Both are documented in
+`tests/README.md`.
+
 ## Rule categories
 
 | Code | Topic |

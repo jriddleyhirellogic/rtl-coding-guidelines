@@ -1,0 +1,41 @@
+# Hand-written. The cheapest, most frequent use of this skill is "what does
+# NTL_xxx mean?" - it should answer from the corpus, not from memory.
+schema_version: "1.0"
+name: rule-lookup-clk05
+description: explain a specific rule ID from the corpus
+tags: [lookup]
+execution:
+  prompt: |
+    lint flagged NTL_CLK05 on one of our blocks and nobody here knows what it
+    wants. what is the rule and what do we have to change?
+  max_turns: 15
+  timeout_seconds: 300
+  allowed_tools: [Read, Glob, Grep, Skill]
+runs: 3
+graders:
+  - type: tool_used
+    name: skill-fired
+    tool: Skill
+    arm: with-only
+  - type: tool_used
+    name: read-the-rule-file
+    tool: Read
+    input_match: "NTL_CLK05"
+    min: 1
+    arm: with-only
+  - type: llm
+    name: states-the-actual-rule
+    focus: last_message
+    criteria: |
+      The answer says that asynchronous inputs to a clock domain must be
+      clocked twice - that is, sampled through a two-stage synchronizer - and
+      explains why (metastability). An answer that is vaguely about clocks, or
+      that describes a different rule, does not pass.
+  - type: llm
+    name: says-what-to-change
+    focus: last_message
+    criteria: |
+      The answer tells the reader what to do about the violation concretely
+      enough to act on: add a second synchronizing flip-flop on the crossing
+      signal in the destination domain, typically with example code or a clear
+      description of the structure.
