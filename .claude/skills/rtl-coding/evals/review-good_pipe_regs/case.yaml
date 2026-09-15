@@ -11,6 +11,8 @@ execution:
     line, what is wrong, and the fix.
 
     ```verilog
+    `default_nettype none
+
     module good_pipe_regs #(
       parameter WIDTH = 8
     ) (
@@ -22,24 +24,26 @@ execution:
       output reg  [WIDTH-1:0] data_out_r
     );
 
-      reg             valid_d1_r;
-      reg [WIDTH-1:0] data_d1_r;
+      reg             valid_d1;
+      reg [WIDTH-1:0] data_d1;
 
       always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
-          valid_d1_r  <= 1'b0;
-          data_d1_r   <= {WIDTH{1'b0}};
+          valid_d1    <= 1'b0;
+          data_d1     <= {WIDTH{1'b0}};
           valid_out_r <= 1'b0;
           data_out_r  <= {WIDTH{1'b0}};
         end else begin
-          valid_d1_r  <= valid_in;
-          data_d1_r   <= data_in;
-          valid_out_r <= valid_d1_r;
-          data_out_r  <= data_d1_r;
+          valid_d1    <= valid_in;
+          data_d1     <= data_in;
+          valid_out_r <= valid_d1;
+          data_out_r  <= data_d1;
         end
       end
 
     endmodule
+
+    `default_nettype wire
     ```
   max_turns: 25
   timeout_seconds: 420
