@@ -157,6 +157,15 @@ def main(argv):
         shutil.rmtree(workdir, ignore_errors=True)
 
     print(f"\n{linted} source(s) linted, {failures} with blocking defects")
+    if linted == 0:
+        # Silence here means the extraction found nothing, not that the RTL was
+        # fine. The usual cause is an agent that wrote its module to a file
+        # instead of inlining it in the reply, which happens as soon as Write
+        # is granted.
+        print("nothing was linted - no complete module appeared in any final "
+              "message. Check whether the agent wrote its RTL to a file "
+              "instead of inlining it.", file=sys.stderr)
+        return 2
     return 1 if failures else 0
 
 

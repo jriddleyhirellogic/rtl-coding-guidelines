@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Eval report — rtl-coding</title>
+</head>
+<body>
+<style>
+:root{--plane:#f9f9f7;--surface:#fcfcfb;--ink:#0b0b0b;--ink-2:#52514e;--ink-3:#6b6a64;--hairline:rgba(11,11,11,.10);--grid:#e1e0d9;--inset:rgba(11,11,11,.04);--accent:#2a78d6;--base-fill:#6b6a64;--delta-good:#006300;--good:#067d06;--warning:#8a6100;--critical:#d03b3b;
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme:dark){:root{--plane:#0d0d0d;--surface:#1a1a19;--ink:#ffffff;--ink-2:#c3c2b7;--ink-3:#898781;--hairline:rgba(255,255,255,.10);--grid:#2c2c2a;--inset:rgba(255,255,255,.05);--accent:#3987e5;--base-fill:#898781;--delta-good:#0ca30c;--good:#0ca30c;--warning:#fab219;--critical:#e06c6c;color-scheme:dark}}
+:root[data-theme="dark"]{--plane:#0d0d0d;--surface:#1a1a19;--ink:#ffffff;--ink-2:#c3c2b7;--ink-3:#898781;--hairline:rgba(255,255,255,.10);--grid:#2c2c2a;--inset:rgba(255,255,255,.05);--accent:#3987e5;--base-fill:#898781;--delta-good:#0ca30c;--good:#0ca30c;--warning:#fab219;--critical:#e06c6c;color-scheme:dark}
+:root[data-theme="light"]{--plane:#f9f9f7;--surface:#fcfcfb;--ink:#0b0b0b;--ink-2:#52514e;--ink-3:#6b6a64;--hairline:rgba(11,11,11,.10);--grid:#e1e0d9;--inset:rgba(11,11,11,.04);--accent:#2a78d6;--base-fill:#6b6a64;--delta-good:#006300;--good:#067d06;--warning:#8a6100;--critical:#d03b3b;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--plane);color:var(--ink);
+  font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;
+  -webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:40px 24px 64px;display:flex;flex-direction:column;gap:20px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+header h1{margin:2px 0 0;font-size:24px;font-weight:600;line-height:1.25;text-wrap:balance}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;color:var(--ink-2);font-size:13px}
+.meta .num{font-variant-numeric:tabular-nums lining-nums}
+.banner{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;
+  border:1px solid var(--hairline);background:var(--surface);font-size:13px}
+.banner .chip-warn{color:var(--warning);font-weight:600}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.tile{background:var(--surface);border:1px solid var(--hairline);border-radius:10px;padding:14px 16px;
+  display:flex;flex-direction:column;gap:4px}
+.tile .label{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.tile .value{font-size:26px;font-weight:600;font-variant-numeric:tabular-nums lining-nums;line-height:1.1}
+.tile.hero .value{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:48px}
+.tile .sub{font-size:12px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.tile .value.delta-pos{color:var(--delta-good)}
+.tile .value.delta-neg{color:var(--critical)}
+.toolbar{display:flex;gap:8px;justify-content:flex-end}
+.toolbar button{font:12px system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink-2);
+  background:var(--surface);border:1px solid var(--hairline);border-radius:6px;padding:4px 10px;cursor:pointer}
+.toolbar button:hover{color:var(--ink)}
+.toolbar button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.case{background:var(--surface);border:1px solid var(--hairline);border-radius:10px;padding:18px 20px;
+  display:flex;flex-direction:column;gap:10px}
+.case-regressed{border-left:3px solid var(--critical)}
+.verdict{margin:6px 0 0;font-size:15px}
+.verdict .delta{font-size:15px}
+.flag{font-size:11px;font-weight:600;color:var(--warning);white-space:nowrap}
+.star{color:var(--warning);font-size:.45em;vertical-align:super;line-height:0;cursor:help}
+.legend summary{cursor:pointer;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-2)}
+.legend-list{margin:8px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:5px;font-size:13px;color:var(--ink-2)}
+.case-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.case-head h2{margin:0;font-size:16px;font-weight:600}
+.case-head .spacer{flex:1}
+.case-score{font-size:15px;font-weight:600}
+.mono{font:12px "SF Mono",ui-monospace,Menlo,Consolas,monospace}
+.num{font-variant-numeric:tabular-nums lining-nums}
+.muted{color:var(--ink-3);font-size:12px}
+.meter{display:inline-block;position:relative;width:120px;height:6px;border-radius:4px;background:var(--grid);
+  vertical-align:middle}
+.meter>span{display:block;height:100%;border-radius:4px;max-width:100%}
+.meter .tick{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--ink-3);border-radius:1px}
+.m-accent>span{background:var(--accent)}
+.m-base>span{background:var(--base-fill)}
+.delta{font-size:12px;font-weight:600;font-variant-numeric:tabular-nums}
+.delta-pos{color:var(--delta-good)}
+.delta-neg{color:var(--critical)}
+.delta-zero{color:var(--ink-3)}
+details.section{border-top:1px solid var(--grid);padding-top:10px}
+details.section>summary{cursor:pointer;font-size:12px;font-weight:600;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--ink-2);list-style-position:outside;margin-left:2px}
+details.section>summary:hover{color:var(--ink)}
+details.section[open]>summary{margin-bottom:8px}
+.md{display:flex;flex-direction:column;gap:8px;background:var(--inset);border-radius:8px;
+  padding:12px 14px;overflow-wrap:break-word}
+.md>:first-child{margin-top:0}
+.md h1,.md h2,.md h3,.md h4,.md h5,.md h6{margin:4px 0 0;font-size:1em;font-weight:600;line-height:1.3}
+.md p,.md ul,.md ol,.md blockquote,.md table,.md pre,.md hr{margin:0}
+.md ul,.md ol{display:flex;flex-direction:column;gap:4px;padding-left:20px}
+.md blockquote{border-left:2px solid var(--hairline);padding-left:10px;color:var(--ink-2)}
+.md :not(pre)>code{background:var(--inset);padding:1px 4px;border-radius:4px;
+  font:.92em "SF Mono",ui-monospace,Menlo,Consolas,monospace}
+.md pre{background:var(--inset);border:1px solid var(--hairline);padding:10px 12px;border-radius:6px;
+  overflow-x:auto;font:12px/1.5 "SF Mono",ui-monospace,Menlo,Consolas,monospace}
+.md pre code{background:none;padding:0;font:inherit}
+.md table{width:100%;border-collapse:collapse}
+.md th,.md td{padding:5px 8px;text-align:left;vertical-align:top;border-bottom:1px solid var(--grid)}
+.md th{font-weight:600;color:var(--ink-2)}
+.md a{color:var(--accent);text-decoration:none}
+.md a:hover{text-decoration:underline}
+.grader-def{display:flex;flex-direction:column;gap:6px;padding:8px 0}
+.grader-def+.grader-def{border-top:1px solid var(--grid)}
+.grader-def-head{display:flex;align-items:baseline;gap:8px}
+.grader-name{font:13px "SF Mono",ui-monospace,Menlo,Consolas,monospace;font-weight:600}
+.badge{font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-2);
+  border:1px solid var(--hairline);border-radius:999px;padding:1px 8px}
+.config{display:flex;flex-direction:column;gap:2px;background:var(--inset);border-radius:8px;padding:10px 14px}
+.config code{font:12px "SF Mono",ui-monospace,Menlo,Consolas,monospace;overflow-wrap:anywhere}
+.arm{display:flex;flex-direction:column;gap:8px;padding:6px 0}
+.arm+.arm{border-top:1px dashed var(--grid);margin-top:4px;padding-top:12px}
+.arm-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.arm-label{font-size:13px;font-weight:600}
+.run{border:1px solid var(--grid);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.run-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.run-title{font-size:12px;font-weight:600;color:var(--ink-2)}
+.run-error .explanation{color:var(--ink-2)}
+.note{font-size:12px;color:var(--ink-2)}
+.graders{display:flex;flex-direction:column;gap:4px}
+details.grader{border-radius:6px}
+details.grader>summary{cursor:pointer;display:flex;align-items:baseline;gap:8px;padding:3px 4px;
+  border-radius:6px;list-style:none}
+details.grader>summary::-webkit-details-marker{display:none}
+details.grader>summary::before{content:'▸';font-size:10px;color:var(--ink-3);flex:none;
+  transition:transform .12s ease}
+details.grader[open]>summary::before{transform:rotate(90deg)}
+details.grader>summary:hover{background:var(--inset)}
+details.grader>summary:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.grader-body{padding:6px 8px 8px 24px;display:flex;flex-direction:column;gap:6px}
+.chip{font-size:11px;font-weight:600;border-radius:999px;padding:1px 8px;white-space:nowrap}
+.chip-pass{color:var(--good);border:1px solid currentColor}
+.chip-fail{color:var(--critical);border:1px solid currentColor}
+.chip.chip-warn{color:var(--warning);border:1px solid currentColor}
+.explanation{margin:0;font-size:13px;color:var(--ink-2);white-space:pre-wrap;overflow-wrap:break-word}
+.kv{display:flex;gap:8px;font-size:12px;color:var(--ink-3)}
+.votes{font-variant-numeric:tabular-nums;letter-spacing:.1em}
+pre.evidence{margin:0;background:var(--inset);border:1px solid var(--hairline);border-radius:6px;
+  padding:8px 10px;overflow-x:auto;max-height:320px;
+  font:12px/1.5 "SF Mono",ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;overflow-wrap:break-word}
+footer{color:var(--ink-3);font-size:12px;text-align:center;padding-top:8px}
+@media (prefers-reduced-motion:no-preference){
+  details.grader>summary,.toolbar button{transition:background .12s ease,color .12s ease}
+}
+@media (prefers-reduced-motion:reduce){
+  details.grader>summary::before{transition:none}
+}
+@media print{
+  :root,:root[data-theme="dark"],:root[data-theme="light"]{--plane:#f9f9f7;--surface:#fcfcfb;--ink:#0b0b0b;--ink-2:#52514e;--ink-3:#6b6a64;--hairline:rgba(11,11,11,.10);--grid:#e1e0d9;--inset:rgba(11,11,11,.04);--accent:#2a78d6;--base-fill:#6b6a64;--delta-good:#006300;--good:#067d06;--warning:#8a6100;--critical:#d03b3b;color-scheme:light}
+  body{background:#fff}
+  .toolbar{display:none}
+  .case,.run,.grader-def{break-inside:avoid}
+  pre.evidence{max-height:none}
+}
+</style>
+<div class="wrap">
+<header>
+<div class="eyebrow">Plugin eval report</div>
+<h1>rtl-coding</h1>
+
+<div class="meta">
+<span class="mono">.</span>
+<span>Claude Code v2.1.272</span>
+<span class="num">2026-09-15 16:53 UTC</span>
+<span class="num">5m 10s</span>
+<span class="num">$1.72</span>
+<span class="num">6 runs</span>
+<span class="num">2 in flight</span>
+
+
+<span>judge claude-sonnet-5</span>
+<span class="num">threshold 100%</span>
+
+</div>
+</header>
+
+<section class="tiles">
+<div class="tile hero"><span class="label">Suite score</span><span class="value">41.7%</span><span class="sub">mean of per-case scores</span></div>
+
+<div class="tile"><span class="label">Cases</span><span class="value num">2</span><span class="sub">0 of 2 ≥ 100% threshold</span></div>
+<div class="tile"><span class="label">Perfect runs</span><span class="value num">33.3%</span><span class="sub">runs where every grader passed</span></div>
+</section>
+<details class="section legend">
+<summary>How to read this report</summary>
+<ul class="legend-list">
+<li>A run's score is the weighted fraction of its graders that passed; a "perfect" run passed every grader.</li>
+<li>A case's score is the mean of its runs; a case passes when its score is at or above the 100% threshold (the tick on each case bar).</li>
+<li>The suite score is the mean of the per-case scores.</li>
+<li>Judge votes are independent samples of the LLM judge; the majority decides pass or fail.</li>
+<li><strong>No baseline arm was run</strong> (ablation off) — this report shows absolute scores only and cannot say whether the plugin caused them. Re-run with <code>--ablation with-without</code> to measure the plugin’s effect.</li>
+
+</ul>
+</details>
+<div class="toolbar"><button type="button" data-act="expand">Expand all</button><button type="button" data-act="collapse">Collapse all</button></div>
+<article class="case" id="case-1">
+<div class="case-head">
+<h2>selfcheck-off</h2>
+<span class="muted mono">probes/selfcheck-off</span>
+<span class="spacer"></span>
+
+
+
+<span class="meter m-accent" aria-hidden="true"><span style="width:0.0%"></span><i class="tick" style="left:100.0%"></i></span>
+<span class="num case-score">0%</span>
+</div>
+
+<details class="section" open>
+<summary>Results</summary>
+<section class="arm">
+<div class="arm-head">
+<span class="arm-label">Runs</span>
+<span class="meter m-accent" aria-hidden="true"><span style="width:0.0%"></span></span>
+<span class="num">0%</span>
+<span class="muted num">0% of runs perfect</span>
+</div>
+<div class="run">
+<div class="run-head">
+<span class="run-title">Run 1</span>
+<span class="meter m-accent" aria-hidden="true"><span style="width:0.0%"></span></span>
+<span class="num">0%</span>
+<span class="muted num">9 turns · $0.26 · 16:53:16 UTC</span>
+</div>
+
+<div class="graders"><details class="grader" open>
+<summary><span class="chip chip-fail">✗ fail</span> <span class="grader-name">produced-a-module</span>  </summary>
+<div class="grader-body">
+<p class="explanation">judge votes: FAIL FAIL FAIL</p>
+<div class="kv"><span>Judge votes</span><span class="votes">✗ ✗ ✗</span></div><div class="kv"><span>Evidence (what the judge was shown; for an image, a description of what was sent)</span></div><pre class="evidence">Bash execution is blocked entirely in this sandbox (permission errors on shell init), so I can&apos;t run a linter/simulator to verify syntax — I&apos;ve reviewed it by hand instead. The file is written at `rr_arbiter.sv`.
+
+Design summary, applying the rtl-coding skill&apos;s checks (commercial/ASIC/SystemVerilog profile assumed):
+
+- **NTL_RST03/NAM03**: async active-low reset (`rst_n`), all registers (`mask_q`, `grant`, `grant_valid`) reset together.
+- **NAM02**: clock signal named `clk`.
+- **ML_ALWAYS/ML_BLOCKING**: `always_comb` uses blocking assigns, `always_ff` uses non-blocking only.
+- **ML_CASEX**: no `casex`/`casez`; priority pick uses a bounded `for` loop with early `return` inside the `priority_select` function instead.
+- **ML_WIDTH**: the `ONE` constant and replication are explicitly sized to `REQ_WIDTH`.
+- **AF_RANGE**: loop index is bounded `0..REQ_WIDTH-1`.
+
+Algorithm: `priority_select` returns the one-hot lowest-set-bit of its input. Each cycle, requests are first masked by `mask_q` (bits above the last winner); if that&apos;s empty, it falls back to the unmasked `req` (wraparound). `mask_next = ~(grant_next | (grant_next - 1))` marks everything above the newly granted bit — the mask-based next-pointer update — so priority rotates to just past the last winner.
+
+One deviation worth flagging: `NTL_NAM07` recommends registered output ports end in `_r`/`_q`; I kept the literal `grant`/`grant_valid` names since that&apos;s the conventional arbiter interface you asked for. Let me know if you&apos;d rather I rename them (e.g. `grant_r`, `grant_valid_r`).</pre>
+</div>
+</details></div>
+</div>
+<div class="run">
+<div class="run-head">
+<span class="run-title">Run 2</span>
+<span class="meter m-accent" aria-hidden="true"><span style="width:0.0%"></span></span>
+<span class="num">0%</span>
+<span class="muted num">10 turns · $0.27 · 16:53:16 UTC</span>
+</div>
+
+<div class="graders"><details class="grader" open>
+<summary><span class="chip chip-fail">✗ fail</span> <span class="grader-name">produced-a-module</span>  </summary>
+<div class="grader-body">
+<p class="explanation">judge votes: FAIL FAIL FAIL</p>
+<div class="kv"><span>Judge votes</span><span class="votes">✗ ✗ ✗</span></div><div class="kv"><span>Evidence (what the judge was shown; for an image, a description of what was sent)</span></div><pre class="evidence">Written to `round_robin_arbiter.sv`. Design summary:
+
+- **Ports**: `clk`, `rst_n` (async active-low, single clock/reset per `NTL_CLK01/03`, `RST03/19/23`), `req[REQ_WIDTH-1:0]`, one-hot `grant`, registered `grant_valid`.
+- **`priority_select` function**: isolates the lowest set bit (`req_vec &amp; (~req_vec + 1)`) — the priority-select primitive, reused for both the masked and unmasked request sets.
+- **Round-robin logic**: `req_masked = req &amp; mask_r` gives requesters with priority higher than the last grant; if any are set, grant among them, else wrap around and grant among all of `req`.
+- **Mask-based next-pointer update**: `mask_next = ~(grant_next | (grant_next - 1))` masks out the granted bit and everyone below it, so priority rotates to the bit above the last winner; held unchanged when no grant occurs (idle cycle), avoiding the mask collapsing to zero.
+- **Registration**: `grant` and `grant_valid` are both flopped together in the async-reset `always_ff`, so they stay aligned.
+
+One deviation from the Leda `NAM07` convention (registered outputs should carry an `_r` suffix): I kept the port names `grant`/`grant_valid` exactly as you specified rather than renaming them.
+
+I wasn&apos;t able to run a linter/simulator to compile-check this — Bash is unavailable in this sandbox session (hitting a permissions error unrelated to the file). Worth a quick `verilator --lint-only` pass on your end before use.</pre>
+</div>
+</details></div>
+</div>
+<div class="run">
+<div class="run-head">
+<span class="run-title">Run 3</span>
+<span class="meter m-accent" aria-hidden="true"><span style="width:0.0%"></span></span>
+<span class="num">0%</span>
+<span class="muted num">9 turns · $0.23 · 16:54:47 UTC</span>
+</div>
+
+<div class="graders"><details class="grader" open>
+<summary><span class="chip chip-fail">✗ fail</span> <span class="grader-name">produced-a-module</span>  </summary>
+<div class="grader-body">
+<p class="explanation">judge votes: FAIL FAIL FAIL</p>
+<div class="kv"><span>Judge votes</span><span class="votes">✗ ✗ ✗</span></div><div class="kv"><span>Evidence (what the judge was shown; for an image, a description of what was sent)</span></div><pre class="evidence">Created `rr_arbiter.sv` — a mask-based round-robin arbiter conforming to the RTL guidelines skill&apos;s conventions:
+
+- **`priority_select`** function: fixed-priority (LSB-first) one-hot encoder, called twice — once against `req &amp; mask_r` (round-robin window) and once against raw `req` (wrap-around fallback).
+- **`grant_r`** / **`grant_valid_r`**: registered together (both `_r`-suffixed per `NTL_NAM07`), so grant and its valid stay in lock-step; `grant_r` is one-hot by construction.
+- **`mask_r`**: updated only on a valid grant via `~(grant_next | (grant_next - 1))`, which masks the winning bit and everything below it so the next round starts just past the last winner — this is the &quot;next-pointer&quot; state.
+- Single clock (`clk`), single async active-low reset (`rst_n`) per `NTL_RST03`/`NTL_CLK01`/`RST01`; `default_nettype none` per `ML_IMPLICIT`; explicit width cast (`REQ_WIDTH&apos;(1)`) per `ML_WIDTH`; no `case`/`casex` so `AF_CASEFULL`/`ML_CASEX` don&apos;t apply.
+
+Note: `grant_r` being one-hot is a property provable by a formal tool (`AF_ONEHOT`) — I can&apos;t fully verify that by inspection alone, though the construction (single `found` latch inside the loop) guarantees it structurally.</pre>
+</div>
+</details></div>
+</div>
+</section>
+</details>
+<details class="section" open>
+<summary>Prompt</summary>
+<div class="md"><p>Write a SystemVerilog module: a round-robin arbiter with a parameterised
+REQ_WIDTH (default 4), a one-hot grant output, a registered grant_valid,
+and a mask-based next-pointer update. Single clock, asynchronous active-low
+reset. Include the priority-select logic as a function.</p>
+</div>
+</details>
+<details class="section" open>
+<summary>Graders — what "good" means for this case</summary>
+<div class="grader-def">
+<div class="grader-def-head"><span class="grader-name">produced-a-module</span><span class="badge">llm</span></div>
+<div class="md"><p>The response contains a complete SystemVerilog module definition.</p>
+</div>
+</div>
+</details>
+</article>
+<article class="case" id="case-2">
+<div class="case-head">
+<h2>selfcheck-on</h2>
+<span class="muted mono">probes/selfcheck-on</span>
+<span class="spacer"></span>
+
+
+
+<span class="meter m-accent" aria-hidden="true"><span style="width:83.3%"></span><i class="tick" style="left:100.0%"></i></span>
+<span class="num case-score">83.3%</span>
+</div>
+
+<details class="section" open>
+<summary>Results</summary>
+<section class="arm">
+<div class="arm-head">
+<span class="arm-label">Runs</span>
+<span class="meter m-accent" aria-hidden="true"><span style="width:83.3%"></span></span>
+<span class="num">83.3%</span>
+<span class="muted num">66.7% of runs perfect</span>
+</div>
+<div class="run">
+<div class="run-head">
+<span class="run-title">Run 1</span>
+<span class="meter m-accent" aria-hidden="true"><span style="width:50.0%"></span></span>
+<span class="num">50%</span>
+<span class="muted num">10 turns · $0.32 · 16:55:10 UTC</span>
+</div>
+
+<div class="graders"><details class="grader" open>
+<summary><span class="chip chip-fail">✗ fail</span> <span class="grader-name">produced-a-module</span>  </summary>
+<div class="grader-body">
+<p class="explanation">judge votes: FAIL FAIL FAIL</p>
+<div class="kv"><span>Judge votes</span><span class="votes">✗ ✗ ✗</span></div><div class="kv"><span>Evidence (what the judge was shown; for an image, a description of what was sent)</span></div><pre class="evidence">I&apos;m unable to execute any Bash commands in this session — every invocation fails at the sandbox/seccomp initialization step (`apply-seccomp: write /proc/self/uid_map: Operation not permitted`), before my actual command even runs. This blocks running `verilator` to lint the file as required.
+
+I can&apos;t run the mandated lint step in this environment. Rather than claim it passed, here&apos;s where things stand:
+
+**What I wrote:** `/tmp/claude-eval-s10xj7/home/cwd/rr_arbiter.sv` — a round-robin arbiter with:
+- `REQ_WIDTH` parameter (default 4), one-hot `grant` output, registered `grant_valid`, single clock, async active-low reset (`rst_n`)
+- `priority_select()` function: fixed-priority (lowest index wins) one-hot select, used both on masked and unmasked requests
+- `pointer_to_mask()` function: builds a thermometer mask from the one-hot priority pointer
+- Mask-based next-pointer update: `ptr_next` is the current grant rotated left by one bit, so the just-served requester becomes lowest priority next cycle
+
+I manually reviewed it against the four warning classes you specified:
+- **LATCH**: both `always_comb` blocks and both functions assign every output on every path (defaults set before loops/ifs), so no latch should infer.
+- **CASEINCOMPLETE**: no `case` statements are used (priority logic is `for`/`if` based), so this class doesn&apos;t apply.
+- **WIDTHTRUNC/WIDTHEXPAND**: the reset concatenation `{{(REQ_WIDTH-1){1&apos;b0}}, 1&apos;b1}` and the rotate `{grant_comb[REQ_WIDTH-2:0], grant_comb[REQ_WIDTH-1]}` both evaluate to exactly `REQ_WIDTH` bits, matching `ptr_q`&apos;s width.
+- **BLKSEQ**: `always_ff` uses only `&lt;=`; `always_comb` blocks and functions use only `=`.
+
+I can&apos;t guarantee this is warning-free without actually running verilator, though. Can you tell me if there&apos;s a way to fix the sandbox (e.g., permissions on `/tmp/claude-eval-s10xj7/home/.bashrc`), or would you rather run the lint yourself and paste back any warnings for me to fix?</pre>
+</div>
+</details>
+<details class="grader">
+<summary><span class="chip chip-pass">✓ pass</span> <span class="grader-name">actually-ran-verilator</span>  </summary>
+<div class="grader-body">
+<p class="explanation">Bash called 5x (expected 1..∞)</p>
+
+</div>
+</details></div>
+</div>
+<div class="run">
+<div class="run-head">
+<span class="run-title">Run 2</span>
+<span class="meter m-accent" aria-hidden="true"><span style="width:100.0%"></span></span>
+<span class="num">100%</span>
+<span class="muted num">11 turns · $0.35 · 16:56:18 UTC</span>
+</div>
+
+<div class="graders"><details class="grader">
+<summary><span class="chip chip-pass">✓ pass</span> <span class="grader-name">produced-a-module</span>  </summary>
+<div class="grader-body">
+<p class="explanation">judge votes: PASS PASS PASS</p>
+<div class="kv"><span>Judge votes</span><span class="votes">✓ ✓ ✓</span></div><div class="kv"><span>Evidence (what the judge was shown; for an image, a description of what was sent)</span></div><pre class="evidence">I hit an environment problem I should flag rather than paper over: **the Bash tool is non-functional in this session** — every invocation fails during its own sandbox setup (`apply-seccomp: write /proc/self/uid_map: Operation not permitted`, plus a permission error reading `.bashrc`) before any command, including a bare `echo`, ever runs. I confirmed this isn&apos;t specific to verilator or to my command, and delegating to a subagent hit the identical failure, so it&apos;s not something I can work around on my end. This means I cannot actually run `verilator --lint-only` as the instructions require.
+
+Given that, here&apos;s the module I wrote at `/tmp/claude-eval-UvJtOy/home/cwd/rr_arbiter.sv`, plus a manual (unverified-by-tool) trace against the five checks you named, so you can see my reasoning and re-run the linter yourself:
+
+- **LATCH**: the single `always_comb` assigns `grant_d`, `grant_valid_d`, and `ptr_d` unconditionally on every path (the only branching is a ternary with both arms covered) — no latch inference.
+- **CASEINCOMPLETE**: no `case` statement in the design at all (priority selection uses the isolate-lowest-set-bit trick `x &amp; (~x + 1)` instead of a case/loop), so this can&apos;t fire.
+- **BLKSEQ**: `always_ff` uses only `&lt;=`; `always_comb` uses only `=`. No mixing.
+- **WIDTHTRUNC/WIDTHEXPAND**: I traced every RHS width against its LHS by hand — `ONE_HOT_LSB`, `mask`, `masked_req`, the isolate-lowest-bit expressions, and the pointer-rotate concatenation `{grant_d[REQ_WIDTH-2:0], grant_d[REQ_WIDTH-1]}` are all exactly `REQ_WIDTH` bits, matching their targets. I don&apos;t see a truncation/expansion path with the default `REQ_WIDTH=4`.
+
+One caveat I should surface rather than hide: the pointer-rotate line indexes `grant_d[REQ_WIDTH-2:0]`, which becomes an invalid `[-1:0]` range if `REQ_WIDTH` were ever set to 1. That&apos;s a degenerate case (arbitrating a single requester), so I didn&apos;t special-case it, but flagging it since I can&apos;t lint-check it across parameter values right now.
+
+Since I can&apos;t empirically confirm this is clean, please run it on your end:
+```
+verilator --lint-only -Wall -Wno-fatal -Wno-DECLFILENAME rr_arbiter.sv
+```
+and send me the output — I&apos;ll fix anything it flags. Also worth mentioning to whoever manages this sandbox: Bash is dead at the seccomp level, not just for me.</pre>
+</div>
+</details>
+<details class="grader">
+<summary><span class="chip chip-pass">✓ pass</span> <span class="grader-name">actually-ran-verilator</span>  </summary>
+<div class="grader-body">
+<p class="explanation">Bash called 5x (expected 1..∞)</p>
+
+</div>
+</details></div>
+</div>
+<div class="run">
+<div class="run-head">
+<span class="run-title">Run 3</span>
+<span class="meter m-accent" aria-hidden="true"><span style="width:100.0%"></span></span>
+<span class="num">100%</span>
+<span class="muted num">10 turns · $0.29 · 16:56:39 UTC</span>
+</div>
+
+<div class="graders"><details class="grader">
+<summary><span class="chip chip-pass">✓ pass</span> <span class="grader-name">produced-a-module</span>  </summary>
+<div class="grader-body">
+<p class="explanation">judge votes: PASS PASS PASS</p>
+<div class="kv"><span>Judge votes</span><span class="votes">✓ ✓ ✓</span></div><div class="kv"><span>Evidence (what the judge was shown; for an image, a description of what was sent)</span></div><pre class="evidence">I can&apos;t run any shell commands in this environment — Bash is broken at the sandbox level (`.bashrc` permission denied, then a seccomp/`uid_map` error before any command, including verilator, even starts). I confirmed this isn&apos;t specific to verilator: even `echo hello` fails the same way, and it fails identically whether run directly or via a fresh subagent. This is a harness/environment problem outside what I can fix from here — you&apos;d need to check the sandbox setup for this session.
+
+I&apos;ve written the module to `/tmp/claude-eval-mWFxLk/home/cwd/rr_arbiter.sv`. I manually reviewed it against the checks you asked for since I can&apos;t run the linter:
+
+- **LATCH**: no case statements at all — the priority function initializes its result to `&apos;0` before the loop, and `always_comb` assigns every signal unconditionally, so nothing can infer a latch.
+- **CASEINCOMPLETE**: avoided by design — I used a for-loop + ternary instead of `case`, so there&apos;s no case statement to be incomplete.
+- **WIDTHTRUNC/WIDTHEXPAND**: the one place width mismatches could sneak in is `grant_sel - 1` for the mask-rotate trick; I sized the `1` explicitly as `{{REQ_WIDTH-1{1&apos;b0}}, 1&apos;b1}` (REQ_WIDTH bits) so the subtraction is width-matched rather than relying on implicit extension.
+- **BLKSEQ**: `always_ff` uses only `&lt;=`, `always_comb` uses only `=` — no mixing.
+
+**Design summary:**
+- `priority_select()` function returns a one-hot vector for the lowest-index set bit — used both for arbitration and as the reusable priority-select primitive.
+- `mask_r` is the round-robin pointer: `masked_req = req &amp; mask_r` restricts arbitration to requesters after the last winner; if that&apos;s empty, it falls back to `priority_select(req)` (wrap-around).
+- `mask_next = ~(grant_sel | (grant_sel - 1))` sets the mask to only the bits above the bit just granted — the standard one-hot &quot;mask trick&quot; for round-robin rotation.
+- `grant`, `grant_valid`, and `mask_r` are all registered in a single `always_ff @(posedge clk or negedge rst_n)` with async active-low reset (`mask_r` resets to all-ones so the first arbitration after reset uses plain fixed priority from bit 0).
+
+Since I can&apos;t verify with verilator right now, please re-run the lint command yourself once the sandbox issue is resolved, and let me know if anything comes up — happy to fix it.</pre>
+</div>
+</details>
+<details class="grader">
+<summary><span class="chip chip-pass">✓ pass</span> <span class="grader-name">actually-ran-verilator</span>  </summary>
+<div class="grader-body">
+<p class="explanation">Bash called 3x (expected 1..∞)</p>
+
+</div>
+</details></div>
+</div>
+</section>
+</details>
+<details class="section" open>
+<summary>Prompt</summary>
+<div class="md"><p>Write a SystemVerilog module: a round-robin arbiter with a parameterised
+REQ_WIDTH (default 4), a one-hot grant output, a registered grant_valid,
+and a mask-based next-pointer update. Single clock, asynchronous active-low
+reset. Include the priority-select logic as a function.</p>
+</div>
+</details>
+<details class="section" open>
+<summary>Graders — what "good" means for this case</summary>
+<div class="grader-def">
+<div class="grader-def-head"><span class="grader-name">produced-a-module</span><span class="badge">llm</span></div>
+<div class="md"><p>The response contains a complete SystemVerilog module definition.</p>
+</div>
+</div>
+<div class="grader-def">
+<div class="grader-def-head"><span class="grader-name">actually-ran-verilator</span><span class="badge">tool_used</span></div>
+<div class="config"><div class="kv"><span>tool</span><code>&quot;Bash&quot;</code></div><div class="kv"><span>input_match</span><code>&quot;verilator&quot;</code></div><div class="kv"><span>min</span><code>1</code></div></div>
+</div>
+</details>
+</article>
+<footer>Generated by <code>claude plugin eval</code> · schema v1 · scores are not comparable across different suites</footer>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var bar=document.querySelector('.toolbar');
+  if(!bar)return;
+  bar.addEventListener('click',function(e){
+    var b=e.target&&e.target.closest('button');
+    if(!b)return;
+    var open=b.dataset.act==='expand';
+    document.querySelectorAll('details.section, details.grader').forEach(function(d){d.open=open});
+  });
+});
+// Collapsed details vanish from print/PDF; these pages are share artifacts.
+window.addEventListener('beforeprint',function(){
+  document.querySelectorAll('details').forEach(function(d){
+    if(!d.open){d.dataset.printOpened='1';d.open=true}
+  });
+});
+window.addEventListener('afterprint',function(){
+  document.querySelectorAll('details[data-print-opened]').forEach(function(d){
+    d.open=false;delete d.dataset.printOpened;
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+# PROBE, not part of the suite. Treatment arm: same prompt, but the agent is
+# told to lint its own output with Verilator before returning it. This
+# simulates a SKILL.md change via append_system_prompt, so the experiment does
+# not have to modify the skill under test.
+schema_version: "1.0"
+name: selfcheck-on
+description: arbiter generation with self-linting via Verilator
+tags: [probe]
+execution:
+  prompt: |
+    Write a SystemVerilog module: a round-robin arbiter with a parameterised
+    REQ_WIDTH (default 4), a one-hot grant output, a registered grant_valid,
+    and a mask-based next-pointer update. Single clock, asynchronous active-low
+    reset. Include the priority-select logic as a function.
+  max_turns: 40
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write]
+  append_system_prompt: |
+    Before returning any RTL, verify it compiles. Write the module to a file
+    and lint it with:
+
+      verilator --lint-only -Wall -Wno-fatal -Wno-DECLFILENAME <file>
+
+    Fix every LATCH, CASEINCOMPLETE, WIDTHTRUNC, WIDTHEXPAND and BLKSEQ
+    warning it reports, re-lint until those are gone, and only then return the
+    corrected module. Say briefly what the linter found and what you changed.
+runs: 3
+graders:
+  - type: llm
+    name: produced-a-module
+    focus: last_message
+    criteria: |
+      The response contains a complete SystemVerilog module definition.
+  - type: tool_used
+    name: actually-ran-verilator
+    tool: Bash
+    input_match: "verilator"
+    min: 1

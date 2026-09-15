@@ -191,6 +191,15 @@ specific to multi-domain naming, where SKILL.md's output conventions say
 nothing. Fixing it means deciding the house convention for per-domain clock
 names first.
 
+### `tool_used` counts calls, not successes
+
+A `tool_used` grader passes when the tool was *invoked*, whatever came back.
+`rule-lookup-clk05` passed `read-the-rule-file` 3/3 in the first full pass even
+though one of those runs was denied the read and could not see the rule text —
+the content graders caught it, the tool grader did not. Treat `tool_used` as
+evidence about what the agent tried, and pair it with a grader that checks what
+it actually got.
+
 ### Judge model
 
 The default judge is haiku, and it is not always strong enough for structural
