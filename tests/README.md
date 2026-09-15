@@ -178,6 +178,18 @@ corpus discourages, a response that follows the prompt and flags the conflict
 is behaving correctly. Say so in the criterion, or the judge reads the
 deviation notice as an admission of non-compliance.
 
+### Known open finding
+
+`generate-cdc-handshake` fails `clock-and-reset-naming` 3/3. This one is the
+skill, not the grader: with two clock domains in play the generated RTL reaches
+for domain-first names — `src_clk`, `dst_clk`, `src_rst_n` — where `NTL_NAM02`
+and `NTL_NAM03` require the clock and reset prefixes to come first, and one run
+declared `output reg req_b` without the `_r` that `NTL_NAM07` asks of a
+registered output port. `generate-fsm` gets naming right 3/3, so the failure is
+specific to multi-domain naming, where SKILL.md's output conventions say
+nothing. Fixing it means deciding the house convention for per-domain clock
+names first.
+
 ### Judge model
 
 The default judge is haiku, and it is not always strong enough for structural
